@@ -19,6 +19,19 @@ $if(fontfamily)$
 $else$
 \usepackage{lmodern}
 $endif$
+
+% https://tex.stackexchange.com/a/324757
+% Palatino for main text and math
+\usepackage[osf,sc]{mathpazo}
+
+% Helvetica for sans serif
+% (scaled to match size of Palatino)
+\usepackage[scaled=0.90]{helvet}
+
+% Bera Mono for monospaced
+% (scaled to match size of Palatino)
+\usepackage[scaled=0.85]{beramono}
+
 $if(linestretch)$
 \usepackage{setspace}
 \setstretch{$linestretch$}
@@ -266,9 +279,19 @@ $endif$
 \def\fps@figure{htbp}
 \makeatother
 
+\usepackage[a-1b]{pdfx}
+\usepackage{fixme}
+\fxsetup{
+  author={Pablo},
+  status=draft,
+  layout=pdfcmargin
+}
+
 $for(header-includes)$
 $header-includes$
 $endfor$
+
+
 $if(lang)$
 \ifnum 0\ifxetex 1\fi\ifluatex 1\fi=0 % if pdftex
   \usepackage[shorthands=off,$for(babel-otherlangs)$$babel-otherlangs$,$endfor$main=$babel-lang$]{babel}

@@ -85,7 +85,7 @@
 			      <names variable="editor translator" delimiter=", " suffix=", ">
               <name and="symbol" initialize-with=". " delimiter=", "/>
               <label form="short" text-case="title" prefix=" (" suffix=")"/>
-            </names>	  
+            </names>
 		      </if>
 		      <else>
 		        <names variable="editor translator" delimiter=", " suffix=", ">
@@ -122,7 +122,7 @@
               </substitute>
             </names>
 					</if>
-          <else>	
+          <else>
 				    <names variable="author">
               <name name-as-sort-order="all" and="symbol" sort-separator=", " initialize-with=". " delimiter=", " delimiter-precedes-last="always"/>
               <label form="symbol" prefix=" (" suffix=")" text-case="capitalize-first"/>
@@ -133,7 +133,7 @@
               </substitute>
             </names>
 			  	</else>
-		  	</choose>	
+		  	</choose>
       </if>
       <else>
         <names variable="author">
@@ -640,7 +640,7 @@
     <sort>
       <key variable="citation-number"/>
     </sort>
-    <layout prefix="[" suffix="]" delimiter="," vertical-align="sup">
+    <layout prefix="[" suffix="]" delimiter=",">
       <text variable="citation-number"/>
     </layout>
   </citation>

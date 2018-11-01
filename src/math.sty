@@ -1,0 +1,39 @@
+\usepackage{amsthm}
+
+\newtheoremstyle{plain}% name of the style to be used
+  {5pt}% measure of space to leave above the theorem. E.g.: 3pt
+  {5pt}% measure of space to leave below the theorem. E.g.: 3pt
+  {\itshape}% name of font to use in the body of the theorem
+  {}% measure of space to indent
+  {\bfseries}% name of head font
+  {:}% punctuation between head and body
+  {.5em}% space after theorem head; " " = normal interword space
+  {}% Manually specify head
+
+\makeatletter
+\renewenvironment{proof}[1][\proofname]{\par
+    \pushQED{\qed}%
+    \normalfont \topsep6\p@\@plus6\p@\relax
+    \trivlist
+    \item[\hskip\labelsep
+        \itshape
+        #1\@addpunct{.} ]\mbox{}\par\nobreak}
+    {\popQED\endtrivlist\@endpefalse}
+\makeatother
+
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{corollary}{Corollary}[theorem]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{definition}{Definition}[section]
+\newtheorem{problem}{Problem}[section]
+\newtheorem{proposition}{Proposition}[section]
+\newtheorem{principle}{Principle}
+
+% Bra-ket notation
+\newcommand{\bra}[1]{\left\langle#1\right|}
+\newcommand{\ket}[1]{\left|#1\right\rangle}
+\newcommand{\bk}[2]{\langle #1|#2\rangle}
+
+% Basic commands
+\newcommand{\CC}{\mathbb{C}}
+\newcommand{\norm}[1]{\left\lVert#1\right\rVert}

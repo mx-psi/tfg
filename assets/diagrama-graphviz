@@ -1,0 +1,13 @@
+digraph G {
+rankdir="BT";
+node [shape="plaintext" fontname="Helvetica"];
+edge[arrowsize=0.5];
+P -> NP;
+NP -> MA -> AM [style="dashed"];
+AM -> PH -> PSPACE;
+BPP -> MA;
+P -> BPP [style="dashed"];
+BPP -> BQP -> QMA -> PP -> PSPACE;
+MA -> QMA;
+BQP -> AWPP -> PP;
+}

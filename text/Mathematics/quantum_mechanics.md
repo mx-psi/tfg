@@ -73,7 +73,7 @@ The relationship between the state spaces of the subsystems and the composite sy
 Let $H_1, H_2$ be finite dimensional Hilbert spaces with orthonormal basis $B_1 = \{u_i\}_{i \in I}, B_2 = \{v_j\}_{j \in J}$ respectively. 
 Then $H_1 \otimes H_2$ is a finite dimensional Hilbert space with inner product given by the linear extension of $$\bk{u \otimes v}{u' \otimes v'} = \bk{u}{u'}\bk{v}{v'}$$ and $B_1 \otimes B_2 = \{u_i \otimes v_j\}_{(i,j) \in I \times J}$ is an orthonormal basis.
 :::
-:::{.proof name='Proof'}
+:::{.proof}
 
 By definition $H_1 \otimes H_2$ is a complex vector space with $\dim(H_1 \otimes H_2) = \dim(H_1)\dim(H_2)$ and $B_1 \otimes B_2$ is a basis of it. 
 Furthermore

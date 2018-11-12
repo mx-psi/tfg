@@ -7,7 +7,7 @@ main = toJSONFilter envtify
 
 raw = (: []) . RawBlock (Format "tex")
 comm  name val  = raw $ "\\" ++ name ++ "{" ++ val ++"}"
-begin name opts = raw $ "\\begin{" ++ name ++"}[" ++ (maybe "" id opts) ++ "]"
+begin name opts = raw $ "\\begin{" ++ name ++"}" ++ (maybe "" (\x -> "[" ++ x ++ "]") opts)
 end             = comm "end"
 label ident  = if Prelude.null ident then [] else comm "label" ident
 

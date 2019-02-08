@@ -9,5 +9,5 @@ BPP -> MA;
 P -> BPP [style="dashed"];
 BPP -> BQP -> QMA -> PP -> PSPACE;
 MA -> QMA;
-BQP -> AWPP -> PP;
+#BQP -> AWPP -> PP;
 }

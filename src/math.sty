@@ -1,3 +1,26 @@
+% pandoc-crossref START
+% CAUTION: Deleting these lines might cause unexpected behavior
+% when using pandoc-crossref
+\makeatletter
+\@ifpackageloaded{subfig}{}{\usepackage{subfig}}
+\@ifpackageloaded{caption}{}{\usepackage{caption}}
+\captionsetup[subfloat]{margin=0.5em}
+\AtBeginDocument{%
+\renewcommand*\figurename{}
+\renewcommand*\tablename{}
+}
+\AtBeginDocument{%
+\renewcommand*\listfigurename{}
+\renewcommand*\listtablename{}
+}
+\@ifpackageloaded{float}{}{\usepackage{float}}
+\floatstyle{ruled}
+\@ifundefined{c@chapter}{\newfloat{codelisting}{h}{lop}}{\newfloat{codelisting}{h}{lop}[chapter]}
+\floatname{codelisting}{}
+\newcommand*\listoflistings{\listof{codelisting}{}}
+\makeatother
+% pandoc-crossref END
+
 \usepackage{amsthm}
 
 \newtheoremstyle{plain}% name of the style to be used
@@ -28,6 +51,7 @@
 \newtheorem{problem}{Problem}[section]
 \newtheorem{proposition}{Proposition}[section]
 \newtheorem{principle}{Principle}
+\newtheorem{example}{Example}[section]
 
 % Bra-ket notation
 \newcommand{\bra}[1]{\left\langle#1\right|}
@@ -35,5 +59,22 @@
 \newcommand{\bk}[2]{\langle #1|#2\rangle}
 
 % Basic commands
+\newcommand{\NN}{\mathbb{N}}
+\newcommand{\RR}{\mathbb{R}}
 \newcommand{\CC}{\mathbb{C}}
+\newcommand{\BB}{\mathbb{B}}
+\newcommand{\PC}{\mathbb{P}\mathbb{C}}
 \newcommand{\norm}[1]{\left\lVert#1\right\rVert}
+\newcommand{\set}[2]{\left\{ #1 \;:\; #2 \right\}}
+
+% Complexity
+\newcommand{\talph}{\mathcal{T}}
+\newcommand{\blank}{\square}
+\newcommand{\ew}{\varepsilon}
+\newcommand{\TIME}{\operatorname{TIME}}
+\newcommand{\SPACE}{\operatorname{SPACE}}
+\newcommand{\NTIME}{\operatorname{NTIME}}
+\newcommand{\NSPACE}{\operatorname{NSPACE}}
+\newcommand{\SIZE}{\operatorname{SIZE}}
+\newcommand{\poly}{\operatorname{poly}}
+\newcommand{\qeq}{\overset{?}{=}}

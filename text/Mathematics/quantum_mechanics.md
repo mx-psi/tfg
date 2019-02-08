@@ -1,9 +1,10 @@
 # A model of quantum mechanics
 
 The study of quantum computers requires us to state the basic principles and mathematical structures this physical theory is based on.
-The physical systems considered in the theory of quantum computation are finite dimensional, yet in the general case physical systems are described by a systems with possible infinite dimensions.
+The physical systems considered in the theory of quantum computation are finite dimensional, yet in the general case physical systems are described by a system with possible infinite dimensions.
 In this section we describe five principles that describe quantum mechanical systems at the appropriate level for the development of the theory of quantum computation.
 We follow the presentation given at [@NielsenQuantumComputationQuantum2010 chap. 2] and [@LiptonQuantumalgorithmslinear2014 chap. 1].
+
 
 ## State space and bra-ket notation
 
@@ -13,11 +14,11 @@ A concrete state of an isolated physical system is described by a **state vector
 In the case of quantum mechanics these are described by (projective) Hilbert spaces.
 
 :::{.definition}
-A (complex) **pre-Hilbert space** is a pair $(H,\bk{\cdot}{\cdot}: H^2 \to \CC)$ such that if we let $u,v \in H$ and $\alpha, \beta \in \CC$
+A (complex) **pre-Hilbert space** is a pair $(H,\bk{\cdot}{\cdot}: H^2 \to \CC)$ such that
 
 #. $H$ is a complex vector space,
-#. $\bk{\cdot}{\cdot}$ is *sesquilinear*, that is, $\bk{u}{v} = \overline{\bk{v}{u}}$ and $$\bk{\alpha u + \beta v}{w} = \overline{\alpha}\bk{u}{w} + \overline{\beta}\bk{v}{w}$$
-#. $\bk{\cdot}{\cdot}$ is *definite positive*, that is, $\bk{v}{v} \geq 0$ and $\bk{v}{v} = 0 \iff v = 0$
+#. $\bk{\cdot}{\cdot}$ (the *product*) is *sesquilinear*, that is, if $u,v \in H$ and $\alpha, \beta \in \CC$, $\bk{u}{v} = \overline{\bk{v}{u}}$ and $$\bk{\alpha u + \beta v}{w} = \overline{\alpha}\bk{u}{w} + \overline{\beta}\bk{v}{w}\,,$$
+#. $\bk{\cdot}{\cdot}$ is *definite positive*, that is, if $v \in H$, $\bk{v}{v} \geq 0$ and $\bk{v}{v} = 0 \iff v = 0$.
 
 An **orthonormal basis** of $H$ is a basis $\{u_i\}_{i \in I}$ of $H$ as a vector space such that $\bk{u_i}{u_j} = \delta_{ij}$.
 
@@ -35,10 +36,10 @@ $$\bk{u}{v} = \sum_{j=1}^N \overline{u_j}v_j \quad \text{ where } u = (u_1, \dot
 An orthonormal basis of $\CC^N$ is the usual basis of $\CC^N$ as a vector space $B = \{\ket{e_i}\}_{i = 1, \dots, N}$.
 Every finite dimensional Hilbert space of dimension $N$ is isomorphic to $\CC^N$, by taking its coordinates over an orthonormal basis, thus we will focus on these spaces.
 
-An alternative way of considering this inner product is by the use of the *adjoint*
+An alternative way of considering this inner product is by the use of the *adjoint*.
 
 :::{.definition}
-Let $A \in \mathcal{M}_{N \times N}(\CC)$. The **adjoint** or **conjugate transpose** of $A$, $A^\dagger$, is given by $$A^\dagger = (A^\ast)^T, \text{ that is } (A^\dagger)_{ij} = \overline{A}_{ji}$$
+Let $A \in \mathcal{M}_{N \times N}(\CC)$. The **adjoint** or **conjugate transpose** of $A$, $A^\dagger$, is given by $$(A^\dagger)_{ij} = \overline{A}_{ji}.$$
 :::
 
 Given a vector $\ket{v} \in \CC^N$ we define $\bra{v} = \ket{v}^\dagger$ (by considering $\ket{v}$ as a matrix).
@@ -52,7 +53,7 @@ $$x \sim y \iff \exists \lambda \in \mathbb{C}\backslash\{0\}: \; x = \lambda y$
 
 Thus, each element of a Hilbert space is a subspace of dimension 1 called a *ray*.
 
-:::{.principle}
+:::{.principle #ppl:state}
 The state space of an isolated (quantum) physical system is the projective space associated with a complex separable Hilbert space (also called state space).
 :::
 
@@ -60,18 +61,18 @@ Thus, the state vectors of an isolated physical system are *rays* on a Hilbert s
 We will identify a ray with a unit vector that generates it. 
 This unit vector is unique up to a constant of the form $e^{i\theta}$ with $\theta \in \mathbb{R}$.
 
-A **qubit** is an isolated physical system with state space $\CC^2$ in which we fix an orthonormal basis $\ket{0}, \ket{1}$ (called the *usual basis*).
+A **qubit** is an isolated physical system with state space $\PC^2$ in which we fix an orthonormal basis $\ket{0}, \ket{1}$ (called the *usual basis*).
 The term is also used to refer to an element of this state space; using the identification of rays with unit vectors a qubit can also refer to a vector 
 $$\ket{\psi} = \alpha\ket{0} + \beta\ket{1} \quad \text{such that } \norm{\ket{\psi}} = |\alpha|^2 + |\beta|^2 = 1$$
 
 ## Composite systems
 
 A physical system may be composed of several separate subsystems. 
-The relationship between the state spaces of the subsystems and the composite system is given by the tensor product, which is justified by the following result \fxnote{Podría definir el producto tensorial de espacios vectoriales}
+The relationship between the state spaces of the subsystems and the composite system is given by the tensor product, which is justified by the following result: \fxnote{Podría definir el producto tensorial de espacios vectoriales}
 
 :::{.proposition}
 Let $H_1, H_2$ be finite dimensional Hilbert spaces with orthonormal basis $B_1 = \{u_i\}_{i \in I}, B_2 = \{v_j\}_{j \in J}$ respectively. 
-Then $H_1 \otimes H_2$ is a finite dimensional Hilbert space with inner product given by the linear extension of $$\bk{u \otimes v}{u' \otimes v'} = \bk{u}{u'}\bk{v}{v'}$$ and $B_1 \otimes B_2 = \{u_i \otimes v_j\}_{(i,j) \in I \times J}$ is an orthonormal basis.
+Then $H_1 \otimes H_2$ is a finite dimensional Hilbert space with inner product given by the linear extension of $$\bk{u \otimes v}{u' \otimes v'} = \bk{u}{u'}\bk{v}{v'}$${#eq:tensorscalar} and $B_1 \otimes B_2 = \{u_i \otimes v_j\}_{(i,j) \in I \times J}$ is an orthonormal basis.
 :::
 :::{.proof}
 
@@ -81,16 +82,16 @@ $$\bk{u_i \otimes v_j}{u_l \otimes v_k} = \bk{u_i}{u_l}\bk{v_j}{v_k} = \delta_{i
 which is equal to one if and only if $i = l$ and $j = k$ and it is zero otherwise.
 
 It suffices to prove that the product is definite positive.
-Let $v \in H_1 \otimes H_2$. Since $B_1 \otimes B_2$ there exists unique $\alpha_{ij} \in \CC$ such that $$v = \sum_{i,j} \alpha_{ij}(u_i \otimes v_j)$$
+Let $v \in H_1 \otimes H_2$. Since $B_1 \otimes B_2$ there exists unique $\alpha_{ij} \in \CC$ such that $$v = \sum_{i,j} \alpha_{ij}(u_i \otimes v_j)\,.$$
 and by linearity
-$$\bk{v}{v} = \sum_{i,j,k,l} \alpha_{il}\alpha_{jk}\bk{u_i \otimes v_j}{u_l \otimes v_k} = \sum_{i,j} \alpha_{ij}^2 \geq 0$$
+$$\bk{v}{v} = \sum_{i,j,k,l} \alpha_{il}\alpha_{jk}\bk{u_i \otimes v_j}{u_l \otimes v_k} = \sum_{i,j} \alpha_{ij}^2 \geq 0\,,$$
 Furthermore $\bk{v}{v} = 0 \iff \sum_{i,j} \alpha_{ij}^2 = 0 \iff \alpha_{ij} = 0 \;\forall i,j$.
 
 Therefore $H_1 \otimes H_2$ is a Hilbert space with the previously defined Hilbert product and by [@eq:orthonormal] we know that $B_1 \otimes B_2$ is therefore an orthonormal basis.
 :::
 
 
-Therefore we can write
+Therefore we can write:
 
 :::{.principle}
 The state space of a composite system is the tensor product of the state spaces of the subsystems.
@@ -98,15 +99,27 @@ The state space of a composite system is the tensor product of the state spaces 
 The state vector of a composite system is the tensor product of the state vectors of the subsystems.
 :::
 
-We will write $\ket{\phi\psi} := \ket{\phi}\ket{\psi} := \ket{\phi} \otimes \ket{\psi}$
+We will write $\ket{\phi\psi} := \ket{\phi}\ket{\psi} := \ket{\phi} \otimes \ket{\psi}$.
+As in [@ppl:state], we take the projective Hilbert space and work with the rays.
+By [@eq:tensorscalar] the tensor product of two unit vectors is a unit vector and thus we can take the tensor product of the representatives of two rays as a unit norm representative of the tensor product of the rays.
 
 
 We will mostly use composite systems made out of qubits.
-The tensor product of $N$ qubits has a state space of $2^N$ dimension. We fix as a basis, the tensor product of the usual basis of each qubit
+The tensor product of $N$ qubits has a state space of $2^n$ dimension. We fix as a basis, the tensor product of the usual basis of each qubit
 $$\ket{a_1\dots a_n} \quad \text{ where } a_i \in \{0,1\}$$
 The basis is ordered in lexicographic order.
 
-Given $0 \leq i \leq 2^N$ we write $\ket{i} = \ket{a_1 \dots a_N}$ where $a_1 \dots a_N$ is the representation of $i$ in binary.
+Given $0 \leq i < 2^N$ we write $\ket{i} = \ket{a_1 \dots a_N}$ where $a_1 \dots a_N$ is the representation of $i$ in binary.
+
+:::{.example name='2 qubit system'}
+Let $Q_A, Q_B$ be two qubits with orthonormal basis $\ket{0}_A, \ket{1}_A$ and $\ket{0}_B, \ket{1}_B$ respectively.
+An orthonormal basis of the composite system $Q_A \otimes Q_B$ is
+$$(\ket{0}_A \otimes\ket{0}_B, \ket{0}_A \otimes\ket{1}_B, \ket{1}_A \otimes\ket{0}_B, \ket{1}_A \otimes\ket{1}_B),$$
+which we write
+$(\ket{00}, \ket{01}, \ket{10}, \ket{11})$
+or
+$(\ket{0}, \ket{1}, \ket{2}, \ket{3}).$
+:::
 
 
 ## Quantum operations
@@ -115,14 +128,13 @@ Following the classical model, the theory of quantum computation considers time 
 Two kinds of operations are possible within this framework: *unitary* operations, which are reversible and keep the system in a quantum state and  *measurements* which are irreversible and non-deterministic and return a classical bit.
 
 Given an operator $A: H \to H'$ and $\ket{\psi} \in H$ we write $A\ket{\psi} := A(\ket{\psi})$.
-We will identify a linear operator with its matrix over the fixed basis
+We will identify a linear operator with its matrix over the fixed basis.
 
 :::{.definition}
-Let $H$ be a Hilbert space. 
-A **unitary operator** $U: H \to H$ is a continuous linear operator such that its matrix 
+Let $H$ be a Hilbert space, a **unitary operator** $U: H \to H$ is a continuous linear operator such that
 
 1. $U$ is surjective and
-2. for all $\ket{\phi},\ket{\psi} \in H$, $\bk{\phi}{\psi} = \bk{U\phi}{U\psi}$
+2. $U$ is an isometry, that is, for all $\ket{\phi},\ket{\psi} \in H$, $\bk{\phi}{\psi} = \bk{U\phi}{U\psi}$
 :::
 
 If $\norm{\ket{\psi}} = 1$ then 
@@ -133,22 +145,22 @@ This justifies the identification of unit vectors with rays.
 In finite dimensional Hilbert spaces this concept admits a simple characterisation on the matrix associated with the operator.
 
 :::{.proposition}
-Let $U:\CC^N \to \CC^N$ be a linear operator. Then $$U \text{ is unitary} \iff U \text{ is invertible and } U^{-1} = U^\dagger$$.
+Let $U:\CC^N \to \CC^N$ be a linear operator, then $$U \text{ is unitary} \iff U \text{ is invertible and } U^{-1} = U^\dagger\,.$$
 :::
-:::{.proof name=Proof}
+:::{.proof}
 
 $\Rightarrow)$
-: Let $U$ be unitary. $$(U^\dagger U)_{ij} = \bra{e_i}U^\dagger U \ket{e_j} = \bk{Ue_i}{Ue_j} = \bk{e_i}{e_j} = \delta_{ij}$$ 
-where we have used $(AB)^\dagger = B^\dagger A ^\dagger$. Therefore $U^\dagger U = I$.
-Furthermore
-\begin{align*}
-\ker U & = \{\ket{x} \in \CC^N \;:\; U\ket{x} = 0\} 
-         = \{\ket{x} \in \CC^N \;:\; \bk{U\ket{x}}{U\ket{x}} = 0\} \\
-       & = \{\ket{x} \in \CC^N \;:\; (U\ket{x})^\dagger(U\ket{x}) = 0\} 
-         = \{\ket{x} \in \CC^N \;:\; \bra{x}U^\dagger U\ket{x} = 0\} \\
-       & = \{\ket{x} \in \CC^N \;:\; \bk{x}{x} = 0\} = \{0\}
-\end{align*}
-Hence $U$ is invertible.
+: Let $U$ be unitary. We consider its matrix representation with respect to $\{e_i\}_{i \in I}$. $$(U^\dagger U)_{ij} = \bra{e_i}U^\dagger U \ket{e_j} = \ket{e_i}^\dagger U^\dagger U \ket{e_j} = \bk{Ue_i}{Ue_j} = \bk{e_i}{e_j} = \delta_{ij}$$ 
+where we have used $(AB)^\dagger = B^\dagger A ^\dagger$. Therefore $U$ is invertible and $U^\dagger U = I$.
+<!-- Furthermore -->
+<!-- \begin{align*} -->
+<!-- \ker U & = \{\ket{x} \in \CC^N \;:\; U\ket{x} = 0\}  -->
+<!--          = \{\ket{x} \in \CC^N \;:\; \bk{U\ket{x}}{U\ket{x}} = 0\} \\ -->
+<!--        & = \{\ket{x} \in \CC^N \;:\; (U\ket{x})^\dagger(U\ket{x}) = 0\}  -->
+<!--          = \{\ket{x} \in \CC^N \;:\; \bra{x}U^\dagger U\ket{x} = 0\} \\ -->
+<!--        & = \{\ket{x} \in \CC^N \;:\; \bk{x}{x} = 0\} = \{0\} -->
+<!-- \end{align*} -->
+<!-- Hence $U$ is invertible. -->
 
 $\Leftarrow)$
 : Since $U$ is invertible it is surjective. Furthermore, let $\ket{\phi},\ket{\psi} \in \CC^N$.
@@ -156,19 +168,20 @@ Then
 $$\bk{U\phi}{U\psi} = \bra{\phi}U^\dagger U \ket{\psi} = \bra{\phi} I \ket{\psi} = \bk{\phi}{\psi}$$
 :::
 
-Quantum operations are represented by unitary operators, as stated in the following principle
+Quantum operations are represented by unitary operators, as stated in the following principle:
 
 :::{.principle}
-The evolution of the state of a quantum system from time $t_1$ to time $t_2$ is given by a unitary transformation $U$, that is $$\ket{\psi(t_2)} = U\ket{\psi(t_1)}$$
+The evolution of the state of a quantum system from time $t_1$ to time $t_2 > t_1$ is given by a unitary transformation $U$, that is $$\ket{\psi(t_2)} = U\ket{\psi(t_1)}$$
 :::
 
 Lastly we state the measurement operation for finite dimensional systems.
 
 :::{.principle #fig:measurement}
-A measurement of a quantum system with state $$\ket{\psi} = \sum_{i} \alpha_i\ket{i}$$ is a discrete random variable $X$ such that $$P\left(X = \ket{i}\right) = |\alpha_i|^2$$
+A measurement of a quantum system of dimension $N = 2^n$ with state $$\ket{\psi} = \sum_{i = 0}^{N-1} \alpha_i\ket{i}$$ is a discrete random variable $X$ such that 
+$$P\left(X = \ket{i}\right) = |\alpha_i|^2 \qquad (i = 1, \dots, N)$$
 :::
 
-Since we take $\norm{\ket{\psi}} = 1$ this means $$\sum_{i} |\alpha_i|^2  = 1$$
+Since we take $\norm{\ket{\psi}} = 1$ this means $$\sum_{i = 0}^{N-1} |\alpha_i|^2  = 1$$
 Furthermore, $|\alpha_i|^2 \geq 0$, so the random variable defined at [Principle @fig:measurement] is well-defined.
 
 We can restrict ourselves to measurements on the usual basis, but since the change of basis matrix for any other orthonormal basis is unitary we can in practice measure with respect to any orthonormal basis by applying an appropriate unitary operation before the measurement.

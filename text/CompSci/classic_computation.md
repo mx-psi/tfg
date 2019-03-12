@@ -91,12 +91,14 @@ Finally we have
 :::{.definition #dfn:tm}
 A Turing machine $M = (Q,\delta, q_0, q_F)$ *accepts* $u \in \BB^\ast$ if there exists a final configuration $C$ such that $(q_0, \ew, u) \vdash^\ast C$.
 
-A Turing machine $M = (Q,\delta, q_0, q_F)$ *computes* $f:\BB^\ast \to \BB^\ast$ if for every word $u$ we have $(q_0, \ew, u) \vdash^\ast (q', v_1,v_2)$ with $f(u) = v_1v_2$.
+A Turing machine $M = (Q,\delta, q_0, q_F)$ *computes* $f:\BB^\ast \to \BB^\ast$ if for every word $u$ we have $(q_0, \ew, u) \vdash^\ast (q_F, v_1,v_2)$ with $f(u) = v_1v_2$.
 
 A Turing machine $M$ *accepts a language $L$* if for every word $u \in L$, $M$ accepts $u$.
 :::
 
+If, when starting with a word on the tape at some point a Turing machine reaches a non-final configuration with no other related configuration, we say the Turing machine *rejects* its input.
 When it is clear from context, we will also denote by $M$ the partial function computed by the Turing machine $M$.
+
 
 ### The circuit model
 
@@ -122,7 +124,7 @@ Clearly, a circuit $C$ with $n$ inputs computes a function $C: \BB^n \to \BB$.
 To allow for functions with an input of arbitrary length we need the concept of a *circuit family*.
 
 :::{.definition}
-A circuit family is a sequence $\mathcal{C} = \{C_n\}_{n \in \NN}$ such that for every $n \in \NN$ $C_n$ is a circuit with $n$ inputs.
+A (classical) *circuit family* is a sequence $\mathcal{C} = \{C_n\}_{n \in \NN}$ such that for every $n \in \NN$ $C_n$ is a circuit with $n$ inputs.
 :::
 
 Likewise, a circuit family computes a function $\mathcal{C} : \BB^\ast \to \BB$ given by $\mathcal{C}(x) = C_{|x|}(x)$. We say $\mathcal{C}$ decides a language $L$ if $$\mathcal{C}(x) = \begin{cases} 1 & \text{ if } x \in L \\ 0 & \text{ otherwise} \end{cases}$$
@@ -172,7 +174,6 @@ The family $\{C_n\}_{n \in \NN}$ then decides $L$.
 :::
 
 ## Complexity
-
 ### Deterministic complexity
 
 There are different approaches as to how to measure the complexity of a given algorithm, here we will focus on two such notions: the worst-case time and space complexity for Turing machines and the number of gates per input size in the case of circuits. <!--TODO: Mencionar otros approaches-->
@@ -192,6 +193,12 @@ Let $f: \NN \to \NN$, $L \subseteq \BB^\ast$. Then:
 If $F \subseteq \NN^\NN$ then $$\TIME(F) = \bigcup_{f(n) \in F} \TIME(f(n))$$ and likewise for $\SPACE$ and $\SIZE$.
 
 These classes are potentially dependent on the use of the specific single-tape Turing machine model of [@dfn:tm]; if a different model is used, such as multitape Turing machines or RAM models, the classes might change [@vanLeeuwenHandbookTheoreticalComputer1990, chap. 1].
+
+#### The hierarchy theorems {.hidden}
+
+Time and space hierarchy theorems
+
+Discussion about relativization
 
 ### Non-deterministic complexity 
 
@@ -329,15 +336,17 @@ Let $C_n$ be the circuit $C'_n$ with input $w_n$ fixed.
 $C_n$ has polynomial-size on the variable $m = n + |w_n|$ and thus has polynomial size with respect to $n$.
 :::
 
+#### The Karp-Lipton theorem {.hidden}
+
 ### Polynomial time verifiers
 
 An important notion in the field of computational complexity is the notion of *verifiers*.
 Potentially, a language might not be able to be decided in polynomial time, yet one can decide membership when supplied with a *proof*. Here we show a characterization of $\mathsf{NP}$ as a verifier class.
 
 :::{.proposition}
-Let $L \in \BB^\ast$. Then $L \in \mathsf{NP}$ if and only if there exists a Turing Machine $V$ (*verifier*) that takes polynomial time to execute with respect to the length of its first argument and a polynomial $p(n) \in \poly(n)$ such that 
+Let $L \subseteq \BB^\ast$. Then $L \in \mathsf{NP}$ if and only if there exists a Turing Machine $V$ (*verifier*) that takes polynomial time to execute with respect to the length of its first argument and a polynomial $p(n) \in \poly(n)$ such that 
 
-> $x \in L$ if and only there exists $y \in \BB^{p(|x|)}$ such that $V(x,y) = 1$.
+> $x \in L$ if and only there exists $y \in \BB^\ast$ with $|y| \leq p(|x|)$ such that $V(x,y) = 1$.
 :::
 :::{.proof}
 $\implies\!\!)$ Let $M = (Q,\delta,q_0,q_F)$ be a polynomial-time non-deterministic Turing machine for $L$.
@@ -351,9 +360,10 @@ Since $M$ runs in polynomial time $V$ runs in polynomial time. Furthermore, if a
 
 ****
 
-$\Leftarrow)$ Let $V$ be a verifier for $L$. Then let $M$ be the Turing machine with the following description
+$\Leftarrow)$ Let $V$ be a verifier for $L$ and $p$ its associated polynomial. 
+Then let $M$ be the Turing machine with the following description
 
-> On input $x$ non-deterministically select a string $y$ of length $|y| \leq |x|^k$. Accept if $V(x,y) = 1$.
+> On input $x$ non-deterministically select a string $y$ of length $|y| \leq p(|x|)$. Accept if $V(x,y) = 1$.
 
 The selection of a string is done in polynomial time since writing each symbol takes one step.
 By hypothesis, $V$ runs in polynomial time on $x$, thus $M$ is a non-deterministic polynomial-time Turing machine.

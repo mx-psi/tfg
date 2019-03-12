@@ -1,0 +1,155 @@
+\newpage
+  
+# Quantum computation models
+## Quantum operations
+
+As we saw in sec. [A model of quantum mechanics], there are two kinds of operations by which a quantum system can be transformed
+
+1. unitary operations, which are reversible,
+2. measurements, which are not reversible.
+
+:::{.definition}
+TODO set of universal quantum gate
+:::
+
+
+:::{.theorem name="Solovay-Kitaev theorem"} 
+[@DawsonSolovayKitaevalgorithm2005]
+
+Let $\mathcal{G}$ be a universal gate set and $U$ a unitary operation.
+
+There exists a constant $c$ such that $U$ can be approximated within $\epsilon$ accuracy by a sequence of $O(\log^c(1/\epsilon))$ gates from $\mathcal{G}$.
+:::
+:::{.proof}
+TODO
+:::
+
+### What classical operations can be made quantum?
+
+Toffoli gate, reversible classical computing, ancilla qubits...
+
+1. ·”the value of the ancilla qubits will be independent of the value of the input”
+2. Watrous Quantum proofs says only a linear amount is needed, why?
+3. QDemocritus says as many as we wnat
+3. Discuss uncomputation as in Quipper
+
+## Quantum circuits
+
+Analogous to the concept of classical or probabilistic circuits, this notion can be further generalized into the quantum realm.
+
+:::{.definition}
+TODO quantum circuit
+TODO size of a quantum circuit
+:::
+
+
+We assume a fixed encoding of quantum circuits as binary strings.
+
+:::{.definition}
+A *quantum circuit family* over a gate set $\mathcal{G}$ is a sequence $\mathcal{C} = \{C_n\}_{n \in \mathbb{N}}$ of quantum circuits such that for every $n \in \NN$, $C_n$ is a circuit over $\mathcal{G}$ with $l(n) \geq n$ inputs.
+
+We say a quantum circuit family is *uniform* if the function $1^n \mapsto C_n$ is computable.
+:::
+
+Unlike in the classical case, we allow the $n$-th circuit of a quantum circuit family to have more than $n$ inputs,
+so as to allow the use of *ancilla qubits*. Therefore, a circuit family has an associated function that outputs a random variable for every input, where we right pad the input string with zeros:
+if $x \in \BB^\ast$, $\mathcal{C}(x) = C_n(\ket{x}\ket{0}^{\otimes l(n) - n})$.
+
+
+:::{.definition}
+Watrous unitary purification
+:::
+
+## Quantum Turing Machines
+
+:::{.definition}
+TODO QTM
+:::
+
+:::{.theorem}
+polynomial slowdown simulation
+:::
+
+
+
+
+# Quantum computability
+
+:::{.definition}
+A function $f : \BB^\ast \to \BB^\ast$ is **quantum $T(n)$-time computable** if there exists a uniform family of $O(T(n))$ size quantum circuits such that 
+:::
+
+Computability in the classical and quantum notions coincides (exponential slowdown simulation).
+
+## Quantum time complexity: BQP
+
+:::{.definition}
+$L \in \mathsf{BQP}$ if and only if there exists 
+a polynomial $p(n)$ and 
+a polynomial time uniform family of quantum circuits $\{C_n\}$ over a finite universal gate set $\mathcal{G}$ such that 
+
+1. $C_n$ acts on $p(n)$ qubits for very $n$,
+2. for every $x \in L$, $|x| = n$, $P[C_n(\ket{x}\ket{0}^{\otimes p(n) - n}) = 1] \geq \frac23$ and
+3. for every $x \notin L$, $|x| = n$, $P[C_n(\ket{x}\ket{0}^{\otimes p(n) - n}) = 1] \leq \frac13$
+:::
+
+:::{.definition}
+BQP/qpoly
+:::
+
+### BQP properties
+
+:::{.proposition}
+$$\mathsf{BPP} \subseteq \mathsf{BQP}$$
+:::
+
+Error correction
+
+:::{.theorem}
+$$\mathsf{BQP}^\mathsf{BQP} = \mathsf{BQP}$$
+:::
+
+
+2. BQP vs PH (Optional)
+### Complete problems for BQP
+
+:::{.definition}
+TODO problem complete for BQP
+:::
+
+
+## Quantum proofs: QMA
+
+:::{.definition}
+TODO QMA
+:::
+
+:::{.proposition}
+BQP/qpoly is in QMA/poly 
+:::
+
+:::{.proposition}
+QMA error correction
+:::
+
+:::{.proposition}
+TODO BQP is in QMA
+TODO NP is in QMA
+:::
+
+  
+### Problems in QMA
+
+:::{.definition}
+GNM
+:::
+
+## Quantum space complexity
+
+BQPSPACE == PPSPACE == PSPACE
+
+
+## Further generalizations {.hidden}
+
+Matrix representation of classical , probabilistic (stochastic matrices) and quantum computation.
+Quaternionic computing

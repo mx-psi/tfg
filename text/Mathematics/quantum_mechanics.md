@@ -130,11 +130,20 @@ Two kinds of operations are possible within this framework: *unitary* operations
 Given an operator $A: H \to H'$ and $\ket{\psi} \in H$ we write $A\ket{\psi} := A(\ket{\psi})$.
 We will identify a linear operator with its matrix over the fixed basis.
 
+Operators form a normed vector space given by the following proposition
+
+:::{.proposition}
+Let $X,Y$ be two normed complex vector spaces and let $L(X,Y)$ be the set of linear maps $A:X \to Y$. Then $(L(X,Y),\norm{\cdot})$ is a normed vector space, with $\norm{\cdot}$ given by 
+$$\norm{A} = \sup\{\norm{A\ket{x}}\;:\; \ket{x} \in X, \norm{\ket{x}} = 1\}.$$
+:::
+
+The operators that can be used in quantum mechanics are unitary.
+
 :::{.definition}
 Let $H$ be a Hilbert space, a **unitary operator** $U: H \to H$ is a continuous linear operator such that
 
 1. $U$ is surjective and
-2. $U$ is an isometry, that is, for all $\ket{\phi},\ket{\psi} \in H$, $\bk{\phi}{\psi} = \bk{U\phi}{U\psi}$
+2. $U$ is an isometry, that is, for all $\ket{\phi},\ket{\psi} \in H$, $\bk{\phi}{\psi} = \bk{U\phi}{U\psi}$.
 :::
 
 If $\norm{\ket{\psi}} = 1$ then 
@@ -152,15 +161,6 @@ Let $U:\CC^N \to \CC^N$ be a linear operator, then $$U \text{ is unitary} \iff U
 $\Rightarrow)$
 : Let $U$ be unitary. We consider its matrix representation with respect to $\{e_i\}_{i \in I}$. $$(U^\dagger U)_{ij} = \bra{e_i}U^\dagger U \ket{e_j} = \ket{e_i}^\dagger U^\dagger U \ket{e_j} = \bk{Ue_i}{Ue_j} = \bk{e_i}{e_j} = \delta_{ij}$$ 
 where we have used $(AB)^\dagger = B^\dagger A ^\dagger$. Therefore $U$ is invertible and $U^\dagger U = I$.
-<!-- Furthermore -->
-<!-- \begin{align*} -->
-<!-- \ker U & = \{\ket{x} \in \CC^N \;:\; U\ket{x} = 0\}  -->
-<!--          = \{\ket{x} \in \CC^N \;:\; \bk{U\ket{x}}{U\ket{x}} = 0\} \\ -->
-<!--        & = \{\ket{x} \in \CC^N \;:\; (U\ket{x})^\dagger(U\ket{x}) = 0\}  -->
-<!--          = \{\ket{x} \in \CC^N \;:\; \bra{x}U^\dagger U\ket{x} = 0\} \\ -->
-<!--        & = \{\ket{x} \in \CC^N \;:\; \bk{x}{x} = 0\} = \{0\} -->
-<!-- \end{align*} -->
-<!-- Hence $U$ is invertible. -->
 
 $\Leftarrow)$
 : Since $U$ is invertible it is surjective. Furthermore, let $\ket{\phi},\ket{\psi} \in \CC^N$.
@@ -185,4 +185,12 @@ Since we take $\norm{\ket{\psi}} = 1$ this means $$\sum_{i = 0}^{N-1} |\alpha_i|
 Furthermore, $|\alpha_i|^2 \geq 0$, so the random variable defined at [Principle @fig:measurement] is well-defined.
 
 We can restrict ourselves to measurements on the usual basis, but since the change of basis matrix for any other orthonormal basis is unitary we can in practice measure with respect to any orthonormal basis by applying an appropriate unitary operation before the measurement.
-\fxnote{Puedo poner ejemplos de operaciones unitarias que sean útiles en la parte de computación en lugar de definirlas allí.}
+
+### Some useful quantum operations
+
+Hadamard
+CNOT
+SWAP
+Classical reversible
+
+Matrix representation

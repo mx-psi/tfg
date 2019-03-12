@@ -2,7 +2,7 @@ PANDOC:=pandoc
 # TODO: filters/IncludeFilter.hs
 FILTERS:= filters/env.hs filters/pandoc-crossref pandoc-citeproc
 PFLAGS:= $(foreach filter,$(FILTERS),-F $(filter)) -M commit="$$(git rev-parse --short HEAD)" -M time="$$(date -Iseconds)"
-SRCS:= text/Mathematics/quantum_mechanics.md text/CompSci/classic_computation.md
+SRCS:= text/Mathematics/quantum_mechanics.md text/CompSci/classic_computation.md text/CompSci/quantum_computation.md
 
 .PHONY: all clean check
 

@@ -133,7 +133,7 @@ We will identify a linear operator with its matrix over the fixed basis.
 Operators form a normed vector space given by the following proposition
 
 :::{.proposition}
-Let $X,Y$ be two normed complex vector spaces and let $L(X,Y)$ be the set of linear maps $A:X \to Y$. Then $(L(X,Y),\norm{\cdot})$ is a normed vector space, with $\norm{\cdot}$ given by 
+Let $X,Y$ be two normed (complex) spaces and let $L(X,Y)$ be the set of linear maps $A:X \to Y$. Then $(L(X,Y),\norm{\cdot})$ is a normed (complex) space, with $\norm{\cdot}$ given by 
 $$\norm{A} = \sup\{\norm{A\ket{x}}\;:\; \ket{x} \in X, \norm{\ket{x}} = 1\}.$$
 :::
 

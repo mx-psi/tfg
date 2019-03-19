@@ -1,7 +1,36 @@
 \newpage
   
 # Quantum computation models
-## Quantum operations
+
+## Quantum circuits
+
+Analogous to the concept of classical or probabilistic circuits, this notion can be further generalized into the quantum realm.
+
+:::{.definition}
+TODO quantum circuit
+TODO size of a quantum circuit
+TODO unitary operation associated with a quantum circuit
+:::
+
+
+We assume a fixed encoding of quantum circuits as binary strings.
+
+:::{.definition}
+A *quantum circuit family* over a gate set $\mathcal{G}$ is a sequence $\mathcal{C} = \{C_n\}_{n \in \mathbb{N}}$ of quantum circuits such that for every $n \in \NN$, $C_n$ is a circuit over $\mathcal{G}$ with $l_{\mathcal{C}}(n) \geq n$ inputs.
+
+We say a quantum circuit family is *uniform* if the function $1^n \mapsto C_n$ is computable.
+:::
+
+Unlike in the classical case, we allow the $n$-th circuit of a quantum circuit family to have more than $n$ inputs,
+so as to allow the use of *ancilla qubits*. Therefore, a circuit family has an associated function that outputs a random variable for every input, where we right pad the input string with zeros:
+if $x \in \BB^\ast$, $\mathcal{C}(x) = C_n(\ket{x}\ket{0}^{\otimes l(n) - n})$.
+
+
+:::{.definition}
+Watrous unitary purification
+:::
+
+### Universal quantum gate sets
 
 As we saw in sec. [A model of quantum mechanics], there are two kinds of operations by which a quantum system can be transformed
 
@@ -9,9 +38,15 @@ As we saw in sec. [A model of quantum mechanics], there are two kinds of operati
 2. measurements, which are not reversible.
 
 :::{.definition}
-TODO set of universal quantum gate
+A set of quantum gates $\mathcal{G}$ is *universal* if for every $\varepsilon > 0$ and every unitary operation $U$ there exists a quantum circuit $C$ over $\mathcal{G}$ such that $\norm{U_C - U} < \varepsilon$.
 :::
 
+:::{.theorem}
+There exists a universal gate set
+:::
+:::{.proof}
+TODO (mirar cuál es más sencillo)
+:::
 
 :::{.theorem name="Solovay-Kitaev theorem"} 
 [@DawsonSolovayKitaevalgorithm2005]
@@ -33,32 +68,6 @@ Toffoli gate, reversible classical computing, ancilla qubits...
 3. QDemocritus says as many as we wnat
 3. Discuss uncomputation as in Quipper
 
-## Quantum circuits
-
-Analogous to the concept of classical or probabilistic circuits, this notion can be further generalized into the quantum realm.
-
-:::{.definition}
-TODO quantum circuit
-TODO size of a quantum circuit
-:::
-
-
-We assume a fixed encoding of quantum circuits as binary strings.
-
-:::{.definition}
-A *quantum circuit family* over a gate set $\mathcal{G}$ is a sequence $\mathcal{C} = \{C_n\}_{n \in \mathbb{N}}$ of quantum circuits such that for every $n \in \NN$, $C_n$ is a circuit over $\mathcal{G}$ with $l(n) \geq n$ inputs.
-
-We say a quantum circuit family is *uniform* if the function $1^n \mapsto C_n$ is computable.
-:::
-
-Unlike in the classical case, we allow the $n$-th circuit of a quantum circuit family to have more than $n$ inputs,
-so as to allow the use of *ancilla qubits*. Therefore, a circuit family has an associated function that outputs a random variable for every input, where we right pad the input string with zeros:
-if $x \in \BB^\ast$, $\mathcal{C}(x) = C_n(\ket{x}\ket{0}^{\otimes l(n) - n})$.
-
-
-:::{.definition}
-Watrous unitary purification
-:::
 
 ## Quantum Turing Machines
 
@@ -88,9 +97,9 @@ $L \in \mathsf{BQP}$ if and only if there exists
 a polynomial $p(n)$ and 
 a polynomial time uniform family of quantum circuits $\{C_n\}$ over a finite universal gate set $\mathcal{G}$ such that 
 
-1. $C_n$ acts on $p(n)$ qubits for very $n$,
+1. $l_C(n) = p(n)$ for every $n \in \NN$,
 2. for every $x \in L$, $|x| = n$, $P[C_n(\ket{x}\ket{0}^{\otimes p(n) - n}) = 1] \geq \frac23$ and
-3. for every $x \notin L$, $|x| = n$, $P[C_n(\ket{x}\ket{0}^{\otimes p(n) - n}) = 1] \leq \frac13$
+3. for every $x \notin L$, $|x| = n$, $P[C_n(\ket{x}\ket{0}^{\otimes p(n) - n}) = 1] \leq \frac13$.
 :::
 
 :::{.definition}

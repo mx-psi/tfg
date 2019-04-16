@@ -7,8 +7,9 @@ colorlinks: true
 bibliography: src/citas.bib
 biblio-style: apalike
 link-citations: true
-#citation-style: src/estilo.csl
 secnumdepth: 3
+toc: true
+toc-depth: 2
 numbersections: true
 linkReferences: true
 prefixes:

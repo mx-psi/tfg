@@ -112,22 +112,34 @@ polynomial slowdown simulation
 
 # Quantum computability
 
-:::{.definition}
-A function $f : \BB^\ast \to \BB^\ast$ is **quantum $T(n)$-time computable** if there exists a uniform family of $O(T(n))$ size quantum circuits such that 
+
+\fxnote{Mirar si podemos poner O(T(n)) computable}
+
+:::{.definition #dfn:qcomputable}
+A function $f : \BB^\ast \to \BB^\ast$ is **quantum computable** if there exists 
+a uniform family of quantum circuits $\{C_n\}$ over a finite universal gate set such that 
+
+> for every $n \in \NN$ and $x \in \BB^n$, $P[C_n(\ket{x}\ket{0}^{\otimes l_C(n) - n}) = f(x)] \geq \frac23$.
 :::
 
-Computability in the classical and quantum notions coincides (exponential slowdown simulation).
+Computability in the classical and quantum notions coincides; the behavior of a uniform family of quantum circuits can be simulated with at most exponential slowdown. Thus any quantum computable function can be computed classically.
+The discussion on the section [What classical operations can be made quantum?] proves the other implication.
+
+\fxnote{Discutir que el dominio podría ser distinto dada una codificación concreta.}
+
+The interest lies therefore in studying complexity results, since, at least *a priori*, some functions might be able to be computed faster in the quantum model. 
+The feasibly computable functions are, as in the classical an probabilistic case, those calculated in polynomial time.
+
+:::{.definition}
+A function $f : \BB^\ast \to \BB$ is **quantum polynomial time computable** if it is quantum computable by a family of circuits of polynomial size.
+:::
+
+As it happened in the probabilistic case, by [@prop:Chernoff] we can see that the constant $\frac{2}{3}$ in [@dfn:qcomputable] is irrelevant when talking about polynomial time; by repeatedly executing the quantum algorithm a polynomial number of times we can ensure correctness with any probability $c \in ]1/2,1[$. 
 
 ## Quantum time complexity: BQP
 
 :::{.definition}
-$L \in \mathsf{BQP}$ if and only if there exists 
-a polynomial $p(n)$ and 
-a polynomial time uniform family of quantum circuits $\{C_n\}$ over a finite universal gate set $\mathcal{G}$ such that 
-
-1. $l_C(n) = p(n)$ for every $n \in \NN$,
-2. for every $x \in L$, $|x| = n$, $P[C_n(\ket{x}\ket{0}^{\otimes p(n) - n}) = 1] \geq \frac23$ and
-3. for every $x \notin L$, $|x| = n$, $P[C_n(\ket{x}\ket{0}^{\otimes p(n) - n}) = 1] \leq \frac13$.
+$L \in \mathsf{BQP}$ if and only if the characteristic function of $L$, $1_L: \BB^\ast \to \BB$ is a quantum polynomial time computable function.
 :::
 
 :::{.definition}
@@ -157,8 +169,15 @@ TODO problem complete for BQP
 
 ## Quantum proofs: QMA
 
-:::{.definition}
-TODO QMA
+:::{.definition #dfn:qma} 
+[@VidickQuantumProofs2016; Definition 3.1]
+
+$L \in \mathsf{QMA}$ if and only if there exists 
+a polynomial $p(n)$ and
+a quantum polynomial time computable function $V:\BB^\ast \times \BB^\ast \to \BB$ such that
+
+2. for every $x \in L$, $V(\ket{x},\ket{\psi})$ and
+3. for every $x \notin L$, $|x| = n$, $P[C_n(\ket{x}\ket{0}^{\otimes p(n) - n}) = 1] \leq \frac13$.
 :::
 
 :::{.proposition}

@@ -33,7 +33,7 @@ We will focus on this scenario when dealing with quantum computers; all the Hilb
 
 The canonical finite dimensional Hilbert space of dimension $N$ is $\CC^N$ with product given by
 $$\bk{u}{v} = \sum_{j=1}^N \overline{u_j}v_j \quad \text{ where } u = (u_1, \dots, u_N), v = (v_1, \dots, v_N)$$
-An orthonormal basis of $\CC^N$ is the usual basis of $\CC^N$ as a vector space $B = \{\ket{e_i}\}_{i = 1, \dots, N}$.
+An orthonormal basis of $\CC^N$ is the computational basis of $\CC^N$ as a vector space $B = \{\ket{e_i}\}_{i = 1, \dots, N}$.
 Every finite dimensional Hilbert space of dimension $N$ is isomorphic to $\CC^N$, by taking its coordinates over an orthonormal basis, thus we will focus on these spaces.
 
 An alternative way of considering this inner product is by the use of the *adjoint*.
@@ -61,7 +61,7 @@ Thus, the state vectors of an isolated physical system are *rays* on a Hilbert s
 We will identify a ray with a unit vector that generates it. 
 This unit vector is unique up to a constant of the form $e^{i\theta}$ with $\theta \in \mathbb{R}$.
 
-A **qubit** is an isolated physical system with state space $\PC^2$ in which we fix an orthonormal basis $\ket{0}, \ket{1}$ (called the *usual basis*).
+A **qubit** is an isolated physical system with state space $\PC^2$ in which we fix an orthonormal basis $\ket{0}, \ket{1}$ (called the *computational basis*).
 The term is also used to refer to an element of this state space; using the identification of rays with unit vectors a qubit can also refer to a vector 
 $$\ket{\psi} = \alpha\ket{0} + \beta\ket{1} \quad \text{such that } \norm{\ket{\psi}} = |\alpha|^2 + |\beta|^2 = 1$$
 
@@ -105,7 +105,7 @@ By [@eq:tensorscalar] the tensor product of two unit vectors is a unit vector an
 
 
 We will mostly use composite systems made out of qubits.
-The tensor product of $N$ qubits has a state space of $2^n$ dimension. We fix as a basis, the tensor product of the usual basis of each qubit
+The tensor product of $N$ qubits has a state space of $2^n$ dimension. We fix as a basis, the tensor product of the computational basis of each qubit
 $$\ket{a_1\dots a_n} \quad \text{ where } a_i \in \{0,1\}$$
 The basis is ordered in lexicographic order.
 
@@ -174,6 +174,25 @@ Quantum operations are represented by unitary operators, as stated in the follow
 The evolution of the state of a quantum system from time $t_1$ to time $t_2 > t_1$ is given by a unitary transformation $U$, that is $$\ket{\psi(t_2)} = U\ket{\psi(t_1)}$$
 :::
 
+If we apply a unitary operation on each subsystem the resulting operation is also a unitary operation.
+This is given by the following proposition:
+
+:::{.proposition}
+Let $H_1,H_2$ be finite dimensional Hilbert spaces with orthonormal basis $B_1 = \{u_i\}_{i \in I}, B_2 = \{v_j\}_{j \in J}$ respectively and let $U_i: H_i \to H_i$ ($i = 1,2$) be unitary operators.
+
+Then $U^{(1)} \otimes U^{(2)}:H_1\otimes H_2 \to H_1 \otimes H_2$ given by $$U^{(1)} \otimes U^{(2)}\ket{u_i}\otimes\ket{v_j} = U^{(1)} \ket{u_i}\otimes U^{(2)} \ket{v_j} \quad \forall i \in I, j \in J,$$ is a unitary operator.
+
+Furthermore, if $U^{(1)} = (u^{(1)}_{ij})$, its matrix expression wrt. the basis $B_1 \otimes B_2$ is given by the *Kronecker product*, $$U^{(1)} \otimes U^{(2)} = \left(\begin{matrix}
+  u^{(1)}_{11} U^{(2)} & \cdots & u^{(1)}_{1n}U^{(2)} \\
+  \vdots & \ddots &           \vdots \\
+  u^{(1)}_{m1} U^{(2)} & \cdots & u^{(1)}_{mn} U^{(2)}
+\end{matrix}\right).$$
+:::
+:::{.proof}
+TODO?
+:::
+
+
 Lastly we state the measurement operation for finite dimensional systems.
 
 :::{.principle #fig:measurement}
@@ -184,13 +203,42 @@ $$P\left(X = \ket{i}\right) = |\alpha_i|^2 \qquad (i = 1, \dots, N)$$
 Since we take $\norm{\ket{\psi}} = 1$ this means $$\sum_{i = 0}^{N-1} |\alpha_i|^2  = 1$$
 Furthermore, $|\alpha_i|^2 \geq 0$, so the random variable defined at [Principle @fig:measurement] is well-defined.
 
-We can restrict ourselves to measurements on the usual basis, but since the change of basis matrix for any other orthonormal basis is unitary we can in practice measure with respect to any orthonormal basis by applying an appropriate unitary operation before the measurement.
+We can restrict ourselves to measurements on the computational basis, but since the change of basis matrix for any other orthonormal basis is unitary we can in practice measure with respect to any orthonormal basis by applying an appropriate unitary operation before the measurement.
 
 ### Some useful quantum operations
 
-Hadamard
-CNOT
-SWAP
-Classical reversible
+:::{.proposition #prop:quantumOps}
+The following operators given by their matrices wrt. the computational basis are unitary:
 
-Matrix representation
+Identity
+: The identity operator (for any number of qubits) is unitary,
+
+Hadamard
+: The *Hadamard gate* is the (1 qubit) unitary operation given by $$H = \frac{1}{\sqrt{2}}\left(\begin{matrix} 1 & 1 \\ 1 & -1 \end{matrix}\right), \qquad H\ket{0} = \frac{1}{\sqrt{2}}(\ket{0} + \ket{1}) \quad H\ket{1} = \frac{1}{\sqrt{2}}(\ket{0} - \ket{1}).$$ It is its own inverse.
+
+NOT
+: The *NOT gate* (or *$X$ gate*) is the (1 qubit) unitary operation given by $$X = \left(\begin{matrix} 0 & 1 \\ 1 & 0 \end{matrix}\right), \qquad X\ket{0} = \ket{1} \quad X\ket{1} = \ket{0}.$$ On classical states it performs the logical NOT operation. 
+
+SWAP
+: A *SWAP gate* is the (2 qubit) unitary operation given by $$\operatorname{SWAP} = \left(\begin{matrix} 1 & 0 & 0 & 0 \\ 0 & 0 & 1 & 0 \\ 0 & 1 & 0 & 0 \\ 0 & 0 & 0 & 1 \end{matrix}\right).$$ 
+It swaps the position of two qubits: $\operatorname{SWAP}\ket{i}\ket{j} = \ket{j}\ket{i}$.
+
+Phase change
+: Let $\theta \in [0,2\pi]$. The *$\theta$-phase change gate* is the (1 qubit) unitary operation given by
+$$R_\theta = \left(\begin{matrix}1 & 0 \\ 0 & e^{i\theta}\end{matrix}\right), \qquad R_\theta\ket{0} = 0, \quad R_\theta\ket{1} = e^{i\theta}\ket{1}.$$
+
+Controlled $U$-gate
+: Given an $n$ qubit unitary operation $U$, the controlled $U$ gate is an $n+1$ qubit operation given by $$C_U= \left(\begin{array}{c|c} I_2 & 0 \\ \hline 0 & U \end{array} \right), \qquad C_U\ket{a}\ket{x} = \ket{a}U^a\ket{x}.$$
+It serves as a conditional operation.
+
+CNOT
+: The controlled not operation is the operation $\operatorname{CNOT} = C_{\operatorname{NOT}}$.
+It maps $\operatorname{CNOT}\ket{x,y} = \ket{x,x \oplus y}$.
+
+Toffoli gate
+: The *Toffoli gate* (or *CCNOT gate*) is the 3 qubit gate that maps $\operatorname{CCNOT}\ket{x,y,z} = \ket{x,y,z \oplus (x\cdot y)}$. Its matrix expression is $$\operatorname{CCNOT}= \left(\begin{array}{c|c} I_6 & 0 \\ \hline 0 & X \end{array} \right).$$
+
+:::
+
+
+Classical reversible

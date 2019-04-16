@@ -32,10 +32,32 @@ Watrous unitary purification
 
 ### Universal quantum gate sets
 
+#### The classical case
+
+It is a well-known fact that, in the classical case, any function $f: \BB^\ast \to \BB^M$ can be computed exactly by a circuit (of at most exponential size) built using the basis of gates $$\{\operatorname{AND}, \operatorname{OR}, \operatorname{NOT}\}.$$
+There are other possible basis universal in this sense, such as $\{\operatorname{NAND}\}$ or $\{\operatorname{NOR}\}$. Of course, not all basis are universal; a full classification of the basis is given by Post's lattice [TODO citar].
+
+Given two finite universal basis $B_1$ and $B_2$ one may construct every element of the latter with a circuit made of gates of the former. 
+The size of a family of circuits transformed in this manner increases only up to a constant and thus, in the classical case this discussion concludes with the following trivial proposition:
+
+:::{.proposition}
+Let $B_1$, $B_2$ two finite universal basis, that is, two basis of gates that allow us to construct a circuit that computes an arbitrary function $f: \BB^N \to \BB^M$.
+
+Given a family of circuits with respect to $B_1$ that has size $O(f(n))$, there exists a family of circuits with respect to $B_2$ that computes the same function and has size $O(f(n))$.
+:::
+
+The main consequence from this proposition is that the chosen basis is irrelevant for proving there exists a family of a certain (asymptotic) size. 
+
+This section aims to prove a similar (yet weaker) result for quantum circuits.
+This result is of great theoretical importance, since we do not currently understand what quantum operations are physically realizable, and thus would like to build a theory independent of any specific quantum gate basis. 
+
+#### Quantum universal gate sets
+
 As we saw in sec. [A model of quantum mechanics], there are two kinds of operations by which a quantum system can be transformed
 
 1. unitary operations, which are reversible,
 2. measurements, which are not reversible.
+
 
 :::{.definition}
 A set of quantum gates $\mathcal{G}$ is *universal* if for every $\varepsilon > 0$ and every unitary operation $U$ there exists a quantum circuit $C$ over $\mathcal{G}$ such that $\norm{U_C - U} < \varepsilon$.
@@ -47,6 +69,8 @@ There exists a universal gate set
 :::{.proof}
 TODO (mirar cuál es más sencillo)
 :::
+
+#### Solovay-Kitaev theorem
 
 :::{.theorem name="Solovay-Kitaev theorem"} 
 [@DawsonSolovayKitaevalgorithm2005]
@@ -61,6 +85,8 @@ TODO
 
 ### What classical operations can be made quantum?
 
+Classical operations can in principle be non-reversible, as is the case 
+
 Toffoli gate, reversible classical computing, ancilla qubits...
 
 1. ·”the value of the ancilla qubits will be independent of the value of the input”
@@ -70,6 +96,8 @@ Toffoli gate, reversible classical computing, ancilla qubits...
 
 
 ## Quantum Turing Machines
+
+Historically, the theory of quantum computation started with the *quantum Turing machine* model, a model built upon the classical Turing machine model. This section aims to define this model and show it is equivalent to the quantum circuit model, which has better properties when it comes to error correction.
 
 :::{.definition}
 TODO QTM

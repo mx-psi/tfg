@@ -115,11 +115,19 @@ polynomial slowdown simulation
 
 \fxnote{Mirar si podemos poner O(T(n)) computable}
 
+\fxnote{¿Dónde definimos la función que define un algoritmo como en el caso clásico?}
+
+:::{.definition}
+A **quantum algorithm** is a uniform family of quantum circuits $\mathcal{C} = \{C_n\}$ over a finite universal gate set.
+
+We say the algorithm is *polynomial time* if the function $n \mapsto |C_n|$ is a polynomial.
+:::
+
 :::{.definition #dfn:qcomputable}
 A function $f : \BB^\ast \to \BB^\ast$ is **quantum computable** if there exists 
-a uniform family of quantum circuits $\{C_n\}$ over a finite universal gate set such that 
+a polynomial time quantum algorithm $\{C_n\}$ such that 
 
-> for every $n \in \NN$ and $x \in \BB^n$, $P[C_n(\ket{x}\ket{0}^{\otimes l_C(n) - n}) = f(x)] \geq \frac23$.
+> for every $x \in \BB^\ast$, $P[C(\ket{x}) = f(x)] \geq \frac23$.
 :::
 
 Computability in the classical and quantum notions coincides; the behavior of a uniform family of quantum circuits can be simulated with at most exponential slowdown. Thus any quantum computable function can be computed classically.
@@ -149,17 +157,18 @@ BQP/qpoly
 ### BQP properties
 
 :::{.proposition}
-$$\mathsf{BPP} \subseteq \mathsf{BQP}$$
+$\mathsf{BPP} \subseteq \mathsf{BQP}$
 :::
 
 Error correction
 
 :::{.theorem}
-$$\mathsf{BQP}^\mathsf{BQP} = \mathsf{BQP}$$
+$\mathsf{BQP}^\mathsf{BQP} = \mathsf{BQP}$
 :::
 
 
 2. BQP vs PH (Optional)
+
 ### Complete problems for BQP
 
 :::{.definition}
@@ -170,29 +179,48 @@ TODO problem complete for BQP
 ## Quantum proofs: QMA
 
 :::{.definition #dfn:qma} 
-[@VidickQuantumProofs2016; Definition 3.1]
+[@VidickQuantumProofs2016; dfn. 3.1]
 
 $L \in \mathsf{QMA}$ if and only if there exists 
 a polynomial $p(n)$ and
-a quantum polynomial time computable function $V:\BB^\ast \times \BB^\ast \to \BB$ such that
+a polynomial time quantum algorithm $\mathcal{V}$ such that
 
-2. for every $x \in L$, $V(\ket{x},\ket{\psi})$ and
-3. for every $x \notin L$, $|x| = n$, $P[C_n(\ket{x}\ket{0}^{\otimes p(n) - n}) = 1] \leq \frac13$.
+1. $l_{\mathcal{V}}(n) \leq p(n) + n$,
+2. for every $x \in L$, $|x| = n$, there exists a quantum state $\ket{\psi}$ of at most $p(n)$ qubits (the *proof*) such that $$P[\mathcal{V}(\ket{x}\ket{\psi}) = 1] \geq \frac23 \text{ and}$$
+3. for every $x \notin L$, $|x| = n$, and every quantum state $\ket{\psi}$ of at most $p(n)$ qubits $$P[\mathcal{V}(\ket{x}\ket{\psi}) = 1] \leq \frac13.$$
+:::
+
+If we look at [@prop:npverifier], we can see $\mathsf{QMA}$ is a straightforward generalization of $\mathsf{NP}$ to the quantum realm; thus we can easily guess the following proposition.
+
+:::{.proposition}
+$\mathsf{BQP}, \mathsf{NP} \subseteq \mathsf{QMA}$
+:::
+:::{.proof}
+1. $\mathsf{BQP} \subseteq \mathsf{QMA}$.
+   Let $L \in \mathsf{BQP}$. 
+   Then there exists a polynomial time quantum algorithm $\mathcal{C}$ that computes $1_L$.
+   In the affirmative case, any proof will suffice, while when $x \notin L$, 
+   no proof will be correct with probability more than $\frac13$.
+2. $\mathsf{NP} \subseteq \mathsf{QMA}$.
+   Let $L \in \mathsf{NP}$.
+   By [@prop:npverifier] there exists a classical verifier $V$, that can be made quantum by TODO.
+   When $x \in L$, the proof will be the quantum state associated with the classical proof $y$ of $V$.
+   Since the verifier answers with certainty, every condition on [@dfn:qma] holds.
+:::
+
+The constants $\frac23$ and $\frac13$ can be substituted by any $c \in ]\frac12,1[$, yet the proof in this case is not as straightforward as in the case of the previous classes. The problem lies in the quantum *no-cloning theorem*, that prevents us from copying the quantum proof and running the algorithm several times.
+
+Two approaches are possible for this error reduction; either multiplying the length of the proof by a constant (known as *parallel error reduction*) or relying on the information of the *garbage* registers to reconstruct the proof and run the proof sequentally (*witness-preserving error reduction*) [@VidickQuantumProofs2016; sec. 3.2].
+The latter process has the advantage of preserving the proof size yet its proof is somewhat more contrived.
+Here we present a proof using parallel error reduction.
+
+:::{.proposition name="QMA error reduction"}
+TODO
 :::
 
 :::{.proposition}
 BQP/qpoly is in QMA/poly 
 :::
-
-:::{.proposition}
-QMA error correction
-:::
-
-:::{.proposition}
-TODO BQP is in QMA
-TODO NP is in QMA
-:::
-
   
 ### Problems in QMA
 

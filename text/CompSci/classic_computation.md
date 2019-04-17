@@ -343,7 +343,7 @@ $C_n$ has polynomial-size on the variable $m = n + |w_n|$ and thus has polynomia
 An important notion in the field of computational complexity is the notion of *verifiers*.
 Potentially, a language might not be able to be decided in polynomial time, yet one can decide membership when supplied with a *proof*. Here we show a characterization of $\mathsf{NP}$ as a verifier class.
 
-:::{.proposition}
+:::{.proposition #prop:npverifier}
 Let $L \subseteq \BB^\ast$. Then $L \in \mathsf{NP}$ if and only if there exists a Turing Machine $V$ (*verifier*) that takes polynomial time to execute with respect to the length of its first argument and a polynomial $p(n) \in \poly(n)$ such that 
 
 > $x \in L$ if and only there exists $y \in \BB^\ast$ with $|y| \leq p(|x|)$ such that $V(x,y) = 1$.

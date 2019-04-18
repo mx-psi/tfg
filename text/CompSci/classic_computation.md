@@ -55,7 +55,7 @@ A *configuration* of $M$ is a triplet $(q,v,u)$ such that $q \in Q$ and $v,u \in
 It is *final* if $q = q_F$.
 :::
 
-Informally, a Turing machine has an internal state, an infinitely-long tape with cells that initially have the blank symbol $\blank$ and a head positioned on top of one of the cells.
+Informally, a Turing machine has an internal state, an infinitely long tape with cells that initially have the blank symbol $\blank$ and a head positioned on top of one of the cells.
 At each step, the machine reads the symbol on the current position and depending on the internal state and the symbol
 
 1. transitions to a new internal state,

@@ -87,7 +87,7 @@ TODO
 
 Classical operations can in principle be non-reversible, as is the case 
 
-Toffoli gate, reversible classical computing, ancilla qubits...
+Toffoli gate, reversible classical computing, ancilla qubits…
 
 1. ·”the value of the ancilla qubits will be independent of the value of the input”
 2. Watrous Quantum proofs says only a linear amount is needed, why?
@@ -199,7 +199,7 @@ $\mathsf{BQP}, \mathsf{NP} \subseteq \mathsf{QMA}$
 1. $\mathsf{BQP} \subseteq \mathsf{QMA}$.
    Let $L \in \mathsf{BQP}$. 
    Then there exists a polynomial time quantum algorithm $\mathcal{C}$ that computes $1_L$.
-   In the affirmative case, any proof will suffice, while when $x \notin L$, 
+   When $x \in L$, any proof will suffice, while when $x \notin L$, 
    no proof will be correct with probability more than $\frac13$.
 2. $\mathsf{NP} \subseteq \mathsf{QMA}$.
    Let $L \in \mathsf{NP}$.

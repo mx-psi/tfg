@@ -241,4 +241,13 @@ Toffoli gate
 :::
 
 
-Classical reversible
+Furthermore, it is easy to show that cloning is not a unitary operation.
+This is the famous *no-cloning theorem*.
+
+:::{.proposition name="No-cloning theorem" #prop:nocloning}
+The operation $U: Q^{\otimes 2n} \to Q^{\otimes 2n}$ given by $$U\ket{x}\ket{0} = \ket{x}\ket{x}$$ is not unitary.
+:::
+:::{.proof}
+TODO citar
+página 532 de Quantum computation and information
+:::

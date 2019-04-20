@@ -102,33 +102,62 @@ When it is clear from context, we will also denote by $M$ the partial function c
 
 ### The circuit model
 
-The circuit model provides an alternative computation model that will be useful in proving the relation between classic and quantum computation models. We adapt the definition from [@VollmerIntroductioncircuitcomplexity1999, chap. 1]. We restrict the definition for circuits with one output although it can easily be generalized to allow for several outputs.
+The circuit model provides an alternative computation model that will be useful in proving the relation between classic and quantum computation models. We adapt the definition from [@VollmerIntroductioncircuitcomplexity1999, chap. 1].
 
-A circuit is made up out of binary functions from a basis. In this case we allow the AND ($\wedge : \BB^2 \to \BB$), OR ($\vee : \BB^2 \to \BB$) and NOT ( $\neg : \BB \to \BB$) logical gates.
+A circuit is made of gates from a basis.
+A *gate* is a triple $(n,m,f)$ where $n,m \in \NN$ (so they are possibly zero).
+We say that the gate has $n$ inputs and $m$ outputs.
 
-:::{.definition}
-A *circuit* with $n$ inputs $\{x_1, \dots, x_n\}$ is a $3$-tuple $C = (G, \beta, v)$ such that
+:::{.definition #dfn:circuit}
+A *circuit* with $n$ inputs $\{x_1, \dots, x_n\}$ and $m$ outputs $\{y_1, \dots, y_m\}$ with respect to basis $\mathcal{B}$ is a $3$-tuple $C = (G, \beta, \mathcal{B})$ such that
 
 1. $G = (V,E)$ is a finite directed acyclic graph,
-2. $\beta: V \to \{\neg, \wedge, \vee\} \cup \{x_1, \dots, x_n\}$ is a function such that
+2. $\beta: V \to \mathcal{B} \cup \{x_1, \dots, x_n\} \cup \{y_1, \dots, y_m\}$ is a function such that
 
-   a) if $v \in V$ has in-degree 0 then $\beta(v)$ is an input,
-   b) if $v \in V$ has in-degree $d > 0$ then $\beta(v)$ is a $d$-ary function,
-   c) each input is the image of $\beta$ in at most one node,
-3. $v \in V$ is the *output vertex*.
+   a) if $w \in V$ has in-degree $n$ and out-degree $m$ then $\beta(w)$ has $n$ inputs and $m$ outputs and
+   b) each input or output  is the image of $\beta$ in at most one node.
 
 The *size* of a circuit $C$ is $|C| := |V|$.
 :::
 
-Clearly, a circuit $C$ with $n$ inputs computes a function $C: \BB^n \to \BB$.
+We assume a fixed efficient encoding of a circuit ( over a finite basis) as a binary string such that
+
+1. the encoding $\operatorname{enc}$ is an injective function,
+2. the encoding is efficient; there exists a polynomial $p(n) \geq n$ such that $$|\operatorname{enc}(C)| = p(|C|)$$
+
+A possibility is the representation of the graph as and adjacency matrix.
+
+
+In the case of classical circuits we allow the following known logical gates
+
+1. the AND gate ($\wedge : \BB^2 \to \BB$), 
+2. the OR  gate ($\vee : \BB^2 \to \BB$) and
+3. the NOT gate ( $\neg : \BB \to \BB$).
+
+This is not the smallest possible set of gates; it is a well-known fact that they can be reduce to the singleton set $\{\operatorname{NAND}\}$, but, as we shall see in sec. [Universal quantum gate sets], this is irrelevant for asymptotic measures of size. It is also important that all gates are symmetric.
+
+Furthermore, we will use three operations that allow us to clone, destroy and create bits, namely,
+
+4. the FANOUT gate, given by $\operatorname{FANOUT}(x) = (x,x)$,
+5. the 1-input 0-ouput DISCARD gate, that ignores the output and
+6. the 0-input 1-output ANCILLARY gate that produces a $0$ bit.
+
+Thus,
+
+:::{.definition}
+A (classical) circuit is a circuit with respect to the basis $$\{\operatorname{AND},\operatorname{OR},\operatorname{NOT},\operatorname{FANOUT},\operatorname{DESTROY},\operatorname{ANCILLARY}\}$$
+:::
+
+Clearly, a (classical) circuit $C$ with $n$ inputs and $m$ outputs computes a function $C: \BB^n \to \BB^m$.
 To allow for functions with an input of arbitrary length we need the concept of a *circuit family*.
 
 :::{.definition}
 A (classical) *circuit family* is a sequence $\mathcal{C} = \{C_n\}_{n \in \NN}$ such that for every $n \in \NN$ $C_n$ is a circuit with $n$ inputs.
 :::
 
-Likewise, a circuit family computes a function $\mathcal{C} : \BB^\ast \to \BB$ given by $\mathcal{C}(x) = C_{|x|}(x)$. We say $\mathcal{C}$ decides a language $L$ if $$\mathcal{C}(x) = \begin{cases} 1 & \text{ if } x \in L \\ 0 & \text{ otherwise} \end{cases}$$
-In what follows we will not describe circuits explicitly as $3$-tuples, relying instead on graphical representations or high-level descriptions.
+We will mostly restrict ourselves to the case where every circuit in the family has one output.
+In this case, a circuit family computes a function $\mathcal{C} : \BB^\ast \to \BB$ given by $\mathcal{C}(x) = C_{|x|}(x)$. We say $\mathcal{C}$ decides a language $L$ if $$\mathcal{C}(x) = \begin{cases} 1 & \text{ if } x \in L \\ 0 & \text{ otherwise} \end{cases}$$
+In what follows we will not describe circuits explicitly as $2$-tuples, relying instead on graphical representations or high-level descriptions.
 
 ### Computability 
 
@@ -290,10 +319,11 @@ Clearly, by [@prop:timespace], $\mathsf{P} \subseteq \mathsf{NP} \subseteq \math
 
 
 As seen in [@prop:halting] $\mathsf{P/\poly}$ contains languages that are uncomputable by the classic notion of computation, thus $\mathsf{P} \subsetneq \mathsf{P/poly}$, and some restriction is needed to use the circuit model for stating complexity results.
-The following definition and result gives an alternative characterization of $\mathsf{P}$ in terms of families of circuits. It assumes a fixed encoding of a circuit into binary strings, for which one can use any representation of graphs such as adjacency matrices.
+
+The following definition and result gives an alternative characterization of $\mathsf{P}$ in terms of families of circuits. 
 
 :::{.definition}
-A circuit family $\mathcal{C}$ is said to be *polynomial-time uniform* if there exists a Turing machine $M$ that computes the function $1^n \mapsto C_n$ in polynomial time.
+A circuit family $\mathcal{C}$ is said to be *polynomial-time uniform* if there exists a Turing machine $M$ that computes the function $1^n \mapsto \operatorname{enc}{C_n}$ in polynomial time.
 :::
 
 Clearly, a polynomial-time uniform circuit family has polynomial size, since it could not be written as the output otherwise.

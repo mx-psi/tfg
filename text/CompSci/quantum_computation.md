@@ -4,38 +4,55 @@
 
 ## Quantum circuits
 
-Analogous to the concept of classical or probabilistic circuits, this notion can be further generalized into the quantum realm.
+Analogous to the concept of classical or probabilistic circuits, this notion can be further generalized into the quantum realm. Recall that in [@dfn:circuit] we defined circuits as dependent on a basis of gates.
 
 :::{.definition}
-TODO quantum circuit
-TODO size of a quantum circuit
-TODO unitary operation associated with a quantum circuit
+A *quantum gate* with $n$ inputs and $n$ outputs is a unitary operation $$U: Q^{\otimes n} \to Q^{\otimes n}.$$
 :::
 
+A *quantum basis* will be a set of quantum gates together with the following non-unitary operations,
 
-We assume a fixed encoding of quantum circuits as binary strings.
+1. The ANCILLARY gate, with $0$ inputs and $1$ output, that outputs a $\ket{0}$ qubit and
+2. the DISCARD gate with $1$ input a $0$ outputs, that discards a qubit.
+
+Notice that the FANOUT operation is missing due to [@prop:nocloning].
+
+Thus,
 
 :::{.definition}
-A *quantum circuit family* over a gate set $\mathcal{G}$ is a sequence $\mathcal{C} = \{C_n\}_{n \in \mathbb{N}}$ of quantum circuits such that for every $n \in \NN$, $C_n$ is a circuit over $\mathcal{G}$ with $l_{\mathcal{C}}(n) \geq n$ inputs.
+A *quantum circuit* is a circuit with respect to a quantum basis.
 
-We say a quantum circuit family is *uniform* if the function $1^n \mapsto C_n$ is computable.
+A *unitary quantum circuit* is circuit with no ancillary or discard gates.
+It has the same number of inputs and outputs.
 :::
 
-Unlike in the classical case, we allow the $n$-th circuit of a quantum circuit family to have more than $n$ inputs,
-so as to allow the use of *ancilla qubits*. Therefore, a circuit family has an associated function that outputs a random variable for every input, where we right pad the input string with zeros:
-if $x \in \BB^\ast$, $\mathcal{C}(x) = C_n(\ket{x}\ket{0}^{\otimes l(n) - n})$.
+Note that the ancillary and discard gates are not operations allowed within the model presented in [A model of quantum mechanics] since they are not unitary; nonetheless every quantum circuit can be transformed into a unitary quantum circuit (its *unitary purification*) by the following process [@WatrousQuantumComputationalComplexity2009 sec III.3]
 
+- every ancillary gate is replaced by a new input and 
+- every discard gate is replace by an output.
+
+Every unitary quantum circuit has an associated unitary operation from the inputs to the outputs:
+given a topological sort of the nodes, we tensor each quantum gate with the identity matrix and compose the resulting unitary operations in order.
+By applying the unitary purification this process can be extended to every quantum circuit.
+
+Thus, every quantum circuit $C$ has an associated function that outputs a random variable;
+if $C$ has $n$ inputs then given $\ket{\psi} \in Q^{\otimes n}$ we apply the associated unitary operation and measure with respect to the computational basis.
+We denote this random variable by $C(\ket{\psi})$.
 
 :::{.definition}
-Watrous unitary purification
+A *quantum circuit family* over a gate set $\mathcal{G}$ is a sequence $\mathcal{C} = \{C_n\}_{n \in \mathbb{N}}$ of quantum circuits such that for every $n \in \NN$, $C_n$ is a circuit over $\mathcal{G}$ with $n$ inputs.
+
+We say a quantum circuit family is *uniform* if the function $1^n \mapsto \operatorname{enc}(C_n)$ is computable.
 :::
+
+Lastly, given a quantum state $\ket{\psi}$ of $n$ qubits and a quantum circuit family $\mathcal{C} = \{C_n\}_{n \in \mathbb{N}}$, we can get a random variable $\mathcal{C}(\ket{\psi}) = C_n(\ket{\psi})$ in an analogous manner.
 
 ### Universal quantum gate sets
 
 #### The classical case
 
 It is a well-known fact that, in the classical case, any function $f: \BB^\ast \to \BB^M$ can be computed exactly by a circuit (of at most exponential size) built using the basis of gates $$\{\operatorname{AND}, \operatorname{OR}, \operatorname{NOT}\}.$$
-There are other possible basis universal in this sense, such as $\{\operatorname{NAND}\}$ or $\{\operatorname{NOR}\}$. Of course, not all basis are universal; a full classification of the basis is given by Post's lattice [TODO citar].
+There are other possible basis universal in this sense, such as $\{\operatorname{NAND}\}$ or $\{\operatorname{NOR}\}$. Of course, not all basis are universal; a full classification of the basis is given by Post's lattice [@LauFunctionAlgebrasFinite2006].
 
 Given two finite universal basis $B_1$ and $B_2$ one may construct every element of the latter with a circuit made of gates of the former. 
 The size of a family of circuits transformed in this manner increases only up to a constant and thus, in the classical case this discussion concludes with the following trivial proposition:
@@ -81,23 +98,44 @@ There exists a constant $c$ such that $U$ can be approximated within $\epsilon$ 
 :::
 :::{.proof}
 TODO
+https://github.com/cmdawson/sk/tree/master/src
 :::
 
-### What classical operations can be made quantum?
+### Simulating classical operations
 
-Classical operations can in principle be non-reversible, as is the case 
+Classical and probabilistic operations can in principle be non-reversible, as is the case of the (linear extensions of) AND and OR gates, the NAND gate, the FANOUT gate or the RANDOM probabilistic gate.
+For the quantum model to be a generalization of the probabilistic one we must be able to compute the same functions in a reversible manner.
 
-Toffoli gate, reversible classical computing, ancilla qubits…
+This can be done thanks to the use of ancillary qubits.
+In the following discussion, let $\ket{x}$, $ket{y}$ and $\ket{z}$ be classical states, 
+that is states from the computational basis.
 
-1. ·”the value of the ancilla qubits will be independent of the value of the input”
-2. Watrous Quantum proofs says only a linear amount is needed, why?
-3. QDemocritus says as many as we wnat
-3. Discuss uncomputation as in Quipper
+Recall from [@prop:quantumOps] the Toffoli gate, that maps $\ket{x,y,z} \mapsto \ket{x,y,z \oplus xy}$. 
+By using an ancillary qubit on $z$ and discarding qubits $x,y$ we can simulate a NAND gate, that is 
+$$\operatorname{TOFFOLI}\ket{x,y,1} = \ket{x,y}\operatorname{NAND}\ket{x}\ket{y}.$$
+This therefore allows us to simulate any classical logical gate.
+
+Similarly, the FANOUT gate can be simulated by using a CNOT gate,
+$$\operatorname{CNOT}\ket{x}\ket{0} = \ket{x}\ket{x}.$$
+This is not a contradiction with [@prop:nocloning], since we are only cloning classical states.
+
+Lastly, the RANDOM gate can be simulated with the aid of a Hadamard gate, since
+$$H\ket{0} = \frac{1}{\sqrt{2}}(\ket{0} + \ket{1}),$$
+and therefore when measuring with respect to the computational basis we have a random bit.
+
+These equivalences can be seen on figure TODO.
+
+Since any probabilistic function can be computed by a probabilistic circuit composed by NAND, FANOUT, ANCILLARY and RANDOM gates (see TODO), we can simulate it on a quantum computer by replacing each gate by its simulation.
+
+In general, the unitary purification of the quantum circuit obtained in this way gives us for a function $f : \BB^N \to \BB^M$ a reversible function that maps $$\ket{x}\ket{c} \mapsto \ket{x}\ket{c \oplus f(x)},$$
+which uses an extra polynomial amount of wires and gates.
 
 
+::::::{.comment}
 ## Quantum Turing Machines
 
 Historically, the theory of quantum computation started with the *quantum Turing machine* model, a model built upon the classical Turing machine model. This section aims to define this model and show it is equivalent to the quantum circuit model, which has better properties when it comes to error correction.
+An advantage of quantum Turing machines are that they allow us to define $\operatorname{BQTIME}$ easily.
 
 :::{.definition}
 TODO QTM
@@ -106,16 +144,11 @@ TODO QTM
 :::{.theorem}
 polynomial slowdown simulation
 :::
-
+::::::
 
 
 
 # Quantum computability
-
-
-\fxnote{Mirar si podemos poner O(T(n)) computable}
-
-\fxnote{¿Dónde definimos la función que define un algoritmo como en el caso clásico?}
 
 :::{.definition}
 A **quantum algorithm** is a uniform family of quantum circuits $\mathcal{C} = \{C_n\}$ over a finite universal gate set.
@@ -131,7 +164,7 @@ a polynomial time quantum algorithm $\{C_n\}$ such that
 :::
 
 Computability in the classical and quantum notions coincides; the behavior of a uniform family of quantum circuits can be simulated with at most exponential slowdown. Thus any quantum computable function can be computed classically.
-The discussion on the section [What classical operations can be made quantum?] proves the other implication.
+The discussion on the section [Simulating classical operations] proves the other implication.
 
 \fxnote{Discutir que el dominio podría ser distinto dada una codificación concreta.}
 
@@ -159,6 +192,16 @@ BQP/qpoly
 :::{.proposition}
 $\mathsf{BPP} \subseteq \mathsf{BQP}$
 :::
+:::{.proof}
+Let $L \in \mathsf{BPP}$.
+Then, by TODO there exists a probabilistic circuit that decides $L$.
+Without loss of generality we may assume that the circuit is composed by NAND, FANOUT, ANCILLARY and RANDOM gates.
+
+Then, by the discussion on sec. [Simulating classical operations], we can create a quantum circuit by replacing each gate with its simulation. If the original circuit has a polynomial number of gates, the resulting quantum circuit will also have a polynomial number of gates.
+
+Furthermore, the output random variable will be the same, and thus the $\frac23$ bounds will be met.
+Hence, $L \in \mathsf{BQP}$.
+:::
 
 Error correction
 
@@ -185,7 +228,6 @@ $L \in \mathsf{QMA}$ if and only if there exists
 a polynomial $p(n)$ and
 a polynomial time quantum algorithm $\mathcal{V}$ such that
 
-1. $l_{\mathcal{V}}(n) \leq p(n) + n$,
 2. for every $x \in L$, $|x| = n$, there exists a quantum state $\ket{\psi}$ of at most $p(n)$ qubits (the *proof*) such that $$P[\mathcal{V}(\ket{x}\ket{\psi}) = 1] \geq \frac23 \text{ and}$$
 3. for every $x \notin L$, $|x| = n$, and every quantum state $\ket{\psi}$ of at most $p(n)$ qubits $$P[\mathcal{V}(\ket{x}\ket{\psi}) = 1] \leq \frac13.$$
 :::

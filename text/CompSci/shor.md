@@ -4,15 +4,21 @@ In this section we describe one of the main applications of QFT on quantum compu
 
 As usual, we encode natural numbers by their binary representation, so that the length of the input $N \in \NN$ is $\lceil \log N\rceil \in O(\log N)$.
 
+The decision problem we will solve is the one associated with the language:
+
 :::{.definition}
-$\operatorname{FACTORING}$ TODO
+$$\operatorname{FACTORING} = \{(n,k) \;:\; n,k \in \NN, \; n \text{ has a non-trivial divisor smaller than } k \}.$$
 :::
+
+In order to solve it we will solve the associated "search" problem: we will give an algorithm that gets a non-trivial factor of a number if there is one. The two are equivalent due to the closure properties of $\mathsf{BQP}$ and the well-known classical reductions between the problems.
 
 
 ## Quantum phase estimation
 
+::::{.comment}
 :::{.algorithm name="Quantum phase estimation"}
 :::
+:::::
 
 :::{.lemma name="Correctness of phase estimation algorith" #lemma:phase}
 Let $U$ be a unitary operator with an eigenvalue $\exp(2\pi i \varphi)$.
@@ -33,8 +39,10 @@ TODO
 
 ## Classical part
 
+::::{.comment}
 :::{.algorithm name="Shor's algorithm"}
 :::
+::::
 
 
 :::{.theorem name="Shor's algorithm" #thm:shor}

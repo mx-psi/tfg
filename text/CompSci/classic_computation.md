@@ -114,7 +114,7 @@ A *circuit* with $n$ inputs $\{x_1, \dots, x_n\}$ and $m$ outputs $\{y_1, \dots,
 1. $G = (V,E)$ is a finite directed acyclic graph,
 2. $\beta: V \to \mathcal{B} \cup \{x_1, \dots, x_n\} \cup \{y_1, \dots, y_m\}$ is a function such that
 
-   a) if $w \in V$ has in-degree $n$ and out-degree $m$ then $\beta(w)$ has $n$ inputs and $m$ outputs and
+   a) the in-degree and out-degree of a vertex match the number of inputs and outputs of its image by $\beta$,
    b) each input or output  is the image of $\beta$ in at most one node.
 
 The *size* of a circuit $C$ is $|C| := |V|$.

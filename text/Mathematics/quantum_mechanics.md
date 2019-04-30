@@ -139,7 +139,7 @@ $$\norm{A} = \sup\{\norm{A\ket{x}}\;:\; \ket{x} \in X, \norm{\ket{x}} = 1\}.$$
 
 The operators that can be used in quantum mechanics are unitary.
 
-:::{.definition}
+:::{.definition #dfn:unitary}
 Let $H$ be a Hilbert space, a **unitary operator** $U: H \to H$ is a continuous linear operator such that
 
 1. $U$ is surjective and
@@ -245,9 +245,19 @@ Furthermore, it is easy to show that cloning is not a unitary operation.
 This is the famous *no-cloning theorem*.
 
 :::{.proposition name="No-cloning theorem" #prop:nocloning}
-The operation $U: Q^{\otimes 2n} \to Q^{\otimes 2n}$ given by $$U\ket{x}\ket{0} = \ket{x}\ket{x}$$ is not unitary.
+There is no unitary map $U: Q^{\otimes 2n} \to Q^{\otimes 2n}$ and state $\ket{x_0} \in Q^{\otimes n}$ that for an arbitrary state $\ket{\psi} \in Q^{\otimes n}$ maps $$U\ket{\psi}\ket{x_0} = \ket{\psi}\ket{\psi}.$$
 :::
 :::{.proof}
-TODO citar
-página 532 de Quantum computation and information
+[@NielsenQuantumComputationQuantum2010; Box 12.1]
+
+Suppose there exists such unitary map $U$. 
+Let $\ket{\psi}, \ket{\phi} \in Q^{\otimes n}$.
+
+By [@dfn:unitary] we have
+$$ \bk{\psi}{\phi} = \bk{\psi}{\phi}\bk{x_0}{x_0} = \bk{\ket{\psi}\ket{x_0}}{\ket{\phi}\ket{x_0}} = \bk{U \ket{\psi}\ket{x_0}}{U \ket{\phi}\ket{x_0}} = \bk{ \ket{\psi}\ket{\psi}}{\ket{\phi}\ket{\phi}} = \bk{\psi}{\phi}^2,$$
+
+therefore $\bk{\psi}{\phi} \in \{0,1\}$ are either equal or orthogonal, which is a contradiction, since we assumed they were arbitary.
 :::
+
+We can however clone states from an orthogonal basis, and we will make use of this fact for quantum simulation of classical operations.
+

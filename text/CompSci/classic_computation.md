@@ -328,7 +328,7 @@ A circuit family $\mathcal{C}$ is said to be *polynomial-time uniform* if there 
 
 Clearly, a polynomial-time uniform circuit family has polynomial size, since it could not be written as the output otherwise.
 
-:::{.proposition}
+:::{.proposition #prop:ppoly}
 Let $L$ be a language. Then
 
 1. $L \in \mathsf{P}$ if and only if $L$ is decidable by some polynomial-time uniform circuit family.

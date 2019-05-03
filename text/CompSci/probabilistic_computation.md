@@ -96,7 +96,7 @@ TODO
 
 Recalling [@dfn:circuit] and using the previous proposition, we can thus define a probabilistic circuit as
 
-:::{.definition}
+:::{.definition #dfn:probCircuit}
 A probabilistic circuit is a circuit respect to the basis 
 $$\{\operatorname{NAND}, \operatorname{FANOUT}, \operatorname{RANDOM}(1/2)\}$$
 :::
@@ -161,7 +161,20 @@ The following relations hold between classical and probabilistic classes.
 $$\mathsf{P} \subseteq \mathsf{BPP} \subseteq \mathsf{PP} \subseteq \mathsf{PSPACE}$$
 :::
 :::{.proof}
-The first three inclusions are 
+The first three inclusions are clear.
+
+For the last one, that is, $\mathsf{PP} \subseteq \mathsf{PSPACE}$, let $L\in \mathsf{PP}$.
+There exists a uniform family of probabilistic circuits that computes $\mathsf{PP}$.
+
+Let $x \in \BB^\ast$, $n = |x|$. 
+Consider $C_n$ and replace every $\operatorname{RANDOM}(\frac12)$ gate by an input (called random inputs).
+There is a polynomial amount of such random inputs, $p(n)$.
+
+For every possible word $y \in \BB^{p(n)}$ run the circuit with input $x$ and random inputs $y$ and count the number of accepting runs. If the number is over $2^{p(n)}/2$ accept $x$, otherwise reject.
+
+Clearly, the algorithm accepts if and only if $P[\mathcal{C}(x) = 1]>\frac12 \iff x \in L$. 
+
+Lastly, the algorithm runs in polynomial space: we need to store the current random inputs $y$, the auxiliary space needed to simulate the circuit and $\lceil \log(2^{p(n)})\rceil \in \poly(n)$ space needed to count the number of accepting paths.
 :::
 
 $\mathsf{P}$ and $\mathsf{BPP}$ are conjectured to be equal, that is, every probabilistic algorithm could be *derandomized* into a classical algorithm. In contrast, $\mathsf{PP}$ is considered unfeasible, as the following proposition shows 

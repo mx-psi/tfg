@@ -5,7 +5,9 @@
 A simple generalization of classical models of computation is to consider the addition of randomness.
 The traditional focus is on probabilistic Turing machines, yet here we focus on probabilistic circuits since they are more similar to quantum circuits.
 
-## Probabilistic circuits
+## Circuits
+
+### The state space
 
 Probabilistic circuits generalize classical circuits by considering "stochastic" gates, that is, gates that given a valid distribution on the inputs, output a valid distribution on the outputs.
 
@@ -23,7 +25,9 @@ A measurement of a probabilistic system of dimension $N = 2^n$ with state $$p = 
 $$P\left(X = \ket{i}\right) = a_i \qquad (i = 1, \dots, N)$$
 :::
 
-Lastly, we state the allowed operations. For this we need the technical concept of computable number.
+Lastly, we state the allowed operations. 
+Even though we will restrict probabilistic circuits to a small set of gates, we will describe here the most general possible operations that can be made by composing these gates.
+For this we need the technical concept of computable number.
 
 :::{.definition}
 A real number $r \in \RR$ is a *computable number* if the function that given $n$ outputs the n-th bit of $r$ can be computed.
@@ -55,6 +59,7 @@ Some simple examples of stochastic gates can be given.
   $$\overset{\sim}{f}\left(\sum_{i=0}^{2^n -1} a_i\ket{i}\right) = \sum_{i=0}^{2^n -1} a_i\ket{f(i)}.$$
   Its matrix is a permutation matrix.
 - The random gate $\operatorname{RANDOM}(p): R^{\otimes 0} \to R$ outputs a random bit, $p\ket{0} + (1-p)\ket{1})$.
+- If $f$ is a stochastic gate, a controlled version of it can be considered analogously to the quantum case (see [@prop:quantumOps]).
 :::
 
 Every stochastic gate can be seen as transforming from one distribution to another.
@@ -71,30 +76,53 @@ Every entry of $A$ and $p$ are non-negative, so $\sum_{i = 1}^{2^n -1} A_{ij}v_j
 Lastly, $$\norm{Ap}_1 = \sum_{i = 1}^{2^n -1} \sum_{j = 1}^{2^m -1} A_{ij}v_j = \sum_{j = 1}^{2^m -1} v_j \left(\sum_{i = 1}^{2^n -1} A_{ij}\right) =  \sum_{j = 1}^{2^m -1} v_j = 1.$$
 :::
 
-Clearly, we can decompose any stochastic gate into a circuit formed by only classical gates and ancillary random bits, that is, $\operatorname{RANDOM}(p)$ gates. The following result shows us that we can restrict to single source of randomness with a fixed bias.
 
+### Probabilistic circuits
 
-::::{.comment}
-:::{.proposition}
-Let $f : R^{\otimes n} \to R^{\otimes m}$.
-There exists a circuit made of $\operatorname{RANDOM}(p)$ gates and classical gates that computes $f$.
+Clearly, we can decompose any stochastic gate into a classical gate and a number of ancillary random bits, that is, $\operatorname{RANDOM}(p)$ gates.
+The following result shows us that we can restrict to single source of randomness with a fixed bias.
+
+:::{.proposition #prop:randomSource}
+Let $p,q \in ]0,1[$ be polynomial time computable numbers. 
+
+A random source $X$ with $P[X = 1] = p$ can be simulated by a random source $Y$ with $P[Y = 1] = q$ on expected $O(\frac{1}{q(1-q)})$ time.
 :::
 :::{.proof}
-$g: \BB^{n+m} \to \BB^{n}$ such that the following circuit TODO
+
+The proof is adapted from [@AroraComputationalComplexityModern2009; Lemma 7.12 & 7.13].
+
+Consider the case where $q = \frac12$, that is, we have a uniform distribution.
+Let $p = \sum_{i = 1}^{\infty} p_i2^{-i}$.
+Consider the following algorithm
+
+1. Let $i = 0$
+2. Increase $i$
+2. Generate a random bit $b_i$ 
+3. If $b_i < p_i$, stop and output $1$.
+   Else, if $b_i > p_i$, stop and output $0$.
+4. If $b_i = p_i$, go back to step 2.
+
+We reach the $i$-th run with probability $2^{-i}$, thus the probability of outputting $1$ is exactly $\sum_{i = 1}^{\infty} p_i2^{-i} = p$.
+
+The expected running time of the algorithm is $\sum i^c2^{-i}$ for a certain constant $c$ (that depends on the algorithm that computes the bits of $p_i$).
+This series is convergent, thus the simulation takes constant time.
+
+****
+
+Consider now the case where $p = \frac12$ and run the following algorithm:
+
+1. Generate two random bits $a,b$
+2. If $a = b$, go back to step 1.
+3. Output $a$.
+
+Conditioned on $a \neq b$, the two outcomes occur with the same probability, $q(1-q)$.
+Each time two bits are generated, the probability of reaching step 3 is $2q(1-q)$, thus the running time is $O(1/(q(1-q)))$.
+
+By joining the two previously discussed cases we have the desired algorithm.
 :::
-::::
 
-:::{.proposition}
-Let $p,q \in [0,1]$ be polynomial time computable numbers and let $\varepsilon > 0$. 
-
-A $\operatorname{RANDOM}(p)$ gate can be simulated by a constant sized circuit formed by classical gates and $\operatorname{RANDOM}(q)$ gates up to an accuracy of more than $\varepsilon$.
-:::
-:::{.proof}
-TODO
-:::
-
-
-Recalling [@dfn:circuit] and using the previous proposition, we can thus define a probabilistic circuit as
+By using this result, we can approximate any random source gate up to accuracy $\varepsilon > 0$ with a $O(\log(1/\varepsilon))$ sized circuit.
+Thus, it makes sense to consider the following definition of probabilistic circuit:
 
 :::{.definition #dfn:probCircuit}
 A probabilistic circuit is a circuit respect to the basis 
@@ -102,6 +130,20 @@ $$\{\operatorname{NAND}, \operatorname{FANOUT}, \operatorname{RANDOM}(1/2)\}$$
 :::
 
 Here the base state space is $R$ and the product is the tensor product.
+A probabilistic circuit $C$ has, for each $x$ an associated random variable $C(x)$ obtained by running the circuit with input $x$ and uniformly random inputs on the $\operatorname{RANDOM}(1/2)$ gates.
+
+A mixed model that considers stochastic and classical gates might be considered with the addition of a measurement gate. This model turns out to be equivalent to the one we defined: any 
+intermediate measurement can be simulated by a controlled gate. We encapsulate this fact in the following principle:
+
+:::{.principle name="Principle of deferred measurements" #ppl:deferred}
+[@NielsenQuantumComputationQuantum2010; sec. 4.4]
+
+Any circuit $C$ with $n$ inputs that has intermediate measurements can be transformed into an algorithm $C'$ with an identical associated function by replacing intermediate measurements by controlled gates.
+:::
+
+In what follows, we will describe probabilistic circuits as randomized algorithms (see [@prop:probturing] for a formalization of this fact) and we will make intermediate measurements if it simplifies the presentation.
+
+
 Lastly, analogous to the classical case, we define the concept of probabilistic computability.
 
 :::{.definition}
@@ -139,45 +181,22 @@ The languages that are feasibly decided by probabilistic algorithms form the cla
 :::{.definition}
 $L \in \mathsf{BPP}$ if and only if $1_{L_{}}$ is a probabilistic polynomial time computable function, that is, there exists a probabilistic polynomial time algorithm $M$ such that
 
-1. for every $x \in L$, $P[M(x) = 1] \geq \frac23$ and
-2. for every $x \notin L$, $P[M(x) = 1] \leq \frac13$.
+1. for every $x \in L$, $P[M(x) = 1] > \frac23$ and
+2. for every $x \notin L$, $P[M(x) = 1] < \frac13$.
 :::
 
 As we saw in [@prop:Chernoff], we can make the bounds as close to 1 as we want and we will have the same class of languages.
-
 Another possibility is to consider unbounded probabilistic algorithms, that are given by the class $\mathsf{PP}$.
 
 :::{.definition}
 $L \in \mathsf{PP}$ if and only if there exists 
 a probabilistic polynomial time algorithm $M$ such that 
 
-1. for every $x \in L$,    $P[M(x) = 1] \geq \frac12$ and
-2. for every $x \notin L$, $P[M(x) = 1] \leq \frac12$.
+1. for every $x \in L$,    $P[M(x) = 1] > \frac12$ and
+2. for every $x \notin L$, $P[M(x) = 1] < \frac12$.
 :::
 
-The following relations hold between classical and probabilistic classes.
-
-:::{.proposition}
-$$\mathsf{P} \subseteq \mathsf{BPP} \subseteq \mathsf{PP} \subseteq \mathsf{PSPACE}$$
-:::
-:::{.proof}
-The first three inclusions are clear.
-
-For the last one, that is, $\mathsf{PP} \subseteq \mathsf{PSPACE}$, let $L\in \mathsf{PP}$.
-There exists a uniform family of probabilistic circuits that computes $\mathsf{PP}$.
-
-Let $x \in \BB^\ast$, $n = |x|$. 
-Consider $C_n$ and replace every $\operatorname{RANDOM}(\frac12)$ gate by an input (called random inputs).
-There is a polynomial amount of such random inputs, $p(n)$.
-
-For every possible word $y \in \BB^{p(n)}$ run the circuit with input $x$ and random inputs $y$ and count the number of accepting runs. If the number is over $2^{p(n)}/2$ accept $x$, otherwise reject.
-
-Clearly, the algorithm accepts if and only if $P[\mathcal{C}(x) = 1]>\frac12 \iff x \in L$. 
-
-Lastly, the algorithm runs in polynomial space: we need to store the current random inputs $y$, the auxiliary space needed to simulate the circuit and $\lceil \log(2^{p(n)})\rceil \in \poly(n)$ space needed to count the number of accepting paths.
-:::
-
-$\mathsf{P}$ and $\mathsf{BPP}$ are conjectured to be equal, that is, every probabilistic algorithm could be *derandomized* into a classical algorithm. In contrast, $\mathsf{PP}$ is considered unfeasible, as the following proposition shows 
+In contrast to $\mathsf{BPP}$, $\mathsf{PP}$ is considered unfeasible, as the following proposition hints at. 
 
 :::{.proposition #prop:nppp}
 [@KatzNotesComplexityTheory]
@@ -205,6 +224,29 @@ $M$ runs in polynomial time since $V$ runs in polynomial time on its first input
 
 As the proof of [@prop:nppp] shows, the difference between $\mathsf{PP}$ and $\mathsf{BPP}$ lies in the possibility of applying [@prop:Chernoff]. 
 The probability bounds of the algorithm stated in this proof can not be amplified efficiently by applying that procedure.
+The following relations hold between classical and probabilistic classes.
+
+:::{.proposition}
+$$\mathsf{P} \subseteq \mathsf{BPP} \subseteq \mathsf{PP} \subseteq \mathsf{PSPACE}$$
+:::
+:::{.proof}
+The first three inclusions are clear.
+
+For the last one, that is, $\mathsf{PP} \subseteq \mathsf{PSPACE}$, let $L\in \mathsf{PP}$.
+There exists a uniform family of probabilistic circuits that computes $\mathsf{PP}$.
+
+Let $x \in \BB^\ast$, $n = |x|$. 
+Consider $C_n$ and replace every $\operatorname{RANDOM}(\frac12)$ gate by an input (called random inputs).
+There is a polynomial amount of such random inputs, $p(n)$.
+
+For every possible word $y \in \BB^{p(n)}$ run the circuit with input $x$ and random inputs $y$ and count the number of accepting runs. If the number is over $2^{p(n)}/2$ accept $x$, otherwise reject.
+
+Clearly, the algorithm accepts if and only if $P[\mathcal{C}(x) = 1]>\frac12 \iff x \in L$. 
+
+Lastly, the algorithm runs in polynomial space: we need to store the current random inputs $y$, the auxiliary space needed to simulate the circuit and $\lceil \log(2^{p(n)})\rceil \in \poly(n)$ space needed to count the number of accepting paths.
+:::
+
+$\mathsf{P}$ and $\mathsf{BPP}$ are conjectured to be equal, that is, every probabilistic algorithm could be *derandomized* into a classical algorithm. 
 
 Lastly, we can show the following relation between $\mathsf{BPP}$ and non-uniform classes,
 
@@ -224,7 +266,7 @@ BPP vs PH
 
 The traditional presentation of probabilistic computation using Turing machines can be given by recalling [@prop:ppoly]
 
-:::{.proposition}
+:::{.proposition #prop:probturing}
 TODO
 :::
 
@@ -315,6 +357,8 @@ $$P[p_A(a_1, \dots, a_n) \neq 0] \geq 1 - \frac{2^{|A|}}{|S|} > \frac23.$$
 Thus $\operatorname{ZEROP} \in \mathsf{BPP}$.
 :::
 
+
+:::{.comment}
 ### Semantic versus syntactic classes
 
 :::{.definition}
@@ -330,7 +374,7 @@ The language of BPP machines is undecidable
 :::
 
 There are no complete problems with empty promise known for BPP
-
+:::
 
 ## Probabilistic polynomial time verifiers
 

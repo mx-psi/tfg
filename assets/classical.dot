@@ -7,7 +7,7 @@ NP -> MA -> AM [style="dashed"];
 AM -> PH -> PSPACE;
 BPP -> MA;
 P -> BPP [style="dashed"];
+BPP -> "P/poly";
 BPP -> BQP -> QMA -> PP -> PSPACE;
 MA -> QMA;
-#BQP -> AWPP -> PP;
 }

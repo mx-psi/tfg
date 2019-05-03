@@ -104,8 +104,14 @@ When it is clear from context, we will also denote by $M$ the partial function c
 
 The circuit model provides an alternative computation model that will be useful in proving the relation between classic and quantum computation models. We adapt the definition from [@VollmerIntroductioncircuitcomplexity1999, chap. 1].
 
-A circuit is made of gates from a basis.
-A *gate* is a triple $(n,m,f)$ where $n,m \in \NN$ (so they are possibly zero).
+We will use the term circuit in different contexts in this document.
+In general, there is an implicit base state space (for example $\BB, \RR$, a random bit or a qubit), that can be composed with a certain product (usually the cartesian product or the tensor product).[^category]
+Both will be clear from context.
+
+[^category]: In its most general terms what we are essentially describing a morphism in a monoidal category via a string diagram[TODO citar]
+
+Using these basic pieces, a circuit is made of gates from a certain set (*basis*).
+A *gate* is a function $f: A^n \to A^m$ from a product of the base state space $A$ to another product.
 We say that the gate has $n$ inputs and $m$ outputs.
 
 :::{.definition #dfn:circuit}

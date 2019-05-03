@@ -23,11 +23,16 @@ A measurement of a probabilistic system of dimension $N = 2^n$ with state $$p = 
 $$P\left(X = \ket{i}\right) = a_i \qquad (i = 1, \dots, N)$$
 :::
 
-Lastly, we state the allowed operations. For this we need the concept of computable number.
+Lastly, we state the allowed operations. For this we need the technical concept of computable number.
 
 :::{.definition}
-A real number $r \in \RR$ is a *computable number* if TODO
+A real number $r \in \RR$ is a *computable number* if the function that given $n$ outputs the n-th bit of $r$ can be computed.
+
+It is *polynomial time computable* if this function can be computed in time polynomial in $n$.
 :::
+
+Clearly, the set of computable numbers is countable and thus there exists uncomputable numbers.
+The restriction to computable numbers is not too strict though since the set of computable numbers is dense.
 
 :::{.definition}
 Let $n,m\in \mathbb{N}$. 
@@ -66,43 +71,45 @@ Every entry of $A$ and $p$ are non-negative, so $\sum_{i = 1}^{2^n -1} A_{ij}v_j
 Lastly, $$\norm{Ap}_1 = \sum_{i = 1}^{2^n -1} \sum_{j = 1}^{2^m -1} A_{ij}v_j = \sum_{j = 1}^{2^m -1} v_j \left(\sum_{i = 1}^{2^n -1} A_{ij}\right) =  \sum_{j = 1}^{2^m -1} v_j = 1.$$
 :::
 
-Furthermore, we can decompose any stochastic gate into a classical gate with some ancillary random bits.[^stinespring]
+Clearly, we can decompose any stochastic gate into a circuit formed by only classical gates and ancillary random bits, that is, $\operatorname{RANDOM}(p)$ gates. The following result shows us that we can restrict to single source of randomness with a fixed bias.
 
-[^stinespring]: As will be the case with unitary purifications, this is a special case of "Stinespring factorization theorem" [TODO cita]
 
+::::{.comment}
 :::{.proposition}
 Let $f : R^{\otimes n} \to R^{\otimes m}$.
-There exists $g: \BB^{n+m} \to \BB^{n}$ such that the following circuit TODO
+There exists a circuit made of $\operatorname{RANDOM}(p)$ gates and classical gates that computes $f$.
 :::
-
-
-TODO comentar si es suficiente con puertas que den una cierta distribución.
+:::{.proof}
+$g: \BB^{n+m} \to \BB^{n}$ such that the following circuit TODO
+:::
+::::
 
 :::{.proposition}
-Let $p,q \in [0,1]$ and $\varepsilon > 0$. 
+Let $p,q \in [0,1]$ be polynomial time computable numbers and let $\varepsilon > 0$. 
 
-A $\operatorname{RANDOM}(p)$ gate can be simulated by a circuit formed by classical gates and $\operatorname{RANDOM}(q)$ gates up to an accuracy of $\varepsilon$.
+A $\operatorname{RANDOM}(p)$ gate can be simulated by a constant sized circuit formed by classical gates and $\operatorname{RANDOM}(q)$ gates up to an accuracy of more than $\varepsilon$.
 :::
 :::{.proof}
 TODO
 :::
 
 
-Recalling [@dfn:circuit], we can thus define a probabilistic circuit as
+Recalling [@dfn:circuit] and using the previous proposition, we can thus define a probabilistic circuit as
 
 :::{.definition}
 A probabilistic circuit is a circuit respect to the basis 
 $$\{\operatorname{NAND}, \operatorname{FANOUT}, \operatorname{RANDOM}(1/2)\}$$
 :::
 
-
+Here the base state space is $R$ and the product is the tensor product.
 Lastly, analogous to the classical case, we define the concept of probabilistic computability.
 
 :::{.definition}
-A function $f: \BB^\ast \to \BB^\ast$ is computable TODO
+A function $f: \BB^\ast \to \BB^\ast$ is probabilistic $T(n)$-computable if there exists a $T(n)$-sized uniform family of probabilistic circuits $\mathcal{C} = \{C_n\}$ such that for all $x \in L$,
+$$P[C(x) = f(x)] \geq \frac23$$
 :::
 
-The constant $\frac23$ is arbitrary and can be replaced by any constant $c \in ]\frac12,1[$ with at most polynomial overhead, as the following proposition shows
+The constant $\frac23$ is arbitrary and can be replaced by any constant $c \in ]\frac12,1[$ with at most polynomial overhead, as the following proposition shows.
 
 :::{.proposition name="Chernoff bound" #prop:Chernoff} 
 [@NielsenQuantumComputationQuantum2010; Box 3.4]
@@ -124,7 +131,6 @@ $$P\left[\sum_1^n X_i \leq \frac{n}{2}\right] \leq 2^n \cdot \frac{(1-4 \varepsi
 Lastly, by the Taylor expansion of the exponential we have $1 - x \leq e^{-x}$, which proves the result,
 $$P\left[\sum_1^n X_i \leq \frac{n}{2}\right] \leq \exp(-4^{\varepsilon^2 n/2})= \exp(-2\varepsilon^2 n).$$
 :::
-
 
 ## Probabilistic polynomial complexity
 
@@ -155,16 +161,33 @@ The following relations hold between classical and probabilistic classes.
 $$\mathsf{P} \subseteq \mathsf{BPP} \subseteq \mathsf{PP} \subseteq \mathsf{PSPACE}$$
 :::
 :::{.proof}
-TODO
+The first three inclusions are 
 :::
 
 $\mathsf{P}$ and $\mathsf{BPP}$ are conjectured to be equal, that is, every probabilistic algorithm could be *derandomized* into a classical algorithm. In contrast, $\mathsf{PP}$ is considered unfeasible, as the following proposition shows 
 
 :::{.proposition #prop:nppp}
+[@KatzNotesComplexityTheory]
+
 $$\mathsf{NP} \subseteq \mathsf{PP}$$
 :::
 :::{.proof}
-TODO http://www.cs.umd.edu/~jkatz/complexity/f05/lecture7.pdf
+Let $L \in \mathsf{NP}$ and $x \in \BB^\ast$.
+
+By [@prop:npverifier], there exist a verifier $V$ and a polynomial $p$ such that $x\in L$ iff there exists $y \in \BB^{p(|x|)}$ with $V(x,y) = 1$.
+
+The following $\mathsf{PP}$ algorithm $M$ decides $L$.
+
+Accept $x$ with probability $\frac12 - 2^{-p(|x|)-2}$.
+Otherwise, pick a random $y \in \BB^{p(|x|)}$ and accept if $V(x,y) = 1$.
+
+If $x \notin L$, then $$P[M(x) = 1] = \frac12 - 2^{-p(|x|)-2} < \frac12.$$
+Otherwise, if $x \in L$ then $P[V(x,y) = 1] \geq 2^{-p(|x|)}$, thus
+$$P[M(x) = 1] \geq \frac12 - 2^{-p(|x|)-2} + 2^{-p(|x|)} > \frac12.$$
+<!--TODO: En la fuente original pone 2^{-p(|x|)}/2-->
+
+Therefore, $M$ decides $L$.
+$M$ runs in polynomial time since $V$ runs in polynomial time on its first input.
 :::
 
 As the proof of [@prop:nppp] shows, the difference between $\mathsf{PP}$ and $\mathsf{BPP}$ lies in the possibility of applying [@prop:Chernoff]. 
@@ -197,8 +220,87 @@ TODO
 In this section we show a simple language known to be in $\mathsf{BPP}$ but not known to be in $\mathsf{P}$.
 Although the general consensus among theoretical computer scientists is that $\mathsf{P} = \mathsf{BPP}$ [TODO citar y extender] (through the use of pseudorandomness), no direct classical algorithm is known to solve this problem in polynomial time.
 
-TODO Mirar Lemma 7.5 de Arora
+The problem is called *polynomial identity testing* and can be formally stated by making use of algebraic circuits, which essentially describe a polynomial expression.
+We follow the approach of [@SaxenaProgressPolynomialIdentity].
 
+:::{.definition}
+An *algebraic circuit* is a circuit with one output with respect to the basis $\{+,-,\times, \operatorname{FANOUT}\}$.
+
+The set of algebraic circuits is $\mathcal{A}$.
+:::
+
+Here the state space is an arbitrary field $\mathbb{F}$ (or more generally a ring) and the product between state spaces is the cartesian product.
+We assume that the field operations can be computed in constant time[^constant].
+
+[^constant]: Although this is a common assumption in the study of PIT it is not trivial. If for example we want to apply the algorithm to circuits over $\ZZ$ further considerations are needed to ensure the algorithm is efficient, since the binary representation of intermediate calculations might have exponential size. See [@AroraComputationalComplexityModern2009; sec 7.2.3] for a possible approach.
+
+Clearly, the function associated with an algebraic circuit $A$ is a (multivariate) polynomial $p_A$.
+The output of the function for a given input can be computed in polynomial time, though obtaining the polynomial coefficients can in principle take exponential time (since its degree can be exponential on the number of gates).
+
+:::{.definition}
+$$\operatorname{ZEROP} = \{A \in \mathcal{A} \;:\; p_A \equiv 0 \}$$
+:::
+
+Solving the decision problem associated with $\operatorname{ZEROP}$ allows us to solve whether two polynomial expressions are equivalent, since we can reduce this problem to checking that their difference is the zero function.
+
+The straightforward approach of obtaining the polynomial coefficients proves $\operatorname{ZEROP} \in \mathsf{EXP}$ but not $\operatorname{ZEROP} \in \mathsf{P}$, since an algebraic circuit might have an exponential number of coefficients.
+
+Surprisingly, a polynomial probabilistic algorithm can be given for this problem.
+The algorithm is based on the following lemma.
+
+:::{.lemma name="Schwartz-Zippel Lemma" #lemma:zippel}
+[@SaxenaProgressPolynomialIdentity; Lemma 1.2]
+
+Let $p \in \mathbb{F}[X_1, \dots, X_m]$ be a nonzero polynomial of (total) degree $d$ and $S \subseteq \mathbb{F}$ a finite set.
+Then, if $a_1, \dots, a_m$ are sampled independently and uniformly from $S$,
+$$P[p(a_1, \dots, a_m) \neq 0] \geq 1 - \frac{d}{|S|}$$
+:::
+:::{.proof}
+The proof is by induction on the number of variables.
+
+In the **base case** $p$ is an univariate polynomial. $p$ has a maximum of $d$ roots and thus the probability of finding a root, i.e $P[p(a_1) = 0]$ is at most $\frac{d}{|S|}$.
+
+For the **inductive case**, assume the lemma holds for any polynomial of total degree less than $d$.
+We may consider $p$ as a polynomial on its first variable, 
+$p \in \mathbb{F}[X_2, \dots, X_m][X_1]$, where the coefficients are now polynomials $p_i$ in the rest of variables.
+
+$p \neq 0$, so let $p_k$ be the polynomial coefficient accompanying the largest $X_1$ power.
+
+Since the total degree of $p$ is $d$, it follows that the total degree of $p_k$ is at most $d-k$.
+By the inductive hypothesis, since $d-k < d$ we have that 
+
+1. if $a_2, \dots, a_m$ are sampled independently and uniformly from $S$,
+   $$P[p_k(a_2, \dots, a_m) \neq 0] \geq 1 - \frac{(d-k)}{|S|} \text{ and}$$
+2. if $p_k(a_2, \dots, a_m) \neq 0$, then $p(X_1, a_2, \dots, a_m)$ is a univariate polynomial and by the base case,
+   $$P[p(a_1, \dots, a_m) \neq 0 | p_k(a_2, \dots, a_m) \neq 0] \geq 1 - \frac{k}{|S|}.$$
+   
+By joining the previous inequalities we have
+$$P[p(a_1, \dots, a_m) \neq 0] \geq \left(1 - \frac{k}{|S|}\right)\left(1 - \frac{d-k}{|S|}\right) \geq 1 - \frac{d}{|S|}$$
+:::
+
+Using this lemma, we can prove the following proposition
+
+:::{.proposition}
+$$\operatorname{ZEROP} \in \mathsf{BPP}$$
+:::
+:::{.proof}
+The polynomial associated with a circuit $A$ has a total degree of at most $2^{|A|}$ and at most $|A|$ inputs.
+We call $m$ the number of inputs of $A$.
+
+The randomized algorithm is as follows:
+
+1. Sample $m$ elements $a_1, \dots, a_m$ from a finite subset $S$ such that $|S| > 3 \cdot 2^{|A|}$.
+   In the case of finite fields, we might need to consider a field extension that has enough elements (for example 
+   by working over a cyclotomic extension).
+2. Evaluate $p_A(a_1, \dots, a_n)$. This can be done in a polynomial amount of field operations.
+3. If the previous result is zero, accept, otherwise, reject.
+
+Clearly, if $A \in \operatorname{ZEROP}$ we always accept.
+If $A \notin \operatorname{ZEROP}$, by [@lemma:zippel] 
+$$P[p_A(a_1, \dots, a_n) \neq 0] \geq 1 - \frac{2^{|A|}}{|S|} > \frac23.$$
+
+Thus $\operatorname{ZEROP} \in \mathsf{BPP}$.
+:::
 
 ### Semantic versus syntactic classes
 

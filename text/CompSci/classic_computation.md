@@ -35,7 +35,7 @@ These kinds of problems do not capture the full general notion of problems such 
 However, most real-world problems can be translated into a decision problem that captures the complexity of solving it.
 
 Inputs are usually stated in terms of mathematical structures such as integers, graphs, Turing machines or (finitely generated) groups. 
-The encoding as binary words needs to be done in a per-object basis.
+The encoding as binary words needs to be done in a per-object basis; it will be implicitly assumed what the actual encoding is if it is clear from context.
 
 ## Computation models and computability
 ### Turing machines

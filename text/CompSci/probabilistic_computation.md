@@ -147,7 +147,7 @@ In what follows, we will describe probabilistic circuits as randomized algorithm
 Lastly, analogous to the classical case, we define the concept of probabilistic computability.
 
 :::{.definition}
-A function $f: \BB^\ast \to \BB^\ast$ is probabilistic $T(n)$-computable if there exists a $T(n)$-sized uniform family of probabilistic circuits $\mathcal{C} = \{C_n\}$ such that for all $x \in L$,
+A function $f: \BB^\ast \to \BB^\ast$ is probabilistic $T(n)$-computable if there exists a uniform family of probabilistic circuits $\mathcal{C} = \{C_n\}$ computable in $O(T(n))$ time such that for all $x \in L$,
 $$P[C(x) = f(x)] \geq \frac23$$
 :::
 
@@ -254,7 +254,23 @@ Lastly, we can show the following relation between $\mathsf{BPP}$ and non-unifor
 $$\mathsf{BPP} \subseteq \mathsf{P}/\operatorname{poly}$$
 :::
 :::{.proof}
-TODO
+[@AroraComputationalComplexityModern2009; Theorem 7.14]
+
+Let $L\in \mathsf{BPP}$ and let $\{C_n\}$ be the polynomial sized uniform probabilistic circuit family that decides $L$.
+
+By [@prop:Chernoff] we have that we can construct a circuit family such that for any $n \in \NN$ and $x \in \BB^n$, $$P[C_n(x) \neq 1_L(x)] \leq 2^{-n-1}.$$
+
+The circuit now has $p(n) \in \poly(n)$ random values (given by the $\operatorname{RANDOM}(\frac12)$ gates).
+By the probability bound, 
+the amount of possible random inputs $r \in \BB^{p(n)}$ that misclassify $x$ are at most $\frac{2^{p(n)}}{2^{n+1}}$.
+
+The amount of words of length $n$ is $2^n$, 
+therefore the amount of random inputs that misclassify at least one word is $2^n \cdot \frac{2^{p(n)}}{2^{n+1}} = 2^{p(n)-1}$.
+
+Hence, there exists at least one random input $r_n$ that correctly classifies every word or length $n$.
+Finally, consider the circuit family $C'_n$ where the $\operatorname{RANDOM}(\frac12)$ are replaced by ancillary gates that have the values given by $r_n$.
+
+This circuit family is classical, polynomial sized and correctly decides $L$, therefore $L\in \mathsf{P}/\poly$.
 :::
 
 <!--
@@ -264,16 +280,40 @@ BPP vs PH
 
 ### Probabilistic computation with Turing machines
 
-The traditional presentation of probabilistic computation using Turing machines can be given by recalling [@prop:ppoly]
+The traditional presentation of probabilistic computation using Turing machines is given by the following proposition.
 
 :::{.proposition #prop:probturing}
-TODO
+$L \in \mathsf{BPP}$ if and only if there exists a Turing machine $M$ that takes polynomial time to execute with respect to the length of its first argument and a polynomial $p(n) \in \poly(n)$ such that for every $x \in \BB^\ast$, $|x| = n$,
+$$P[M(x,r) = 1_L(x)] \geq \frac23,$$
+where $r \sim U(\BB^{p(n)})$.
 :::
+:::{.proof}
+Let $L \in \mathsf{BPP}$ and let $\{C_n\}$ be the polynomial sized uniform probabilistic circuit family that decides $L$.
+Let $p(n)$ be the amount of $\operatorname{RANDOM}(1/2)$ gates on the circuit $C_n$.
+
+Consider the following algorithm.
+On input $x,r$, 
+
+1. construct $C_{|x|}$,
+2. replace every  $\operatorname{RANDOM}(1/2)$ gate with the corresponding bit on $r$,
+3. simulate the modified circuit with input $x$ and
+4. output the result.
+
+Clearly, the algorithm takes polynomial time.
+Furthermore, by the definition of $\mathsf{BPP}$, the probability bound is achieved.
+:::
+
+This model and the *probabilistic Turing Machine* model, that includes a tape with uniform random bits (see @AroraComputationalComplexityModern2009) are equivalent in power to the probabilistic circuit model presented in the previous section.
+It justifies the informal description of probabilistic circuit families by randomized algorithms.
 
 ### A $\mathsf{BPP}$ language
 
-In this section we show a simple language known to be in $\mathsf{BPP}$ but not known to be in $\mathsf{P}$.
-Although the general consensus among theoretical computer scientists is that $\mathsf{P} = \mathsf{BPP}$ [TODO citar y extender] (through the use of pseudorandomness), no direct classical algorithm is known to solve this problem in polynomial time.
+The general consensus among theoretical computer scientists is that $\mathsf{P} = \mathsf{BPP}$.
+Current attempts try to prove this equality by the use of *pseudorandom generators*, that transform a logarithmic number of random bits into a polynomial amount of almost-random bits.
+This suggest a simple way of transforming a randomized algorithm into a classical one: feed every possible logarithmic seed to the pseudorandom generator and run the randomized algorithm with the output.
+Unfortunately, this remains an open problem and there are problems that resist *derandomization*. [@AroraComputationalComplexityModern2009; chap. 21]
+
+In this section we show a simple decision problem known to be in $\mathsf{BPP}$ but not known to be in $\mathsf{P}$, that is, no direct classical algorithm is known to solve this problem in polynomial time.
 
 The problem is called *polynomial identity testing* and can be formally stated by making use of algebraic circuits, which essentially describe a polynomial expression.
 We follow the approach of [@SaxenaProgressPolynomialIdentity].
@@ -382,11 +422,28 @@ A natural generalization of $\mathsf{NP}$ is to consider the possibility of rand
 This gives rise to the class $\mathsf{MA}$ (*Merlin-Arthur*).
 
 :::{.definition}
-TODO MA
+$L \in \mathsf{MA}$ if and only if there exists 
+a polynomial $p(n)$ and
+a polynomial time probabilistic algorithm $V$ such that
+
+2. for every $x \in L$, $|x| = n$, there exists $y \in \BB^\ast$ with $|y| \leq p(n)$ (the *proof*) such that $$P[V(x,y) = 1] \geq \frac23 \text{ and}$$
+3. for every $x \notin L$, $|x| = n$, and every $y \in \BB^\ast$ with $|y| \leq p(n)$ $$P[V(x,y) = 1] \leq \frac13.$$
 :::
 
 Clearly, $\mathsf{NP}, \mathsf{BPP} \subseteq \mathsf{MA}$.
-There are no known natural problems that lie in $\mathsf{MA}$ and are not in $\mathsf{BPP} \cup \mathsf{NP}$.
+Furthermore, $\mathsf{MA} \subseteq \mathsf{PP}$ by a similar proof to the one given in [@prop:nppp].
+
+
+Unfortunately, there are no known natural problems that lie in $\mathsf{MA}$ and are not in $\mathsf{BPP} \cup \mathsf{NP}$.
+By a similar derandomization procedure to the one given for the $\mathsf{P} = \mathsf{BPP}$ conjecture, the class is believed to be equal to $\mathsf{NP}$ (see @AaronsonmathoplimitsNP2016).
+Nonetheless, this class provides an intermediate step between classical and quantum proofs, that will be discussed in a later chapter.
+
+
+The hierarchy of complexity classes discussed so far can be seen at [@fig:hierarchy].
+
+![The hierarchy of classical and probabilistic complexity classes. 
+Inclusions are represented by an arrow from the subset to the superset. 
+Dashed lines indicate the two classes are conjectured to be equal](assets/prob.pdf){#fig:hierarchy width=60%}
 
 <!--
 Mencionar AM

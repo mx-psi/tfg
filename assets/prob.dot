@@ -1,0 +1,10 @@
+digraph G {
+rankdir="BT";
+node [shape="plaintext" fontname="Helvetica"];
+edge[arrowsize=0.5];
+P -> BPP [style="dashed"];
+BPP -> "P/poly";
+P -> NP;
+NP -> MA [style="dashed"];
+BPP -> MA -> PP -> PSPACE;
+}

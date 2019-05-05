@@ -2,12 +2,11 @@ digraph G {
 rankdir="BT";
 node [shape="plaintext" fontname="Helvetica"];
 edge[arrowsize=0.5];
+BPP -> "P/poly";
 P -> NP;
-NP -> MA -> AM [style="dashed"];
-AM -> PH -> PSPACE;
+NP -> MA [style="dashed"];
 BPP -> MA;
 P -> BPP [style="dashed"];
-BPP -> "P/poly";
 BPP -> BQP -> QMA -> PP -> PSPACE;
 MA -> QMA;
 }

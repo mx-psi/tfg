@@ -193,7 +193,7 @@ $L \in \mathsf{PP}$ if and only if there exists
 a probabilistic polynomial time algorithm $M$ such that 
 
 1. for every $x \in L$,    $P[M(x) = 1] > \frac12$ and
-2. for every $x \notin L$, $P[M(x) = 1] < \frac12$.
+2. for every $x \notin L$, $P[M(x) = 1] \leq \frac12$.
 :::
 
 In contrast to $\mathsf{BPP}$, $\mathsf{PP}$ is considered unfeasible, as the following proposition hints at. 

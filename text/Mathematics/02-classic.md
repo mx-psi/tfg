@@ -229,11 +229,11 @@ If $F \subseteq \NN^\NN$ then $$\TIME(F) = \bigcup_{f(n) \in F} \TIME(f(n))$$ an
 
 These classes are potentially dependent on the use of the specific single-tape Turing machine model of [@dfn:tm]; if a different model is used, such as multitape Turing machines or RAM models, the classes might change [@vanLeeuwenHandbookTheoreticalComputer1990, chap. 1].
 
-#### The hierarchy theorems {.hidden}
+<!-- #### The hierarchy theorems {.hidden} -->
 
-Time and space hierarchy theorems
+<!-- Time and space hierarchy theorems -->
 
-Discussion about relativization
+<!-- Discussion about relativization -->
 
 ### Non-deterministic complexity 
 
@@ -372,7 +372,7 @@ Let $C_n$ be the circuit $C'_n$ with input $w_n$ fixed.
 $C_n$ has polynomial-size on the variable $m = n + |w_n|$ and thus has polynomial size with respect to $n$.
 :::
 
-#### The Karp-Lipton theorem {.hidden}
+<!-- #### The Karp-Lipton theorem {.hidden} -->
 
 ### Polynomial time verifiers
 

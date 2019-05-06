@@ -27,22 +27,11 @@ $$P\left(X = \ket{i}\right) = a_i \qquad (i = 1, \dots, N)$$
 
 Lastly, we state the allowed operations. 
 Even though we will restrict probabilistic circuits to a small set of gates, we will describe here the most general possible operations that can be made by composing these gates.
-For this we need the technical concept of computable number.
-
-:::{.definition}
-A real number $r \in \RR$ is a *computable number* if the function that given $n$ outputs the n-th bit of $r$ can be computed.
-
-It is *polynomial time computable* if this function can be computed in time polynomial in $n$.
-:::
-
-Clearly, the set of computable numbers is countable and thus there exists uncomputable numbers.
-The restriction to computable numbers is not too strict though since the set of computable numbers is dense.
 
 :::{.definition}
 Let $n,m\in \mathbb{N}$. 
-A *stochastic gate* is a linear map $f : R^{\otimes n} \to R^{\otimes m}$, represented by a computable *stochastic matrix*, that is, a matrix such that
+A *stochastic gate* is a linear map $f : R^{\otimes n} \to R^{\otimes m}$, represented by a *stochastic matrix*, that is, a matrix such that
 
-1. every entry is a computable number,
 1. every entry is non-negative and
 2. every column adds up to 1.
 
@@ -80,7 +69,17 @@ Lastly, $$\norm{Ap}_1 = \sum_{i = 1}^{2^n -1} \sum_{j = 1}^{2^m -1} A_{ij}v_j = 
 ### Probabilistic circuits
 
 Clearly, we can decompose any stochastic gate into a classical gate and a number of ancillary random bits, that is, $\operatorname{RANDOM}(p)$ gates.
-The following result shows us that we can restrict to single source of randomness with a fixed bias.
+In practice, not every source of randomness is feasible, since we could encode in the digits an uncomputable function.
+
+:::{.definition}
+A real number $r \in \RR$ is a *computable number* if the function that given $n$ outputs the n-th bit of $r$ can be computed.
+
+It is *polynomial time computable* if this function can be computed in time polynomial in $n$.
+:::
+
+We restrict the numbers on stochastic gates to be computable so as to avoid this situation. 
+This restriction is not too strict though since the set of computable numbers is dense.
+Provided we follow that restriction, the following result shows us that we can restrict to single source of randomness with a fixed bias.
 
 :::{.proposition #prop:randomSource}
 Let $p,q \in ]0,1[$ be polynomial time computable numbers. 

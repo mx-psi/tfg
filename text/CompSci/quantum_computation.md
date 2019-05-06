@@ -221,7 +221,7 @@ polynomial slowdown simulation
 
 
 
-# Quantum computability
+## Quantum computability
 
 In this section we define what it means for a function to be efficiently computed by a quantum computer.
 
@@ -249,7 +249,7 @@ As it happened in the probabilistic case, by [@prop:Chernoff] we can see that th
 
 Furthermore, [@thm:solovay] shows that [@dfn:qcomputable] is independent from the chosen universal gate set: we may approximate it with an $\varepsilon$ sufficiently small so as to remain above the $\frac12$ threshold and we may do so in polynomial time if we are interested in efficiently computable functions.
 
-## Quantum time complexity: BQP
+## Quantum time complexity
 
 In the realm of complexity classes, the set of languages that can be efficiently decided by a quantum computer is formalized in the class $\mathsf{BQP}$.
 

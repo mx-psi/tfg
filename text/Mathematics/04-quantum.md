@@ -100,7 +100,7 @@ A set of quantum gates $\mathcal{G}$ is *universal* if for every $\varepsilon > 
 :::
 
 Several universal gate sets are described in the literature. 
-For example, a minimal universal gate set can be obtained with probability 1 by combining the CNOT with a single qubit gate. [@AaronsonLecturenotes28th; sec. 2.1]
+For example, a minimal universal gate set can be obtained with probability 1 by combining the CNOT with a single qubit gate. [@AaronsonLecturenotes28th2016; sec. 2.1]
 
 We now present an example of a universal gate set, which is not minimal but will serve our purposes.
 
@@ -357,7 +357,7 @@ $\mathsf{BQP}, \mathsf{MA} \subseteq \mathsf{QMA}$
 :::
 
 There is an obvious similarity between the $\mathsf{P}$ vs. $\mathsf{NP}$ problem and the $\mathsf{BQP}$ vs. $\mathsf{QMA}$ problem (the latter are also believed to be different).
-Nonetheless, there is no known formal result that relates the two problems, that is, separating one pair of classes would give us, in principle, no information about the other pair. [@AaronsonBQPvsQMA2010]
+Nonetheless, there is no known formal result that relates the two problems, that is, separating one pair of classes would give us, in principle, no information about the other pair. [@AaronsonmathsfBQPvsmathsfQMA2010]
 
 The constants $\frac23$ and $\frac13$ can be substituted by any $c \in ]\frac12,1[$, yet the proof in this case is not as straightforward as in the case of the previous classes. The problem lies in the quantum *no-cloning theorem*, that prevents us from copying the quantum proof and running the algorithm several times.
 

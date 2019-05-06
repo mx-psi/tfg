@@ -163,11 +163,11 @@ If $f(n) \in \poly(n)$, this gives us a *poly-logarithmic time* family.
 
 ### Simulating classical operations
 
-Classical and probabilistic operations can in principle be non-reversible, as is the case of the (linear extensions of) AND and OR gates, the NAND gate, the FANOUT gate or the RANDOM probabilistic gate.
+Classical and probabilistic operations can in principle be non-reversible, as is the case of the (linear extensions of) AND and OR gates, the NAND gate, the FANOUT gate or the $\operatorname{RANDOM}(1/2)$ probabilistic gate.
 For the quantum model to be a generalization of the probabilistic one we must be able to compute the same functions in a reversible manner.
 
 This can be done thanks to the use of ancillary qubits.
-In the following discussion, let $\ket{x}$, $ket{y}$ and $\ket{z}$ be classical states, 
+In the following discussion, let $\ket{x}$, $\ket{y}$ and $\ket{z}$ be classical states, 
 that is states from the computational basis.
 
 Recall from [@prop:quantumOps] the Toffoli gate, that maps $\ket{x,y,z} \mapsto \ket{x,y,z \oplus xy}$. 
@@ -175,17 +175,30 @@ By using an ancillary qubit on $z$ and discarding qubits $x,y$ we can simulate a
 $$\operatorname{TOFFOLI}\ket{x,y,1} = \ket{x,y}\operatorname{NAND}\ket{x}\ket{y}.$$
 This therefore allows us to simulate any classical logical gate.
 
-Similarly, the FANOUT gate can be simulated by using a CNOT gate,
-$$\operatorname{CNOT}\ket{x}\ket{0} = \ket{x}\ket{x}.$$
+Similarly, the FANOUT gate can also be simulated by using a TOFFOLI gate,
+$$\operatorname{TOFFOLI}\ket{x}\ket{1}\ket{0} = \ket{1}\ket{x}\ket{x}.$$
 This is not a contradiction with [@prop:nocloning], since we are only cloning classical states.
 
 Lastly, the $\operatorname{RANDOM}(1/2)$ gate can be simulated with the aid of a Hadamard gate, since
 $$H\ket{0} = \frac{1}{\sqrt{2}}(\ket{0} + \ket{1}),$$
 and therefore when measuring with respect to the computational basis we have a random bit.
 
-These equivalences can be seen on figure TODO.
+These equivalences can be seen on [@fig:probSimulation].
 
-Since any probabilistic function can be computed by a probabilistic circuit composed by NAND, FANOUT, ANCILLARY and RANDOM gates (see TODO), we can simulate it on a quantum computer by replacing each gate by its simulation.
+<div id="fig:probSimulation">
+![The TOFFOLI gate symbol.](assets/toffoli.pdf){width=40%}
+![NAND simulation.](assets/nand.pdf){width=50%}
+
+![FANOUT simulation.](assets/fanout.pdf){width=50%}
+![$\operatorname{RANDOM}(1/2)$ simulation.](assets/random.pdf){width=50%}
+
+![AND gate simulated composing NAND gates.](assets/and.pdf){width=100%}
+
+Reversible simulation of the probabilistic gate basis.
+Made with Quipper.
+</div>
+
+Clearly, we can then simulate any probabilistic circuit on a quantum computer by replacing each gate by its simulation.
 
 In general, the unitary purification of the quantum circuit obtained in this way gives us for a function $f : \BB^N \to \BB^M$ a reversible function that maps $$\ket{x}\ket{c} \mapsto \ket{x}\ket{c \oplus f(x)},$$
 which uses an extra polynomial amount of wires and gates.
@@ -309,7 +322,10 @@ This shows that the power of quantum computers is limited to what classical comp
 <!-- ::: -->
 
 
-## Quantum proofs: QMA
+## Quantum verifiers
+
+Following the chapters on classical and probabilistic models of computation, it is now natural to consider quantum verifiers.
+In this kind of verifiers both the proof and the verifier are quantum.
 
 :::{.definition #dfn:qma}
 [@VidickQuantumProofs2016; dfn. 3.1]
@@ -333,12 +349,15 @@ $\mathsf{BQP}, \mathsf{MA} \subseteq \mathsf{QMA}$
    Then there exists a polynomial time quantum algorithm $\mathcal{C}$ that computes $1_L$.
    When $x \in L$, any proof will suffice, while when $x \notin L$,
    no proof will be correct with probability more than $\frac13$.
-2. $\mathsf{NP} \subseteq \mathsf{QMA}$. TODO arreglar
-   Let $L \in \mathsf{NP}$.
-   By [@prop:npverifier] there exists a classical verifier $V$, that can be made quantum by TODO.
-   When $x \in L$, the proof will be the quantum state associated with the classical proof $y$ of $V$.
-   Since the verifier answers with certainty, every condition on [@dfn:qma] holds.
+2. $\mathsf{MA} \subseteq \mathsf{QMA}$.
+   Let $L \in \mathsf{MA}$.
+   By definition, there exists a probabilistic verifier $M$, that can be made quantum by replacing each gate with its simulation.
+   When $x \in L$, the proof will be the quantum state associated with the classical proof $y$ of $M$.
+   The probability bounds hold since they are identical in each class.
 :::
+
+There is an obvious similarity between the $\mathsf{P}$ vs. $\mathsf{NP}$ problem and the $\mathsf{BQP}$ vs. $\mathsf{QMA}$ problem (the latter are also believed to be different).
+Nonetheless, there is no known formal result that relates the two problems, that is, separating one pair of classes would give us, in principle, no information about the other pair. [@AaronsonBQPvsQMA2010]
 
 The constants $\frac23$ and $\frac13$ can be substituted by any $c \in ]\frac12,1[$, yet the proof in this case is not as straightforward as in the case of the previous classes. The problem lies in the quantum *no-cloning theorem*, that prevents us from copying the quantum proof and running the algorithm several times.
 
@@ -347,23 +366,38 @@ The latter process has the advantage of preserving the proof size yet its proof 
 Here we present a proof using parallel error reduction.
 
 :::{.proposition name="QMA error reduction" #prop:qmaerror}
-TODO
+[@VidickQuantumProofs2016; sec. 3.2]
+
+Let $c \in ]\frac12,1[$. 
+
+Then $L \in \mathsf{QMA}$ if and only if there exists
+a polynomial $p(n)$ and
+a polynomial time quantum algorithm $\mathcal{V}$ such that
+
+2. for every $x \in L$, $|x| = n$, there exists a quantum state $\ket{\psi}$ of at most $p(n)$ qubits (the *proof*) such that $$P[\mathcal{V}(\ket{x}\ket{\psi}) = 1] \geq c \text{ and}$$
+3. for every $x \notin L$, $|x| = n$, and every quantum state $\ket{\psi}$ of at most $p(n)$ qubits $$P[\mathcal{V}(\ket{x}\ket{\psi}) = 1] \leq c.$$
+:::
+:::{.proof}
+\fxnote{Queda por hacer.}
 :::
 
 
 [@prop:qmaerror] shows that we can prove a similar result to [@prop:nppp], namely:
 
 :::{.proposition}
+[@WatrousQuantumComputationalComplexity2009; sec V.4]
+
 $\mathsf{QMA} \subseteq \mathsf{PP}$
 :::
 :::{.proof}
-Adapted from [@WatrousQuantumComputationalComplexity2009; sec V.4].
-
 By [@thm:pqp], we know that $\mathsf{PQP} = \mathsf{PP}$, 
 thus, it suffices to prove $\mathsf{QMA} \subseteq \mathsf{PQP}$.
 
-The proof of this result is then identical to [@prop:nppp] but using quantum circuits and adjusting for the probability bound of $\mathsf{QMA}$ as was suggested for $\mathsf{MA}$.
+The proof of this result is then identical to [@prop:nppp], using quantum circuits and adjusting for the probability bound of $\mathsf{QMA}$ as was suggested for $\mathsf{MA}$.
 :::
+
+This result gives us information about the tightness of the upper bound of $\mathsf{BQP}$ by $\mathsf{PP}$.
+The chain $\mathsf{BQP} \subseteq \mathsf{QMA} \subseteq \mathsf{PP}$ hints that the bound is not very tight, since quantum proofs are presumed to have higher computational power than quantum algorithms. 
 
 
 The complete diagram of relationships between quantum, probabilistic and classical complexity classes is shown in [@fig:diagram].

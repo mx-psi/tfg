@@ -175,7 +175,7 @@ The evolution of the state of a quantum system from time $t_1$ to time $t_2 > t_
 :::
 
 If we apply a unitary operation on each subsystem the resulting operation is also a unitary operation.
-This is given by the following proposition:
+This is given by the following well-known proposition:
 
 :::{.proposition}
 Let $H_1,H_2$ be finite dimensional Hilbert spaces with orthonormal basis $B_1 = \{u_i\}_{i \in I}, B_2 = \{v_j\}_{j \in J}$ respectively and let $U_i: H_i \to H_i$ ($i = 1,2$) be unitary operators.
@@ -188,9 +188,9 @@ Furthermore, if $U^{(1)} = (u^{(1)}_{ij})$, its matrix expression wrt. the basis
   u^{(1)}_{m1} U^{(2)} & \cdots & u^{(1)}_{mn} U^{(2)}
 \end{matrix}\right).$$
 :::
-:::{.proof}
-TODO?
-:::
+<!-- :::{.proof} -->
+<!-- TODO? -->
+<!-- ::: -->
 
 
 Lastly we state the measurement operation for finite dimensional systems.

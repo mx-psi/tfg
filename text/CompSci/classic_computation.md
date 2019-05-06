@@ -108,7 +108,7 @@ We will use the term circuit in different contexts in this document.
 In general, there is an implicit base state space (for example $\BB, \RR$, a random bit or a qubit), that can be composed with a certain product (usually the cartesian product or the tensor product).[^category]
 Both will be clear from context.
 
-[^category]: In its most general terms what we are essentially describing a morphism in a monoidal category via a string diagram[TODO citar]
+[^category]: In its most general terms what we are essentially describing a morphism in a planar monoidal category via a string diagram [@Selingersurveygraphicallanguages2010; thm. 3.1].
 
 Using these basic pieces, a circuit is made of gates from a certain set (*basis*).
 A *gate* is a function $f: A^n \to A^m$ from a product of the base state space $A$ to another product.

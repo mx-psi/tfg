@@ -21,8 +21,8 @@ check: $(SRCS) #tfg.html
 tfg.pdf: $(SRCS) src/template.tex src/citas.bib
 	$(PANDOC) $(PFLAGS) --template src/template.tex -H src/math.sty src/before.md $(SRCS) src/after.md -o $@
 
-%.html: %.md
-	$(PANDOC) $(PFLAGS) $< -o $@
+tfg.html: $(SRCS)
+	$(PANDOC) $(PFLAGS) $(SRCS) -o $@
 
 clean:
 	rm tfg.pdf

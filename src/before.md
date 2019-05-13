@@ -38,4 +38,9 @@ prefixes:
     - 'prop.'
     - 'props.$\;$'
     title: Proposition
+  prob:
+    ref:
+    - 'prob.'
+    - 'probs.$\;$'
+    title: Problem
 ---

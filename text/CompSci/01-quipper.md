@@ -40,3 +40,5 @@ TODO
 
 
 # The Deutsch-Jozsa algorithm
+
+## Deutsch algorithm

@@ -23,15 +23,18 @@ Firstly, we will present an algorithm that computes an $n$-bit approximation of 
 Approximate an eigenvalue of the eigenvector $\ket{u}$ a unitary operator $U$.
 
 - **Input**: For each $j$, 
-  an oracle that computes the controlled unitary operation $C-U^{2^j}$ and the eigenvector $\ket{u}$
+  an oracle that computes the controlled unitary operation $C-U^{2^j}$ and a vector $\ket{u}$
+- **Promise**: $\ket{u}$ is an eigenvector of $U$.
 - **Output**: An $n$-bit approximation of $\varphi_u$ such that $$\exp(2\pi i \varphi_u)$$ 
   is the eigenvalue of $U$ associated with $U$.
 :::
 
-Since $U$ is unitary its eigenvalues will have modulus one and thus they can all be expressed as $\exp(2\pi i \varphi)$ for some $\varphi \in \RR$.
+Since $U$ is unitary its eigenvalues will have modulus one and thus they can all be expressed as $\exp(2\pi i \varphi)$ for some $\varphi \in [0,1[$.
+Hence, if we approximate $\varphi \approx 0.x_1 \dots x_n$, we can output $\ket{x_1 \cdots x_n}$ as an answer.
+
 Next, we present a quantum algorithm that solves this problem in polynomial time in the number of bits of the approximation.
 
-:::{.algorithm name="Quantum phase estimation"}
+:::{.algorithm name="Quantum phase estimation" #algo:qpe}
 [@NielsenQuantumComputationQuantum2010; TODO]
 
 **Solves:** the phase estimation problem, [@prob:phase].
@@ -53,13 +56,36 @@ An $n$-bit approximation of $\varphi$ is polynomial-time computable in the quant
 TODO
 :::
 
-As a direct application of [@lemma:phase] we prove that the order of an element TODO
+As a direct application of [@lemma:phase] we prove that the order of an element in $U(\mathbb{Z}_N)$ can be calculated in polynomial quantum time.
 
 :::{.lemma}
 Let $N \in \NN$. Then $\operatorname{ord}: U(\ZZ_N) \to \NN$ is polynomial quantum time computable.
 :::
 :::{.proof}
-TODO
+Let us consider the unique unitary map $U$ that maps, for $j,k \in {0, \dots, N-1}$ (and therefore expressable in $n$ qubits each),
+$$\ket{j}\ket{k} \mapsto \ket{j}\ket{x^jk \mod N}.$$
+This map is efficiently computable for powers $2^j$ via binary exponentiation.
+
+Let $r = \operatorname{ord}_{\ZZ_N}(x)$ and $s \in \{0,\dots,r-1\}$.
+Let $$\ket{u_s} = \frac{1}{\sqrt{r}} \sum_{k=0}^{r-1} \exp\left(-2\pi i k \frac{s}{r}\right)\ket{x^k \mod N}.$$
+
+One can easily verify that for all $s \in \{0,\dots,r-1\}$, $\ket{u_s}$ is an eigenvector of $U$ with eigenvalue $$\exp\left(2\pi i \frac{s}{r}\right).$$
+
+<!--TODO:Hacer-->
+
+Furthermore, consider that
+\begin{align*}
+\frac{1}{\sqrt{r}} \sum_{s=0}^{r-1}\ket{u_s} = \ket{1 \dots 1}
+\end{align*}
+
+Consider applying [@algo:qpe] with unitary map $U$ and $\ket{1 \dots 1}$ as an eigenvector.
+Clearly, the output will be an approximation of the phase of one of the eigenvalues of some $\ket{u_s}$.
+
+Hence, the output will be an approximation of $$\frac{s}{r}.$$
+If the approximation is accurate enough, the period $r$ can be recovered from the decimal expression of this fraction by using *continued fractions*.
+
+<!--TODO: Justificar fracciones continuadas y precisión de la estimación-->
+
 :::
 
 ## Classical part

@@ -43,4 +43,9 @@ prefixes:
     - 'prob.'
     - 'probs.$\;$'
     title: Problem
+  algo:
+    ref:
+    - 'algorithm'
+    - 'algorithms$\;$'
+    title: Algorithm
 ---

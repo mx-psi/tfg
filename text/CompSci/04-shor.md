@@ -12,7 +12,18 @@ The decision problem we will solve is the one associated with the language:
 $$\operatorname{FACTORING} = \{(n,k) \;:\; n,k \in \NN, \; n \text{ has a non-trivial divisor smaller than } k \}.$$
 :::
 
-In order to solve it we will solve the associated function problem: we will give an algorithm that gets a non-trivial factor of a number if there is one. The two are equivalent due to the closure properties of $\mathsf{BQP}$ and the well-known classical reductions between the problems.
+In order to solve it we will solve the associated function problem: we will give an algorithm that gets a non-trivial factor of a number. 
+
+:::{.problem name="Factoring" #prob:factoring}
+Find a factor of an integer $N$.
+
+- **Input:** An integer $N$.
+- **Promise:** $N$ is composite
+- **Output:** A non trivial factor of $N$.
+:::
+
+
+The two are equivalent due to the closure properties of $\mathsf{BQP}$ and the well-known classical reductions between the problems.
 
 
 ## Quantum phase estimation
@@ -56,10 +67,20 @@ An $n$-bit approximation of $\varphi$ is polynomial-time computable in the quant
 TODO
 :::
 
-As a direct application of [@lemma:phase] we prove that the order of an element in $U(\mathbb{Z}_N)$ can be calculated in polynomial quantum time.
+As a direct application of [@lemma:phase] we prove that the order of an element in $U(\mathbb{Z}_N)$ can be calculated in polynomial quantum time, that is, we can solve the problem:
 
-:::{.lemma}
-Let $N \in \NN$. Then $\operatorname{ord}: U(\ZZ_N) \to \NN$ is polynomial quantum time computable.
+:::{.problem name="Order calculation" #prob:order}
+Calculate the order of an element $x$ in the group of units $U(\ZZ_N)$.
+
+- **Input:** Two integers $x$ and $N$.
+- **Promise:** $x \in U(\ZZ_N)$, that is, $0 < x < N$ and $\operatorname{gcd}(x,N) = 1$.
+- **Output:** The order of $x$ as an element of $U(\ZZ_N)$, that is, the least integer $r$ such that $x^r = 1$ in $U(\ZZ_N)$.
+:::
+
+We show how to solve it by constructing an appropiate pair of unitary map and eigenvector.
+
+:::{.lemma #lemma:order}
+[@prob:order] is solvable in quantum polynomial time.
 :::
 :::{.proof}
 Let us consider the unique unitary map $U$ that maps, for $j,k \in {0, \dots, N-1}$ (and therefore expressable in $n$ qubits each),
@@ -90,7 +111,57 @@ If the approximation is accurate enough, the period $r$ can be recovered from th
 
 ## Classical part
 
+The classical part of Shor's algorithm is a randomized reduction of the decision problem associated with $\operatorname{FACTORING}$ to [@prob:order]. To prove that such reduction works, we need to present two auxiliary lemmas from [@NielsenQuantumComputationQuantum2010].
+
+:::{.lemma #lemma:solution}
+Let $N$ be a composite integer and $x \in \ZZ_N$, $x \notin \{-1,1\}$ an element such that $x^2 = 1$.
+
+Then $\operatorname{gcd}(x-1,N)$ is a non-trivial divisor of $N$ and it is computable in classical time $O(\log^3 N)$.
+:::
+:::{.proof}
+
+Since $x^2 = 1$ in $\ZZ_N$, we have that $N | x^2 -1 = (x-1)(x+1)$.
+Furthermore, $x-1,x+1 < N$, and hence $N \not|x-1$ and $N \not | x+1$.
+
+Let $k$ be such that $x^2 -1 = Nk$.
+Assume $x-1$ and $N$ are coprime.
+Then, by applying Bézout's identity, we have that there exists $a,b$ such that
+$$aN + b(x-1) = 1.$$
+Multiplying by $x+1$ we have
+$$aN(x+1)+ b(x^2-1) = x+1 \implies N(a(x+1) + bk) = x+1.$$
+Therefore, $N | x+1$, but this is a contradiction.
+
+Therefore, $1<\operatorname{gcd}(x-1,N)<N$, and thus it is a non-trivial divisor of $N$.
+We may then compute it using the well-known Euclides' algorithm, which has the desired complexity.
+:::
+
+[@lemma:solution] hints at the reduction used by Shor's algorithm: if we can find a non-trivial solution to 
+$$x^2 = 1 \mod N,$${#eq:shor}
+then we can find a non-trivial divisor of $N$.
+
+In particular, suppose we have $a \in \ZZ_N$, we compute its order using [@lemma:order] and it turns out to be even.
+Then, by choosing $x = a^{r/2}$, we have a solution to [@eq:shor].
+If it is not trivial we can apply [@lemma:solution] to get a non-trivial factor of $N$.
+
+The following lemma shows that this happens with enough probability if we sample $a \in U(\ZZ_N)$ uniformly.
+
+:::{.lemma}
+TODO
+:::
+
+
 :::{.algorithm name="Shor's algorithm"}
+[@NielsenQuantumComputationQuantum2010; TODO]
+
+Solves [@prob:factoring].
+
+1. Check if $N$ is even, if so **return** 2.
+2. Check if $N = a^b$, for integers $a \geq 1, b \geq 2$, if so **return** $a$.
+3. Sample $x$ uniformly from $\ZZ_N\backslash\{0\}$.
+4. Check if $\operatorname{gcd}(x,N) > 1$, if so **return** $\operatorname{gcd}(x,N)$.
+5. Find $r = \operatorname{ord}(x,N)$ by applying [@algo:qpe].
+6. If $r$ is odd or $x^{r/2} \neq -1 \mod N$, **fail**.
+7. **Return** $\operatorname{gcd}(x^{r/2} -1,N)$.
 :::
 
 

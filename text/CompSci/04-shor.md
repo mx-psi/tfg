@@ -86,6 +86,7 @@ We show how to solve it by constructing an appropiate pair of unitary map and ei
 Let us consider the unique unitary map $U$ that maps, for $j,k \in {0, \dots, N-1}$ (and therefore expressable in $n$ qubits each),
 $$\ket{j}\ket{k} \mapsto \ket{j}\ket{x^jk \mod N}.$$
 This map is efficiently computable for powers $2^j$ via binary exponentiation.
+<!--TODO:Demostrar que U es unitario-->
 
 Let $r = \operatorname{ord}_{\ZZ_N}(x)$ and $s \in \{0,\dots,r-1\}$.
 Let $$\ket{u_s} = \frac{1}{\sqrt{r}} \sum_{k=0}^{r-1} \exp\left(-2\pi i k \frac{s}{r}\right)\ket{x^k \mod N}.$$
@@ -136,7 +137,7 @@ We may then compute it using the well-known Euclides' algorithm, which has the d
 :::
 
 [@lemma:solution] hints at the reduction used by Shor's algorithm: if we can find a non-trivial solution to 
-$$x^2 = 1 \mod N,$${#eq:shor}
+$$x^2 \equiv_N 1,$${#eq:shor}
 then we can find a non-trivial divisor of $N$.
 
 In particular, suppose we have $a \in \ZZ_N$, we compute its order using [@lemma:order] and it turns out to be even.
@@ -146,7 +147,33 @@ If it is not trivial we can apply [@lemma:solution] to get a non-trivial factor 
 The following lemma shows that this happens with enough probability if we sample $a \in U(\ZZ_N)$ uniformly.
 
 :::{.lemma}
-TODO
+[@NielsenQuantumComputationQuantum2010; thm. A4.13]
+
+Let $N$ be an odd positive composite integer. 
+Then, if $x$ is sampled uniformly from $U(\ZZ_N)$ and $r = \operatorname{ord}_{U(\ZZ_N)}(x)$ we have
+$$P[r \text{ is odd or } x^{r/2} \equiv_N -1] \leq \frac13.$$
+:::
+:::{.proof}
+
+We show that 
+$$P[r \text{ is odd or } x^{r/2} \equiv_N -1] \leq \frac14.$$
+
+Let $N = \prod_{i=1}^m p_i^{n_i}$
+By the Chinese remainder theorem, we have that
+$$U(\ZZ_N) \cong \prod_{i=1}^m U(\ZZ_{p_i^{n_i}}),$$
+hence sampling uniformly $x \sim U(\ZZ_N)$ is equivalent to sampling uniformly and independently $x_i \sim U(\ZZ_{p_i^{n_i}})$, and $x$ would be the unique element such that $x \equiv_{p_i^{n_i}} x_i$ for each $i$.
+
+Let $r_i = \operatorname{ord}_{U(\ZZ_{p_i^{n_i}})}(x_i)$ and let $2^d$
+
+::::{.claim}
+Let $p \neq 2$ be prime, $n \geq 1$ be an integer and $2^d$ be the largest power of $2$ such that $2^d | \varphi(p^n)$, where $\varphi$ is Euler's phi function.
+Then 
+$$P\left[2^d | \operatorname{ord}_{U(\ZZ_{p^n})}(x)\right] = \frac12,$$
+where $x$ is sampled uniformly from $U(\ZZ_{p^n})$.
+::::
+::::{.proof}
+::::
+
 :::
 
 
@@ -160,7 +187,7 @@ Solves [@prob:factoring].
 3. Sample $x$ uniformly from $\ZZ_N\backslash\{0\}$.
 4. Check if $\operatorname{gcd}(x,N) > 1$, if so **return** $\operatorname{gcd}(x,N)$.
 5. Find $r = \operatorname{ord}(x,N)$ by applying [@algo:qpe].
-6. If $r$ is odd or $x^{r/2} \neq -1 \mod N$, **fail**.
+6. If $r$ is odd or $x^{r/2} \not \equiv_N -1$, **fail**.
 7. **Return** $\operatorname{gcd}(x^{r/2} -1,N)$.
 :::
 

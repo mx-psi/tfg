@@ -163,17 +163,46 @@ By the Chinese remainder theorem, we have that
 $$U(\ZZ_N) \cong \prod_{i=1}^m U(\ZZ_{p_i^{n_i}}),$$
 hence sampling uniformly $x \sim U(\ZZ_N)$ is equivalent to sampling uniformly and independently $x_i \sim U(\ZZ_{p_i^{n_i}})$, and $x$ would be the unique element such that $x \equiv_{p_i^{n_i}} x_i$ for each $i$.
 
-Let $r_i = \operatorname{ord}_{U(\ZZ_{p_i^{n_i}})}(x_i)$ and let $2^d$
+Let $r_i = \operatorname{ord}_{U(\ZZ_{p_i^{n_i}})}(x_i)$ and let
+
+1. $2^d$ be the largest power of 2 such that $2^d | r$ and
+2. for each $i$, $2^{d_i}$ the largest power of 2 such that $2^{d_i} | r_i$.
+
+Assume $r$ is odd.
+For all $i$, $r_i|r$, and hence $r_i$ is odd, so $d_i = 0$.
+
+Assume $r$ is even and $x^{r/2} \equiv_N -1$.
+Then for all $i$, $x^{r/2} \equiv_{p_i^{n_i}} -1$ and hence $r_i \not | r/2$, but $r_i | r$.
+Therefore, $d_i = d$.
+
+In any of these cases we have that $d_i$ is equal to the same value for all $i$ ($0$ or $d$).
+Consider the following claim:
 
 ::::{.claim}
+[@NielsenQuantumComputationQuantum2010; lemma A4.12]
+
 Let $p \neq 2$ be prime, $n \geq 1$ be an integer and $2^d$ be the largest power of $2$ such that $2^d | \varphi(p^n)$, where $\varphi$ is Euler's phi function.
 Then 
 $$P\left[2^d | \operatorname{ord}_{U(\ZZ_{p^n})}(x)\right] = \frac12,$$
 where $x$ is sampled uniformly from $U(\ZZ_{p^n})$.
 ::::
 ::::{.proof}
+$\varphi(p^n) = p^{n-1}(p-1)$ is even and therefore $d\geq 1$.
+
+Let $x \in U(\ZZ_{p^n})$ and $r =  \operatorname{ord}_{U(\ZZ_{p^n})}(x)$.
+Since $p$ is prime, $U(\ZZ_{p^n})$ is a cyclic group. 
+Let $U(\ZZ_{p^n}) = \langle a\rangle$, so that 
+there exists some $k \in \{1,\dots,\varphi(p^n)\}$ such that $a^k = x$.
+
+If $k$ is odd, then $a^{kr} = 1$ and hence $\varphi(p^n)|kr$, therefore $2^d|r$.
+
+If $k$ is even then $$a^{k/2\varphi(p^n)} = (a^{\varphi(p^n)})^{k/2} = a^{k/2} = 1,$$
+therefore $r | \varphi(p^n)/2$ and hence $2^d \not | r$.
 ::::
 
+This claim shows then that, by applying the bound for each $i$ and using independence,
+$$P[r \text{ is odd or } x^{r/2} \equiv_N -1] \leq \frac{1}{2^m} \leq \frac14,$$
+where the last inequality follows from $N$ being composite.
 :::
 
 

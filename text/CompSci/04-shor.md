@@ -22,13 +22,33 @@ Find a factor of an integer $N$.
 - **Output:** A non trivial factor of $N$.
 :::
 
+The two are equivalent due to the closure properties of $\mathsf{BQP}$ and the well-known classical reductions between the problems. The main theorem thus will be 
 
-The two are equivalent due to the closure properties of $\mathsf{BQP}$ and the well-known classical reductions between the problems.
+:::{.theorem #thm:shor}
+[@NielsenQuantumComputationQuantum2010]
 
+$$\operatorname{FACTORING} \in \mathsf{BQP},$$
+in particular, [@prob:factoring] is solvable in $O(\log^3 N)$ quantum time with bounded error.
+:::
+
+How does this problem fit in classical complexity classes? 
+$\operatorname{FACTORING} \in \mathsf{NP}$ is easy to show via [@prop:npverifier]: for $(n,k) \in \operatorname{FACTORING}$, the proof would be the non-trivial factor $m$, that would have at most as many digits as $k$, and the verifier would check that $m|n$, which can easily be done in polynomial time by the usual division algorithm.
+
+On the other hand, it is believed that $\operatorname{FACTORING} \notin \mathsf{P}$.
+Although this is not proven (since a proof would imply solving the $\mathsf{P}$ vs. $\mathsf{NP}$ problem),
+the best known classical algorithm for solving this problem runs in time $\exp(O(\log^{1/3}N \sqrt{\log \log N}$ [@Lenstranumberfieldsieve1990a].
+
+Factoring is an important problem because of the reliance of some widely used cryptographic systems on the hardness of this problem [@AroraComputationalComplexityModern2009; sec. 9.2.1].
+Shor's algorithm is widely appraised for being one of the hallmarks of quantum computation, since it gives definite proof of an exponential quantum speedup between the best known classical algorithm and the best known quantum algorithm.
+
+Nonetheless, its applicability is somewhat limited.
+$\operatorname{FACTORING}$ is believed not to be $\mathsf{NP}$-complete, that is, an algorithm that decides this language does not seem to allow us to solve an arbitrary $\mathsf{NP}$ problem.
+Hence, Shor's algorithm speedup is not as useful in principle as the one provided by Grover's algorithm (although this one is only polynomial).
 
 ## Quantum phase estimation
 
 Firstly, we will present an algorithm that computes an $n$-bit approximation of the eigenvalue of an operator.
+This will be directly useful to solve the factoring problem, but it will also be applicable in the case of Grover's algorithm.
 
 :::{.problem name="Phase estimation" #prob:phase}
 Approximate an eigenvalue of the eigenvector $\ket{u}$ a unitary operator $U$.
@@ -40,10 +60,10 @@ Approximate an eigenvalue of the eigenvector $\ket{u}$ a unitary operator $U$.
   is the eigenvalue of $U$ associated with $U$.
 :::
 
-Since $U$ is unitary its eigenvalues will have modulus one and thus they can all be expressed as $\exp(2\pi i \varphi)$ for some $\varphi \in [0,1[$.
+Since $U$ is unitary its eigenvalues will lie on $\mathbb{T}$, and thus they can all be expressed as $\exp(2\pi i \varphi)$ for some $\varphi \in [0,1[$.
 Hence, if we approximate $\varphi \approx 0.x_1 \dots x_n$, we can output $\ket{x_1 \cdots x_n}$ as an answer.
 
-Next, we present a quantum algorithm that solves this problem in polynomial time in the number of bits of the approximation.
+Next, we present a quantum algorithm that solves this problem in polynomial time in the number of bits of the approximation (in the query complexity setting).
 
 :::{.algorithm name="Quantum phase estimation" #algo:qpe}
 [@NielsenQuantumComputationQuantum2010; TODO]
@@ -59,6 +79,10 @@ Let $t = n + 2$.
 5. Discard the bottom qubits and measure the top qubits.
 :::
 
+It is easy to show by applying [@lemma:productrepr] that the algorithm is correct on the case where $\varphi$ has exactly $n$ qubits. TODO
+
+The general proof of correctness relies on TODO.
+
 :::{.lemma name="Correctness of phase estimation algorith" #lemma:phase}
 Let $U$ be a unitary operator with an eigenvalue $\exp(2\pi i \varphi)$.
 An $n$-bit approximation of $\varphi$ is polynomial-time computable in the quantum black box model ($O(n^2)$)
@@ -67,7 +91,7 @@ An $n$-bit approximation of $\varphi$ is polynomial-time computable in the quant
 TODO
 :::
 
-As a direct application of [@lemma:phase] we prove that the order of an element in $U(\mathbb{Z}_N)$ can be calculated in polynomial quantum time, that is, we can solve the problem:
+As a direct application of [@lemma:phase] and as an intermediate step towards proving [@thm:shor], we prove that the order of an element in $U(\mathbb{Z}_N)$ can be calculated in polynomial quantum time, that is, we can solve the problem:
 
 :::{.problem name="Order calculation" #prob:order}
 Calculate the order of an element $x$ in the group of units $U(\ZZ_N)$.
@@ -77,7 +101,9 @@ Calculate the order of an element $x$ in the group of units $U(\ZZ_N)$.
 - **Output:** The order of $x$ as an element of $U(\ZZ_N)$, that is, the least integer $r$ such that $x^r = 1$ in $U(\ZZ_N)$.
 :::
 
-We show how to solve it by constructing an appropiate pair of unitary map and eigenvector.
+We show how to solve it by using [@algo:qpe].
+Notice that if [@algo:qpe] is applied with a superposition of eigenvectors $\sum \alpha_i \ket{u_i}$ as inputs, the output will be a superposition of estimations of its eigenvalues, $\sum \alpha_i \ket{\overset{\sim}{\varphi_i}}$.
+This fact will be later used again for solving the quantum counting problem.
 
 :::{.lemma #lemma:order}
 [@prob:order] is solvable in quantum polynomial time.
@@ -149,7 +175,7 @@ The following lemma shows that this happens with enough probability if we sample
 :::{.lemma}
 [@NielsenQuantumComputationQuantum2010; thm. A4.13]
 
-Let $N$ be an odd positive composite integer. 
+Let $N$ be an odd positive composite integer with more than one prime factor. 
 Then, if $x$ is sampled uniformly from $U(\ZZ_N)$ and $r = \operatorname{ord}_{U(\ZZ_N)}(x)$ we have
 $$P[r \text{ is odd or } x^{r/2} \equiv_N -1] \leq \frac13.$$
 :::
@@ -202,11 +228,18 @@ therefore $r | \varphi(p^n)/2$ and hence $2^d \not | r$.
 
 This claim shows then that, by applying the bound for each $i$ and using independence,
 $$P[r \text{ is odd or } x^{r/2} \equiv_N -1] \leq \frac{1}{2^m} \leq \frac14,$$
-where the last inequality follows from $N$ being composite.
+where the last inequality follows from $N$ having more than one prime factor.
 :::
 
+Hence, we can apply the previously sketched-out algorithm to odd integers with more than one factor.
+What remains is only checking the other cases.
 
-:::{.algorithm name="Shor's algorithm"}
+We can check if $N$ is even by looking at its last digit on its binary representation, which takes constant time on a classical family of circuits.
+For the remaining case, that is, $N = a^b$, with $a \geq 1, b \geq 2$, TODO.
+
+Hence, Shor's algorithm is complete and is presented at [@algo:shor].
+
+:::{.algorithm name="Shor's algorithm" #algo:shor}
 [@NielsenQuantumComputationQuantum2010; TODO]
 
 Solves [@prob:factoring].
@@ -220,17 +253,8 @@ Solves [@prob:factoring].
 7. **Return** $\operatorname{gcd}(x^{r/2} -1,N)$.
 :::
 
-
-:::{.theorem name="Shor's algorithm" #thm:shor}
-There exists a $O(n^3)$ algorithm that factors a given natural number.
-
-Consequently:
-
-1. TODO find all factors
-2. $$\operatorname{FACTORING} \in \mathsf{BQP}$$
-:::
-
-Using more efficient multiplication algorithms, such as those based on the FFT, can bring down the asymptotic complexity of Shor's algorithm to TODO.
+By the previous discussion this proves [@thm:shor].
+For finding *all* factors of a given number we may repeat [@algo:shor] and succesively divide the integer until we reach a base case. This would also take a polynomial amount of time, $O(\log^4 N)$.
 
 ## Quipper implementation
 

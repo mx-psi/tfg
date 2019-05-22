@@ -9,11 +9,11 @@ This first section presents the general setup; both in terms of what will be sai
 ## The query complexity model
 
 The focus of the previous sections on computation models was on time complexity.
-These are the most meaningful practical measures of complexity; however, they are notoriously difficult to analyse, as the wide range of existing open problems in the field shows.[@AaronsonmathoplimitsNP2016]
+These are the most meaningful practical measures of complexity; however, they are notoriously difficult to analyse, as the wide range of existing open problems in the field shows (@AaronsonmathoplimitsNP2016).
 
-In the analysis of the algorithms that will be presented we will sometimes focus on an alternative complexity measure: *query complexity*, also known in the classical case as *decision tree complexity*.[@AmbainisUnderstandingQuantumAlgorithms2017; sec. 2]
+In the analysis of the algorithms that will be presented we will sometimes focus on an alternative complexity measure: *query complexity*, also known in the classical case as *decision tree complexity* (@AmbainisUnderstandingQuantumAlgorithms2017, sec. 2).
 
-In the quantum case, we are given an *oracle* that gives us information about a certain binary string $x \in \BB^N$. [@Kayeintroductionquantumcomputing2007; sec 9.2]
+In the quantum case, we are given an *oracle* that gives us information about a certain binary string $x \in \BB^N$ (@Kayeintroductionquantumcomputing2007, sec 9.2).
 Similar to the approached mentioned in [Simulating classical operations], we can have a unitary operation that maps $$\ket{j}\ket{y} \mapsto \ket{j}\ket{y \oplus x_j}.$$
 
 We would then like to compute some property about the oracle; the question then becomes: 

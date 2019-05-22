@@ -29,7 +29,7 @@ It has the same number of inputs and outputs.
 The ancillary and discard gates are not operations allowed within the model presented in [A model of quantum mechanics] since they are not unitary; nonetheless every quantum circuit can be transformed into a unitary quantum circuit:
 
 :::{.definition #dfn:purification}
- [@WatrousQuantumComputationalComplexity2009 sec III.3]
+ (@WatrousQuantumComputationalComplexity2009, sec III.3)
  
 Let $C$ be a quantum circuit.
 The  *unitary purification* of $C$ is a unitary quantum circuit $C'$ constructed by the following process
@@ -58,7 +58,7 @@ if $C$ has $n$ inputs then given $\ket{\psi} \in Q^{\otimes n}$ we apply the ope
 Finally, we discard the outputs that originally were a DISCARD gate.
 
 We denote this random variable also by $C(\ket{\psi})$.
-Restricting the measurement to the original outputs would give the same random variable; this is known as the *Principle of unterminated wires* in the literature [@NielsenQuantumComputationQuantum2010].
+Restricting the measurement to the original outputs would give the same random variable; this is known as the *Principle of unterminated wires* in the literature (@NielsenQuantumComputationQuantum2010).
 
 The concept of circuit family is analogous to the classical and probabilistic cases:
 
@@ -73,7 +73,7 @@ Lastly, given a quantum state $\ket{\psi}$ of $n$ qubits and a quantum circuit f
 #### The classical case
 
 It is a well-known fact that, in the classical case, any function $f: \BB^\ast \to \BB^\ast$ can be computed exactly by a circuit (of at most exponential size) built using the basis of gates $$\{\operatorname{AND}, \operatorname{OR}, \operatorname{NOT}\}.$$
-There are other possible basis universal in this sense, such as $\{\operatorname{NAND}\}$ or $\{\operatorname{NOR}\}$. Of course, not all basis are universal; a full classification of the basis is given by Post's lattice [@LauFunctionAlgebrasFinite2006].
+There are other possible basis universal in this sense, such as $\{\operatorname{NAND}\}$ or $\{\operatorname{NOR}\}$. Of course, not all basis are universal; a full classification of the basis is given by Post's lattice (@LauFunctionAlgebrasFinite2006).
 
 
 Given two finite universal basis $B_1$ and $B_2$ one may construct every element of the latter with a circuit made of gates of the former. 
@@ -100,12 +100,12 @@ A set of quantum gates $\mathcal{G}$ is *universal* if for every $\varepsilon > 
 :::
 
 Several universal gate sets are described in the literature. 
-For example, a minimal universal gate set can be obtained with probability 1 by combining the CNOT with a single qubit gate. [@AaronsonLecturenotes28th2016; sec. 2.1]
+For example, a minimal universal gate set can be obtained with probability 1 by combining the CNOT with a single qubit gate (@AaronsonLecturenotes28th2016, sec. 2.1).
 
 We now present an example of a universal gate set, which is not minimal but will serve our purposes.
 
 :::{.theorem}
-[@NielsenQuantumComputationQuantum2010; sec. 4.5.3]
+(@NielsenQuantumComputationQuantum2010, sec. 4.5.3)
 
 $\{\operatorname{CNOT}, H, R_{\pi/4}\}$  is a universal gate set.
 :::
@@ -114,7 +114,7 @@ For the proof we will make use of the following technical lemmas.
 A *two-level unitary operation* is a unitary operation that acts different from the identity in at most two computational basis states.
 
 :::{.lemma}
-[@NielsenQuantumComputationQuantum2010; sec. 4.5.1]
+(@NielsenQuantumComputationQuantum2010, sec. 4.5.1)
 The set of two-level unitary operations is a universal gate set.
 :::
 
@@ -122,7 +122,7 @@ This can be easily shown to be the case by constructing matrices whose multiplic
 Secondly, we will make use of this lemma.
 
 :::{.lemma}
-[@NielsenQuantumComputationQuantum2010; sec. 4.5.2]
+(@NielsenQuantumComputationQuantum2010, sec. 4.5.2)
 The set of single qubit gates together with the CNOT gate forms a universal gate set.
 :::
 
@@ -145,7 +145,7 @@ The *Solovay-Kitaev Theorem* shows that the approximation can be done in quasi-l
 This celebrated result is essential for the usefulness of certain algorithms, such as Grover's algorithm.
 
 :::{.theorem name="Solovay-Kitaev theorem" #thm:solovay} 
-[@DawsonSolovayKitaevalgorithm2005]
+(@DawsonSolovayKitaevalgorithm2005)
 
 Let $\mathcal{G}$ be a universal gate set closed under inverses and $U$ a unitary operation.
 
@@ -328,7 +328,7 @@ Following the chapters on classical and probabilistic models of computation, it 
 In this kind of verifiers both the proof and the verifier are quantum.
 
 :::{.definition #dfn:qma}
-[@VidickQuantumProofs2016; dfn. 3.1]
+(@VidickQuantumProofs2016, dfn. 3.1)
 
 $L \in \mathsf{QMA}$ if and only if there exists
 a polynomial $p(n)$ and
@@ -357,16 +357,16 @@ $\mathsf{BQP}, \mathsf{MA} \subseteq \mathsf{QMA}$
 :::
 
 There is an obvious similarity between the $\mathsf{P}$ vs. $\mathsf{NP}$ problem and the $\mathsf{BQP}$ vs. $\mathsf{QMA}$ problem (the latter are also believed to be different).
-Nonetheless, there is no known formal result that relates the two problems, that is, separating one pair of classes would give us, in principle, no information about the other pair. [@AaronsonmathsfBQPvsmathsfQMA2010]
+Nonetheless, there is no known formal result that relates the two problems, that is, separating one pair of classes would give us, in principle, no information about the other pair (@AaronsonmathsfBQPvsmathsfQMA2010).
 
 The constants $\frac23$ and $\frac13$ can be substituted by any $c \in ]\frac12,1[$, yet the proof in this case is not as straightforward as in the case of the previous classes. The problem lies in the quantum *no-cloning theorem*, that prevents us from copying the quantum proof and running the algorithm several times.
 
-Two approaches are possible for this error reduction; either multiplying the length of the proof by a constant (known as *parallel error reduction*) or relying on the information of the *garbage* registers to reconstruct the proof and run the proof sequentally (*witness-preserving error reduction*) [@VidickQuantumProofs2016; sec. 3.2].
+Two approaches are possible for this error reduction; either multiplying the length of the proof by a constant (known as *parallel error reduction*) or relying on the information of the *garbage* registers to reconstruct the proof and run the proof sequentally (*witness-preserving error reduction*) (@VidickQuantumProofs2016, sec. 3.2).
 The latter process has the advantage of preserving the proof size yet its proof is somewhat more contrived.
 Here we present a proof using parallel error reduction.
 
 :::{.proposition name="QMA error reduction" #prop:qmaerror}
-[@VidickQuantumProofs2016; sec. 3.2]
+(@VidickQuantumProofs2016, sec. 3.2)
 
 Let $c \in ]\frac12,1[$. 
 
@@ -385,7 +385,7 @@ a polynomial time quantum algorithm $\mathcal{V}$ such that
 [@prop:qmaerror] shows that we can prove a similar result to [@prop:nppp], namely:
 
 :::{.proposition}
-[@WatrousQuantumComputationalComplexity2009; sec V.4]
+(@WatrousQuantumComputationalComplexity2009, sec V.4)
 
 $\mathsf{QMA} \subseteq \mathsf{PP}$
 :::

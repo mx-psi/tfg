@@ -25,7 +25,7 @@ Find a factor of an integer $N$.
 The two are equivalent due to the closure properties of $\mathsf{BQP}$ and the well-known classical reductions between the problems. The main theorem thus will be 
 
 :::{.theorem #thm:shor}
-[@NielsenQuantumComputationQuantum2010]
+(@NielsenQuantumComputationQuantum2010, TODO)
 
 $$\operatorname{FACTORING} \in \mathsf{BQP},$$
 in particular, [@prob:factoring] is solvable in $O(\log^3 N)$ quantum time with bounded error.
@@ -36,9 +36,9 @@ $\operatorname{FACTORING} \in \mathsf{NP}$ is easy to show via [@prop:npverifier
 
 On the other hand, it is believed that $\operatorname{FACTORING} \notin \mathsf{P}$.
 Although this is not proven (since a proof would imply solving the $\mathsf{P}$ vs. $\mathsf{NP}$ problem),
-the best known classical algorithm for solving this problem runs in time $\exp(O(\log^{1/3}N \sqrt{\log \log N}$ [@Lenstranumberfieldsieve1990a].
+the best known classical algorithm for solving this problem runs in time $\exp(O(\log^{1/3}N \sqrt{\log \log N}$ (@Lenstranumberfieldsieve1990a).
 
-Factoring is an important problem because of the reliance of some widely used cryptographic systems on the hardness of this problem [@AroraComputationalComplexityModern2009; sec. 9.2.1].
+Factoring is an important problem because of the reliance of some widely used cryptographic systems on the hardness of this problem (@AroraComputationalComplexityModern2009, sec. 9.2.1).
 Shor's algorithm is widely appraised for being one of the hallmarks of quantum computation, since it gives definite proof of an exponential quantum speedup between the best known classical algorithm and the best known quantum algorithm.
 
 Nonetheless, its applicability is somewhat limited.
@@ -66,7 +66,7 @@ Hence, if we approximate $\varphi \approx 0.x_1 \dots x_n$, we can output $\ket{
 Next, we present a quantum algorithm that solves this problem in polynomial time in the number of bits of the approximation (in the query complexity setting).
 
 :::{.algorithm name="Quantum phase estimation" #algo:qpe}
-[@NielsenQuantumComputationQuantum2010; TODO]
+(@NielsenQuantumComputationQuantum2010, TODO)
 
 **Solves:** the phase estimation problem, [@prob:phase].
 
@@ -138,7 +138,7 @@ If the approximation is accurate enough, the period $r$ can be recovered from th
 
 ## Classical part
 
-The classical part of Shor's algorithm is a randomized reduction of the decision problem associated with $\operatorname{FACTORING}$ to [@prob:order]. To prove that such reduction works, we need to present two auxiliary lemmas from [@NielsenQuantumComputationQuantum2010].
+The classical part of Shor's algorithm is a randomized reduction of the decision problem associated with $\operatorname{FACTORING}$ to [@prob:order]. To prove that such reduction works, we need to present two auxiliary lemmas from (@NielsenQuantumComputationQuantum2010).
 
 :::{.lemma #lemma:solution}
 Let $N$ be a composite integer and $x \in \ZZ_N$, $x \notin \{-1,1\}$ an element such that $x^2 = 1$.
@@ -173,7 +173,7 @@ If it is not trivial we can apply [@lemma:solution] to get a non-trivial factor 
 The following lemma shows that this happens with enough probability if we sample $a \in U(\ZZ_N)$ uniformly.
 
 :::{.lemma}
-[@NielsenQuantumComputationQuantum2010; thm. A4.13]
+(@NielsenQuantumComputationQuantum2010, thm. A4.13)
 
 Let $N$ be an odd positive composite integer with more than one prime factor. 
 Then, if $x$ is sampled uniformly from $U(\ZZ_N)$ and $r = \operatorname{ord}_{U(\ZZ_N)}(x)$ we have
@@ -205,7 +205,7 @@ In any of these cases we have that $d_i$ is equal to the same value for all $i$ 
 Consider the following claim:
 
 ::::{.claim}
-[@NielsenQuantumComputationQuantum2010; lemma A4.12]
+(@NielsenQuantumComputationQuantum2010, lemma A4.12)
 
 Let $p \neq 2$ be prime, $n \geq 1$ be an integer and $2^d$ be the largest power of $2$ such that $2^d | \varphi(p^n)$, where $\varphi$ is Euler's phi function.
 Then 
@@ -240,7 +240,7 @@ For the remaining case, that is, $N = a^b$, with $a \geq 1, b \geq 2$, TODO.
 Hence, Shor's algorithm is complete and is presented at [@algo:shor].
 
 :::{.algorithm name="Shor's algorithm" #algo:shor}
-[@NielsenQuantumComputationQuantum2010; TODO]
+(@NielsenQuantumComputationQuantum2010, TODO)
 
 Solves [@prob:factoring].
 

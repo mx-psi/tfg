@@ -88,7 +88,7 @@ A random source $X$ with $P[X = 1] = p$ can be simulated by a random source $Y$ 
 :::
 :::{.proof}
 
-The proof is adapted from [@AroraComputationalComplexityModern2009; Lemma 7.12 & 7.13].
+The proof is adapted from (@AroraComputationalComplexityModern2009, lemma 7.12 and lemma 7.13).
 
 Consider the case where $q = \frac12$, that is, we have a uniform distribution.
 Let $p = \sum_{i = 1}^{\infty} p_i2^{-i}$.
@@ -135,7 +135,7 @@ A mixed model that considers stochastic and classical gates might be considered 
 intermediate measurement can be simulated by a controlled gate. We encapsulate this fact in the following principle:
 
 :::{.principle name="Principle of deferred measurements" #ppl:deferred}
-[@NielsenQuantumComputationQuantum2010; sec. 4.4]
+(@NielsenQuantumComputationQuantum2010, sec. 4.4)
 
 Any circuit $C$ with $n$ inputs that has intermediate measurements can be transformed into an algorithm $C'$ with an identical associated function by replacing intermediate measurements by controlled gates.
 :::
@@ -153,7 +153,7 @@ $$P[C(x) = f(x)] \geq \frac23$$
 The constant $\frac23$ is arbitrary and can be replaced by any constant $c \in ]\frac12,1[$ with at most polynomial overhead, as the following proposition shows.
 
 :::{.proposition name="Chernoff bound" #prop:Chernoff} 
-[@NielsenQuantumComputationQuantum2010; Box 3.4]
+(@NielsenQuantumComputationQuantum2010, Box 3.4)
 
 Let $\varepsilon > 0, n \in \NN, p = \frac12 + \varepsilon$ and $X_1, \dots, X_n \sim \operatorname{Bernouilli}(p)$ independent identically distributed random variables. Then
 $$P\left[\sum_1^n X_i \leq \frac{n}{2}\right] \leq \exp(-2\varepsilon^2 n)$$
@@ -198,7 +198,7 @@ a probabilistic polynomial time algorithm $M$ such that
 In contrast to $\mathsf{BPP}$, $\mathsf{PP}$ is considered unfeasible, as the following proposition hints at. 
 
 :::{.proposition #prop:nppp}
-[@KatzNotesComplexityTheory]
+(@KatzNotesComplexityTheory)
 
 $$\mathsf{NP} \subseteq \mathsf{PP}$$
 :::
@@ -253,7 +253,7 @@ Lastly, we can show the following relation between $\mathsf{BPP}$ and non-unifor
 $$\mathsf{BPP} \subseteq \mathsf{P}/\operatorname{poly}$$
 :::
 :::{.proof}
-[@AroraComputationalComplexityModern2009; Theorem 7.14]
+(@AroraComputationalComplexityModern2009, thm. 7.14)
 
 Let $L\in \mathsf{BPP}$ and let $\{C_n\}$ be the polynomial sized uniform probabilistic circuit family that decides $L$.
 
@@ -302,7 +302,7 @@ Clearly, the algorithm takes polynomial time.
 Furthermore, by the definition of $\mathsf{BPP}$, the probability bound is achieved.
 :::
 
-This model and the *probabilistic Turing Machine* model, that includes a tape with uniform random bits (see @AroraComputationalComplexityModern2009) are equivalent in power to the probabilistic circuit model presented in the previous section.
+This model and the *probabilistic Turing Machine* model, that includes a tape with uniform random bits are equivalent in power to the probabilistic circuit model presented in the previous section (@AroraComputationalComplexityModern2009).
 It justifies the informal description of probabilistic circuit families by randomized algorithms.
 
 ### A $\mathsf{BPP}$ language
@@ -310,12 +310,12 @@ It justifies the informal description of probabilistic circuit families by rando
 The general consensus among theoretical computer scientists is that $\mathsf{P} = \mathsf{BPP}$.
 Current attempts try to prove this equality by the use of *pseudorandom generators*, that transform a logarithmic number of random bits into a polynomial amount of almost-random bits.
 This suggest a simple way of transforming a randomized algorithm into a classical one: feed every possible logarithmic seed to the pseudorandom generator and run the randomized algorithm with the output.
-Unfortunately, this remains an open problem and there are problems that resist *derandomization*. [@AroraComputationalComplexityModern2009; chap. 21]
+Unfortunately, this remains an open problem and there are problems that resist *derandomization* (@AroraComputationalComplexityModern2009, chap. 21).
 
 In this section we show a simple decision problem known to be in $\mathsf{BPP}$ but not known to be in $\mathsf{P}$, that is, no direct classical algorithm is known to solve this problem in polynomial time.
 
 The problem is called *polynomial identity testing* and can be formally stated by making use of algebraic circuits, which essentially describe a polynomial expression.
-We follow the approach of [@SaxenaProgressPolynomialIdentity].
+We follow the approach of (@SaxenaProgressPolynomialIdentity).
 
 :::{.definition}
 An *algebraic circuit* is a circuit with one output with respect to the basis $\{+,-,\times, \operatorname{FANOUT}\}$.
@@ -326,7 +326,7 @@ The set of algebraic circuits is $\mathcal{A}$.
 Here the state space is an arbitrary field $\mathbb{F}$ (or more generally a ring) and the product between state spaces is the cartesian product.
 We assume that the field operations can be computed in constant time[^constant].
 
-[^constant]: Although this is a common assumption in the study of PIT it is not trivial. If for example we want to apply the algorithm to circuits over $\ZZ$ further considerations are needed to ensure the algorithm is efficient, since the binary representation of intermediate calculations might have exponential size. See [@AroraComputationalComplexityModern2009; sec 7.2.3] for a possible approach.
+[^constant]: Although this is a common assumption in the study of PIT it is not trivial. If for example we want to apply the algorithm to circuits over $\ZZ$ further considerations are needed to ensure the algorithm is efficient, since the binary representation of intermediate calculations might have exponential size. See (@AroraComputationalComplexityModern2009, sec 7.2.3) for a possible approach.
 
 Clearly, the function associated with an algebraic circuit $A$ is a (multivariate) polynomial $p_A$.
 The output of the function for a given input can be computed in polynomial time, though obtaining the polynomial coefficients can in principle take exponential time (since its degree can be exponential on the number of gates).
@@ -343,7 +343,7 @@ Surprisingly, a polynomial probabilistic algorithm can be given for this problem
 The algorithm is based on the following lemma.
 
 :::{.lemma name="Schwartz-Zippel Lemma" #lemma:zippel}
-[@SaxenaProgressPolynomialIdentity; Lemma 1.2]
+(@SaxenaProgressPolynomialIdentity, lemma 1.2)
 
 Let $p \in \mathbb{F}[X_1, \dots, X_m]$ be a nonzero polynomial of (total) degree $d$ and $S \subseteq \mathbb{F}$ a finite set.
 Then, if $a_1, \dots, a_m$ are sampled independently and uniformly from $S$,
@@ -434,7 +434,7 @@ Furthermore, $\mathsf{MA} \subseteq \mathsf{PP}$ by a similar proof to the one g
 
 
 Unfortunately, there are no known natural problems that lie in $\mathsf{MA}$ and are not in $\mathsf{BPP} \cup \mathsf{NP}$.
-By a similar derandomization procedure to the one given for the $\mathsf{P} = \mathsf{BPP}$ conjecture, the class is believed to be equal to $\mathsf{NP}$ (see @AaronsonmathoplimitsNP2016).
+By a similar derandomization procedure to the one given for the $\mathsf{P} = \mathsf{BPP}$ conjecture, the class is believed to be equal to $\mathsf{NP}$ (@AaronsonmathoplimitsNP2016).
 Nonetheless, this class provides an intermediate step between classical and quantum proofs, that will be discussed in a later chapter.
 
 

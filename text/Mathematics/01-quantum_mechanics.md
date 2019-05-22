@@ -5,7 +5,7 @@
 The study of quantum computers requires us to state the basic principles and mathematical structures this physical theory is based on.
 The physical systems considered in the theory of quantum computation are finite dimensional, yet in the general case physical systems are described by a system with possible infinite dimensions.
 In this section we describe five principles that describe quantum mechanical systems at the appropriate level for the development of the theory of quantum computation.
-We follow the presentation given at [@NielsenQuantumComputationQuantum2010 chap. 2] and [@LiptonQuantumalgorithmslinear2014 chap. 1].
+We follow the presentation given at (@NielsenQuantumComputationQuantum2010, chap. 2) and (@LiptonQuantumalgorithmslinear2014, chap. 1).
 
 
 ## State space and bra-ket notation
@@ -197,13 +197,13 @@ Furthermore, if $U^{(1)} = (u^{(1)}_{ij})$, its matrix expression wrt. the basis
 
 Lastly we state the measurement operation for finite dimensional systems.
 
-:::{.principle #fig:measurement}
+:::{.principle #ppl:measurement}
 A measurement of a quantum system of dimension $N = 2^n$ with state $$\ket{\psi} = \sum_{i = 0}^{N-1} \alpha_i\ket{i}$$ is a discrete random variable $X$ such that 
 $$P\left(X = \ket{i}\right) = |\alpha_i|^2 \qquad (i = 1, \dots, N)$$
 :::
 
 Since we take $\norm{\ket{\psi}} = 1$ this means $$\sum_{i = 0}^{N-1} |\alpha_i|^2  = 1$$
-Furthermore, $|\alpha_i|^2 \geq 0$, so the random variable defined at [Principle @fig:measurement] is well-defined.
+Furthermore, $|\alpha_i|^2 \geq 0$, so the random variable defined at [@ppl:measurement] is well-defined.
 
 We can restrict ourselves to measurements on the computational basis, but since the change of basis matrix for any other orthonormal basis is unitary we can in practice measure with respect to any orthonormal basis by applying an appropriate unitary operation before the measurement.
 
@@ -250,7 +250,7 @@ This is the famous *no-cloning theorem*.
 There is no unitary map $U: Q^{\otimes 2n} \to Q^{\otimes 2n}$ and state $\ket{x_0} \in Q^{\otimes n}$ that for an arbitrary state $\ket{\psi} \in Q^{\otimes n}$ maps $$U\ket{\psi}\ket{x_0} = \ket{\psi}\ket{\psi}.$$
 :::
 :::{.proof}
-[@NielsenQuantumComputationQuantum2010; Box 12.1]
+(@NielsenQuantumComputationQuantum2010, Box 12.1)
 
 Suppose there exists such unitary map $U$. 
 Let $\ket{\psi}, \ket{\phi} \in Q^{\otimes n}$.

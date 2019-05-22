@@ -102,13 +102,13 @@ When it is clear from context, we will also denote by $M$ the partial function c
 
 ### The circuit model
 
-The circuit model provides an alternative computation model that will be useful in proving the relation between classic and quantum computation models. We adapt the definition from [@VollmerIntroductioncircuitcomplexity1999, chap. 1].
+The circuit model provides an alternative computation model that will be useful in proving the relation between classic and quantum computation models. We adapt the definition from (@VollmerIntroductioncircuitcomplexity1999, chap. 1).
 
 We will use the term circuit in different contexts in this document.
 In general, there is an implicit base state space (for example $\BB, \RR$, a random bit or a qubit), that can be composed with a certain product (usually the cartesian product or the tensor product).[^category]
 Both will be clear from context.
 
-[^category]: In its most general terms what we are essentially describing a morphism in a planar monoidal category via a string diagram [@Selingersurveygraphicallanguages2010; thm. 3.1].
+[^category]: In its most general terms what we are essentially describing a morphism in a planar monoidal category via a string diagram (@Selingersurveygraphicallanguages2010, thm. 3.1).
 
 Using these basic pieces, a circuit is made of gates from a certain set (*basis*).
 A *gate* is a function $f: A^n \to A^m$ from a product of the base state space $A$ to another product.
@@ -167,7 +167,7 @@ In what follows we will not describe circuits explicitly as $2$-tuples, relying 
 
 ### Computability 
 
-A Turing machine $M$ can be encoded in a canonical way as a binary string $w_M$, in such a way that there exists a *universal Turing machine* $U$ that computes $U(w_M,x) =M(x)$ [@AroraComputationalComplexityModern2009, Theorem 1.9]. Furthermore, we denote by $n(M)$ the number associated with the binary string $w_M$.
+A Turing machine $M$ can be encoded in a canonical way as a binary string $w_M$, in such a way that there exists a *universal Turing machine* $U$ that computes $U(w_M,x) =M(x)$ (@AroraComputationalComplexityModern2009, thm. 1.9). Furthermore, we denote by $n(M)$ the number associated with the binary string $w_M$.
 
 It is clear from the previous paragraph that the set of Turing machines is countable, since the function $M \mapsto n(M)$ is injective. On the other hand, the set of all languages $\mathcal{P}(\BB^\ast)$ is uncountable by Cantor's theorem. Therefore there are languages that are *undecidable*, that is, that are not the language associated with a Turing machine.
 
@@ -227,7 +227,7 @@ Let $f: \NN \to \NN$, $L \subseteq \BB^\ast$. Then:
 
 If $F \subseteq \NN^\NN$ then $$\TIME(F) = \bigcup_{f(n) \in F} \TIME(f(n))$$ and likewise for $\SPACE$ and $\SIZE$.
 
-These classes are potentially dependent on the use of the specific single-tape Turing machine model of [@dfn:tm]; if a different model is used, such as multitape Turing machines or RAM models, the classes might change [@vanLeeuwenHandbookTheoreticalComputer1990, chap. 1].
+These classes are potentially dependent on the use of the specific single-tape Turing machine model of [@dfn:tm]; if a different model is used, such as multitape Turing machines or RAM models, the classes might change (@vanLeeuwenHandbookTheoreticalComputer1990, chap. 1).
 
 <!-- #### The hierarchy theorems {.hidden} -->
 
@@ -266,7 +266,7 @@ The possible computation paths on a given execution of a non-deterministic Turin
 For stating the relations between the different notions of complexity we will make use of the following technical lemma, that we present without proof.
 
 :::{.lemma name="Oblivious Turing machine" #lemma:oblivious}
-[@AroraComputationalComplexityModern2009, Remark 1.7]
+(@AroraComputationalComplexityModern2009, remark 1.7)
 
 For any $f(n)$-time Turing machine $M$ there exists a $f(n) \log f(n)$-time Turing machine $\overset{\sim}{M}$ that decides the same language and such that for every input $x \in \BB^\ast$ and $i \in \NN$ the location of the head of $M$ at the $i$th step of execution is a function of $|x|$ and $i$.
 :::
@@ -307,9 +307,9 @@ The following inequalities hold for every $f \in \NN^\NN$
 ### Polynomial usage of resources
 
 A polynomial amount of resources is informally described as an efficient usage of time or space.
-This definition does not precisely match the everyday definition of "efficient"; for practical purposes an algorithm that takes $n^{1000}$ steps to decide a word of size $n$ is not considered efficient and an algorithm with running time $n^{\log \log n}$ is [@AaronsonmathoplimitsNP2016 sec. 1.2.1].
+This definition does not precisely match the everyday definition of "efficient"; for practical purposes an algorithm that takes $n^{1000}$ steps to decide a word of size $n$ is not considered efficient and an algorithm with running time $n^{\log \log n}$ is (@AaronsonmathoplimitsNP2016, sec. 1.2.1).
 
-Nonetheless, the interpretation of the following classes as containing efficiently decidable languages makes sense since these are the minimal classes closed under composition, concatenation and union that contain linear-time decidable languages (or respectively space or size)  [@CobhamIntrinsicComputationalDifficulty1965]. Additionally, these classes are robust under small changes in the computational models used to define them (e.g. by using multi-tape machines or RAM models) [@vanLeeuwenHandbookTheoreticalComputer1990, chap. 1].
+Nonetheless, the interpretation of the following classes as containing efficiently decidable languages makes sense since these are the minimal classes closed under composition, concatenation and union that contain linear-time decidable languages (or respectively space or size)  (@CobhamIntrinsicComputationalDifficulty1965). Additionally, these classes are robust under small changes in the computational models used to define them (e.g. by using multi-tape machines or RAM models) (@vanLeeuwenHandbookTheoreticalComputer1990, chap. 1).
 
 :::{.definition}
 Let $\poly(n) = \set{P \in \NN^\NN}{P \text{ is a polynomial}}$. Then
@@ -321,7 +321,7 @@ Let $\poly(n) = \set{P \in \NN^\NN}{P \text{ is a polynomial}}$. Then
 - $\mathsf{P/\poly} := \SIZE(\poly(n))$.
 :::
 
-Clearly, by [@prop:timespace], $\mathsf{P} \subseteq \mathsf{NP} \subseteq \mathsf{PSPACE} \subseteq \mathsf{NPSPACE}$. The first inequality is conjectured to be strict and is the most important problem in the field [@AaronsonmathoplimitsNP2016 sec. 2.2.5], given the wide range of practical problems that are in $\mathsf{NP}$. The last inequality is in fact an equality given by *Savitch's theorem* [@AroraComputationalComplexityModern2009, theorem 4.14].
+Clearly, by [@prop:timespace], $\mathsf{P} \subseteq \mathsf{NP} \subseteq \mathsf{PSPACE} \subseteq \mathsf{NPSPACE}$. The first inequality is conjectured to be strict and is the most important problem in the field (@AaronsonmathoplimitsNP2016 sec. 2.2.5), given the wide range of practical problems that are in $\mathsf{NP}$. The last inequality is in fact an equality given by *Savitch's theorem* (@AroraComputationalComplexityModern2009, thm. 4.14).
 
 
 As seen in [@prop:halting] $\mathsf{P/\poly}$ contains languages that are uncomputable by the classic notion of computation, thus $\mathsf{P} \subsetneq \mathsf{P/poly}$, and some restriction is needed to use the circuit model for stating complexity results.
@@ -386,7 +386,7 @@ Let $L \subseteq \BB^\ast$. Then $L \in \mathsf{NP}$ if and only if there exists
 :::
 :::{.proof}
 $\implies\!\!)$ Let $M = (Q,\delta,q_0,q_F)$ be a polynomial-time non-deterministic Turing machine for $L$.
-As in the proof of [@prop:timespace, 3], any sequence of choices can be written in a polynomial-length word as a sequence of numbers between $0$ and the maximum branching factor.
+As in the proof of [@prop:timespace], any sequence of choices can be written in a polynomial-length word as a sequence of numbers between $0$ and the maximum branching factor.
 
 We can then let $V$ be the verifier given by the following description
 

@@ -57,7 +57,7 @@ Furthermore, this algorithm is clearly optimal in the classical setting: in the 
 
 Randomness does not add an advantage. 
 With a limited number $k$ of queries, the best possible random algorithm would be to randomly sample $k$ words without replacement from the set of possible inputs, in which we would have a probability of success of $k/N$. 
-If bounded error is required, then we must do a linear amount of queries (e.g. $k =2N/3$) to answer, and thus asymptotically the query complexity is equal to the classical case.[@Kayeintroductionquantumcomputing2007; sec 8.1]
+If bounded error is required, then we must do a linear amount of queries (e.g. $k =2N/3$) to answer, and thus asymptotically the query complexity is equal to the classical case (@Kayeintroductionquantumcomputing2007, sec 8.1).
 
 As we shall see in the next section, Grover's algorithm builds on this idea and uses the features of quantum computing to *amplify* the probability of outputting a correct answer in order to provide 
 
@@ -65,7 +65,7 @@ As we shall see in the next section, Grover's algorithm builds on this idea and 
 
 
 :::{.algorithm name="Grover's algorithm"}
-[@Kayeintroductionquantumcomputing2007; sec 8.1]
+(@Kayeintroductionquantumcomputing2007, sec 8.1)
 
 **Solves:** The search problem with one answer, [@prob:searchwithone].
 

@@ -1,5 +1,3 @@
-\newpage
-  
 # Quantum computation models
 
 ## Quantum circuits

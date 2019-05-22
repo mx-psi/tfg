@@ -1,5 +1,3 @@
-\newpage
-
 # Programming quantum algorithms: Quipper
 
 In this and the following sections we will present several key quantum algorithms that provide some speedup in comparison with the best known classical (or randomized) algorithm that solves the same problem.

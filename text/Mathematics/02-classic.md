@@ -1,5 +1,3 @@
-\newpage
-
 # Classical computation models
 
 ## What is a problem?

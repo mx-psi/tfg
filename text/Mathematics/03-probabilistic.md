@@ -1,5 +1,3 @@
-\newpage
-
 # Probabilistic computation models
 
 A simple generalization of classical models of computation is to consider the addition of randomness.

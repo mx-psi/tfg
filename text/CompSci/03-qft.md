@@ -1,5 +1,3 @@
-\newpage
-
 # The Quantum Fourier Transform
 
 The Quantum Fourier transform is one of the main algorithms that allow us to achieve super-polynomial speedups when comparing with the best known classical and probabilistic algorithms. It depends on the notion of discrete normalised Fourier transform.

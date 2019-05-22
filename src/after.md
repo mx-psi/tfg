@@ -1,5 +1,3 @@
-\newpage
+# Bibliography {.unnumbered}
 
 \listoffixmes
-
-# Bibliography {.unnumbered}

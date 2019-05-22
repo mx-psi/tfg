@@ -15,37 +15,37 @@ linkReferences: true
 prefixes:
   ppl:
     ref:
-    - 'ppl.'
-    - 'ppls.'
+    - 'Principle'
+    - 'Principles'
     title: Principle
   dfn:
     ref:
-    - 'dfn.'
-    - 'dfns.'
+    - 'Definition'
+    - 'Definitions'
     title: Defiinition
   thm:
     ref:
-    - 'thm.'
-    - 'thms.'
+    - 'Theorem'
+    - 'Theorems'
     title: Theorem
   lemma:
     ref:
-    - 'lemma'
-    - 'lemmas'
+    - 'Lemma'
+    - 'Lemmas'
     title: Lemma
   prop:
     ref:
-    - 'prop.'
-    - 'props.$\;$'
+    - 'Proposition'
+    - 'Propositions$\;$'
     title: Proposition
   prob:
     ref:
-    - 'prob.'
-    - 'probs.$\;$'
+    - 'Problem'
+    - 'Problems$\;$'
     title: Problem
   algo:
     ref:
-    - 'algorithm'
-    - 'algorithms$\;$'
+    - 'Algorithm'
+    - 'Algorithms$\;$'
     title: Algorithm
 ---

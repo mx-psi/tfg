@@ -1,5 +1,3 @@
-\newpage
-
 # Grover's algorithm
 
 In this section we present *Grover's algorithm*, a quantum algorithm that can be used to solve search and minimization problems, providing polynomial speedup in the query complexity setting with respect to the best possible classical algorithm.

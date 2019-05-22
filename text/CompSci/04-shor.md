@@ -1,5 +1,3 @@
-\newpage
-
 # Shor's algorithm
 
 In this section we describe one of the main applications of QFT on quantum computing: Shor's algorithm, which shows that factoring is feasible quantumly.

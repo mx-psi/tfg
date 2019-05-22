@@ -140,7 +140,7 @@ In the case of classical circuits we allow the following known logical gates
 2. the OR  gate ($\vee : \BB^2 \to \BB$) and
 3. the NOT gate ( $\neg : \BB \to \BB$).
 
-This is not the smallest possible set of gates; it is a well-known fact that they can be reduce to the singleton set $\{\operatorname{NAND}\}$, but, as we shall see in sec. [Universal quantum gate sets], this is irrelevant for asymptotic measures of size. It is also important that all gates are symmetric.
+This is not the smallest possible set of gates; it is a well-known fact that they can be reduce to the singleton set $\{\operatorname{NAND}\}$, but, as we shall see in [a later section](#universal-quantum-gate-sets), this is irrelevant for asymptotic measures of size. It is also important that all gates are symmetric.
 
 Furthermore, we will use three operations that allow us to clone, destroy and create bits, namely,
 

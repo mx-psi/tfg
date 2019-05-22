@@ -18,7 +18,7 @@ We call such space $R$.
 A *random bit* is a vector $$p = a\ket{0} + b\ket{1}$$ of the real vector space $R$ spanned by a basis $\{\ket{0},\ket{1}\}$, such that $$a,b \geq 0 \text{ and } \norm{p}_1 = a + b = 1.$$
 :::
 
-As was the case on quantum mechanics (sec. [Composite systems]), to consider the state space of a composite system we tensor the state spaces of the subsystems. Similarly, a state can be *measured*
+As was [the case on quantum mechanics](#composite-systems), to consider the state space of a composite system we tensor the state spaces of the subsystems. Similarly, a state can be *measured*
 
 :::{.definition}
 A measurement of a probabilistic system of dimension $N = 2^n$ with state $$p = \sum_{i = 0}^{N-1} a_i\ket{i}$$ is a discrete random variable $X$ such that 

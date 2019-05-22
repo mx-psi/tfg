@@ -26,7 +26,7 @@ A *unitary quantum circuit* is a quantum circuit with no ancillary or discard ga
 It has the same number of inputs and outputs.
 :::
 
-The ancillary and discard gates are not operations allowed within the model presented in [A model of quantum mechanics] since they are not unitary; nonetheless every quantum circuit can be transformed into a unitary quantum circuit:
+The ancillary and discard gates are not operations allowed within [the quantum model](#a-model-of-quantum-mechanics) since they are not unitary; nonetheless every quantum circuit can be transformed into a unitary quantum circuit:
 
 :::{.definition #dfn:purification}
  (@WatrousQuantumComputationalComplexity2009, sec III.3)
@@ -233,7 +233,7 @@ We say the algorithm is *polynomial time* if the function $1^n \mapsto C_n$ cane
 
 
 Computability in the classical and quantum notions coincides; the behavior of a uniform family of quantum circuits can be simulated with at most exponential slowdown. Thus any quantum computable function can be computed classically.
-The discussion on the section [Simulating classical operations] proves the other implication.
+The [quantum simulation of classical operations](#simulating-classical-operations) proves the other implication.
 
 The interest lies therefore in studying complexity results, since, at least *a priori*, some functions might be able to be computed faster in the quantum model.
 The feasibly computable functions are, as in the classical and probabilistic case, those calculated in polynomial time. Analogous to the probabilistic case, we define quantum computability with bounded error.

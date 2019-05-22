@@ -1,15 +1,15 @@
 ---
-title: Quantum models of computation
+title: Modelos de computación cuánticos
 author: Pablo Baeyens Fernández
 lang: en
-documentclass: scrartcl
+documentclass: scrbook
 colorlinks: true
 bibliography: src/citas.bib
 biblio-style: apalike
 link-citations: true
 secnumdepth: 3
 toc: true
-toc-depth: 2
+toc-depth: 3
 numbersections: true
 linkReferences: true
 prefixes:

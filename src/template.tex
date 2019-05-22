@@ -1,19 +1,34 @@
+%% Plantilla adaptada de:
+%% 1. Plantilla por defecto de `pandoc'
+%% 2. Plantilla de Francisco Torralbo Torralbo para trabajos fin de grado del grado en Matemáticas de la UGR
+
 \PassOptionsToPackage{unicode=true}{hyperref} % options for packages loaded elsewhere
 \PassOptionsToPackage{hyphens}{url}
 $if(colorlinks)$
 \PassOptionsToPackage{dvipsnames,svgnames*,x11names*}{xcolor}
 $endif$
 %
-\documentclass[$if(fontsize)$$fontsize$,$endif$$if(lang)$$babel-lang$,$endif$$if(papersize)$$papersize$paper,$endif$$if(beamer)$ignorenonframetext,$if(handout)$handout,$endif$$if(aspectratio)$aspectratio=$aspectratio$,$endif$$endif$$for(classoption)$$classoption$$sep$,$endfor$]{$documentclass$}
-$if(beamer)$
-\setbeamertemplate{caption}[numbered]
-\setbeamertemplate{caption label separator}{: }
-\setbeamercolor{caption name}{fg=normal text.fg}
-\beamertemplatenavigationsymbols$if(navigation)$$navigation$$else$empty$endif$
-$endif$
-$if(beamerarticle)$
-\usepackage{beamerarticle} % needs to be loaded first
-$endif$
+\documentclass{scrbook}
+
+\KOMAoptions{%
+  fontsize=11pt,        % Tamaño de fuente
+  paper=a4,             % Tamaño del papel
+  headings=normal,      % Tamaño de letra para los títulos: small, normal, big
+  parskip=half,         % Espacio entre párrafos: full (una línea) o half (media línea)
+  headsepline=false,    % Una linea separa la cabecera del texto
+  cleardoublepage=empty,% No imprime cabecera ni pie en páginas en blanco
+  chapterprefix=false,  % No antepone el texto "capítulo" antes del número
+  appendixprefix=false,	% No antepone el texto "Apéndice" antes de la letra
+  listof=totoc,		    	% Añade a la tabla de contenidos la lista de tablas y figuras
+  index=totoc,			    % Añade a la talba de contenidos una entrada para el índice
+  bibliography=totoc,	  % Añade a la tabla de contenidos una entrada para bibliografía
+  BCOR=5mm,           % Reserva margen interior para la encuadernación.
+                        % El valor dependerá el tipo de encuadernado y del grosor del libro.
+  DIV=10,             % Cálcula el diseño de página según ciertos
+                        % parámetros. Al aumentar el número aumentamos el ancho de texto y disminuimos el ancho del margen. Una opción de 14 producirá márgenes estrechos y texto ancho.
+}
+
+
 $if(fontfamily)$
 \usepackage[$for(fontfamilyoptions)$$fontfamilyoptions$$sep$,$endfor$]{$fontfamily$}
 $else$
@@ -119,7 +134,7 @@ $endif$
 \IfFileExists{upquote.sty}{\usepackage{upquote}}{}
 % use microtype if available
 \IfFileExists{microtype.sty}{%
-\usepackage[$for(microtypeoptions)$$microtypeoptions$$sep$,$endfor$]{microtype}
+\usepackage[activate={true,nocompatibility},final,tracking=true,kerning=true,spacing=true,factor=1100,stretch=10,shrink=10]{microtype}
 \UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
 }{}
 $if(indent)$
@@ -201,43 +216,7 @@ $if(graphics)$
 % using explicit options in \includegraphics[width, height, ...]{}
 \setkeys{Gin}{width=\maxwidth,height=\maxheight,keepaspectratio}
 $endif$
-$if(beamer)$
-% Prevent slide breaks in the middle of a paragraph:
-\widowpenalties 1 10000
-\raggedbottom
-$if(section-titles)$
-\setbeamertemplate{part page}{
-\centering
-\begin{beamercolorbox}[sep=16pt,center]{part title}
-  \usebeamerfont{part title}\insertpart\par
-\end{beamercolorbox}
-}
-\setbeamertemplate{section page}{
-\centering
-\begin{beamercolorbox}[sep=12pt,center]{part title}
-  \usebeamerfont{section title}\insertsection\par
-\end{beamercolorbox}
-}
-\setbeamertemplate{subsection page}{
-\centering
-\begin{beamercolorbox}[sep=8pt,center]{part title}
-  \usebeamerfont{subsection title}\insertsubsection\par
-\end{beamercolorbox}
-}
-\AtBeginPart{
-  \frame{\partpage}
-}
-\AtBeginSection{
-  \ifbibliography
-  \else
-    \frame{\sectionpage}
-  \fi
-}
-\AtBeginSubsection{
-  \frame{\subsectionpage}
-}
-$endif$
-$endif$
+
 $if(links-as-notes)$
 % Make links footnotes instead of hotlinks:
 \DeclareRobustCommand{\href}[2]{#2\footnote{\url{#1}}}
@@ -288,6 +267,19 @@ $endif$
 }
 \usepackage{comment}
 
+\usepackage{eso-pic}
+\newcommand\BackgroundPic{%
+	\put(0,0){%
+		\parbox[b][\paperheight]{\paperwidth}{%
+			\vfill
+			\centering
+      % Indicar la imagen de fondo en el siguiente comando
+			\includegraphics[width=\paperwidth,height=\paperheight,%
+			keepaspectratio]{assets/portada-ugr-sencilla}%
+			\vfill
+    }}}
+
+
 $for(header-includes)$
 $header-includes$
 $endfor$
@@ -336,6 +328,7 @@ $for(bibliography)$
 $endfor$
 $endif$
 
+
 $if(title)$
 \title{$title$$if(thanks)$\thanks{$thanks$}$endif$}
 $endif$
@@ -362,16 +355,51 @@ $endif$
 
 \begin{document}
 $if(title)$
-$if(beamer)$
-\frame{\titlepage}
-$else$
-\maketitle
-$endif$
-$if(abstract)$
-\begin{abstract}
-$abstract$
-\end{abstract}
-$endif$
+\begin{titlepage}
+  \AddToShipoutPicture*{\BackgroundPic}
+  \phantomsection
+  \pdfbookmark[1]{Título}{title}
+
+  % Para que el título esté centrado en la página.
+  % Los valores numéricos deberán elegirse de acuerdo con el diseño de
+  % página (sobre todo si se cambia la opción BCOR o DIV).
+  \begin{addmargin}[2.575cm]{0cm}
+  \begin{flushleft}
+    \Large
+    \hfill\vfil
+
+    \vfill\vfill
+
+    \textsf{Facultad de Ciencias} \\
+    \textsf{E.T.S. de Ingenierías Informática y de Telecomunicación} \\
+    \vfill\vfill
+
+    {\huge\textsf Doble Grado en Ingeniería Informática y Matemáticas} \vfill
+
+
+    \textsc{trabajo de fin de grado}
+
+    \begingroup
+    \Huge{$title$} \\ \bigskip
+    \endgroup
+
+    \vfill\vfill\vfill\vfill
+
+    \textsf{\normalsize{Presentado por:}}
+    {\Large\textrm{$author$}}
+
+    \vspace*{0.7cm}
+
+    \textsf{\normalsize{Tutor:}}
+    {\Large\textrm{Serafín Moral Callejón}}
+
+    \vfill
+    \textsf{Curso académico 2018--2019}
+  \end{flushleft}
+  \end{addmargin}
+
+\end{titlepage}
+\cleardoublepage
 $endif$
 
 $for(include-before)$

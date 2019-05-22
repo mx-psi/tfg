@@ -2,7 +2,9 @@ PANDOC:=pandoc
 # TODO: filters/IncludeFilter.hs
 FILTERS:= filters/env.hs filters/pandoc-crossref pandoc-citeproc
 PFLAGS:= $(foreach filter,$(FILTERS),-F $(filter)) -M commit="$$(git rev-parse --short HEAD)" -M time="$$(date -Iseconds)"
-SRCS:= $(sort $(wildcard text/Mathematics/*.md)) $(sort $(wildcard text/CompSci/*.md))
+PREV:= $(patsubst %.md, text/Others/%.md, 01-summary.md 02-intro.md)
+POST:= $(patsubst %.md, text/Others/%.md, 03-conclusions.md 04-appendix.md)
+SRCS:= $(PREV) $(sort $(wildcard text/Mathematics/*.md)) $(sort $(wildcard text/CompSci/*.md)) $(POST)
 
 .PHONY: all clean check
 

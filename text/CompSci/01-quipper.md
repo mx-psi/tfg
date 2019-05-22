@@ -27,6 +27,12 @@ Query complexity then gives a lower bound estimate of the actual time complexity
 
 ## Quipper
 
+### stack and Haskell setup 
+
+### Testing
+
+### Quipper as an embedded language
+
 Quipper is an embedded functional programming language based on Haskell that provides tools for quantum simulation and expressing circuit families.
 
 ### Relevant functions

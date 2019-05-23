@@ -45,4 +45,65 @@ TODO
 
 # The Deutsch-Jozsa algorithm
 
-## Deutsch algorithm
+The Deutsch-Jozsa algorithm is one of the first quantum algorithms that provide some quantum speedup in the query complexity model.
+It was first proposed in 1992 as a generalization of a previous algorithm that solves a special case [@CleveQuantumAlgorithmsRevisited1998].
+It will serve as a first approximation to a concrete algorithm.
+
+The problem it solves is as follows
+
+:::{.problem name="Deutsch's Problem" #prob:deutsch}
+Find out whether a function is balanced or constant.
+
+- **Input:** A function $f:\BB^n \to \BB$
+- **Promise:** The function is either constant or it is *balanced*, i.e., $|f^{-1}(0)| = |f^{-1}(1)|$.
+- **Output:** A bit $b$ where $b = 0$ if the function is constant or $b = 1$ if it is balanced.
+:::
+
+As we work in the query complexity model, we assume $f$ is given as a reversible oracle that maps 
+$$\ket{x}\ket{y} \mapsto \ket{x}\ket{y \oplus f(x)}.$$
+
+In the classical case, at worst we have to check $2^{n-1} + 1$ inputs to distinguish between the two classes.
+In the quantum case in contrast, it can be checked with exactly one query.
+
+First, consider the following simple lemma,
+
+:::{.lemma #lemma:hadamard}
+(@NielsenQuantumComputationQuantum2010, eq. 1.50)
+
+Let $n \in \NN, N = 2^n$ and $x \in \BB^n$. Then $$H^{\otimes n}\ket{x} = \frac{1}{\sqrt{2^n}}\sum_{y \in \BB^n} (-1)^{x \odot y}\ket{y},$$
+where, if $x = x_1 \dots x_n$ and $y = y_1 \dots y_n$, then $$x \odot y = \sum_{j=1}^n x_jy_j \mod 2,$$
+is its "bitwise inner product" in $\ZZ_2$.
+:::
+:::{.proof}
+
+Let $n=1$. We have 
+$$H\ket{x} = \frac{1}{\sqrt{2}}(\ket{0} + (-1)^{x}\ket{1}) = \sum_{y = 0}^1 (-1)^{xy}\ket{y} = \sum_{y \in \BB} (-1)^{x \odot y}\ket{y}.$$
+
+Let $n > 1$. Then
+\begin{align*}
+H^{\otimes n}\ket{x} & = \bigotimes_{k = 1}^n \sum_{y_k = 0}^1 (-1)^{x_ky_k}\ket{y_k} \\
+& = \sum_{y \in \BB^n} \bigotimes_{k = 1}^n (-1)^{x_ky_k}\ket{y_k} \\
+& = \sum_{y \in \BB^n} (-1)^{\sum x_ky_k}\ket{y} \\
+& = \sum_{y \in \BB^n} (-1)^{x \odot y}\ket{y}.
+\end{align*}
+:::
+
+In particular, we can obtain an uniform superposition of all posible $n$ bit strings by using [@lemma:hadamard],
+$$H^{\otimes n}\ket{0}^{\otimes n} = \frac{1}{\sqrt{2^n}}\sum_{y \in \BB^n} (-1)^{0 \odot y}\ket{y} = \frac{1}{\sqrt{2^n}}\sum_{y \in \BB^n} \ket{y}.$$
+
+Next, consider the following algorithm:
+
+:::{.algorithm name="Deutsch-Jozsa algorithm"}
+(@NielsenQuantumComputationQuantum2010, sec. 1.4.4)
+
+**Solves:** [@prob:deutsch].
+
+1. Initialize $n$ qubits to $\ket{0}$ and an extra qubit to $\ket{1}$.
+2. Apply Hadamard gates to each qubit.
+3. Apply the oracle for $f$ to the whole state.
+4. Apply Hadamard transform to the first $n$ qubits.
+5. Discard the last qubit and measure the first $n$ qubits.
+6. Output the logical OR of the measured bits.
+:::
+
+

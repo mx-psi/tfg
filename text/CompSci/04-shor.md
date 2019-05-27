@@ -77,19 +77,45 @@ Let $t = n + 2$.
 5. Discard the bottom qubits and measure the top qubits.
 :::
 
-It is easy to show by applying [@lemma:productrepr] that the algorithm is correct on the case where $\varphi$ has exactly $n$ qubits. TODO
+It is easy to show by applying [@lemma:productrepr] that the algorithm is correct on the case where $\varphi$ has exactly $n$ qubits, since the output of the first part of the algorithm gives us in that case the QFT of the desired output.
 
-The general proof of correctness relies on TODO.
+We now present the general proof of correctness.
 
-:::{.lemma name="Correctness of phase estimation algorith" #lemma:phase}
+:::{.theorem name="Correctness of phase estimation algorith" #thm:phase}
+(@NielsenQuantumComputationQuantum2010, sec. 5.2.1)
+
+
 Let $U$ be a unitary operator with an eigenvalue $\exp(2\pi i \varphi)$.
 An $n$-bit approximation of $\varphi$ is polynomial-time computable in the quantum black box model ($O(n^2)$)
 :::
 :::{.proof}
-TODO
+
+The proof is also adapted from (@NielsenQuantumComputationQuantum2010, sec. 5.2.1).
+We focus on the top qubits only, since the bottom qubits remain unaltered throughout the whole algorithm.
+Let $T = 2^t$ and let $\overset{\sim}{\varphi}$ be the best $n$ bit approximation to $\varphi$, that is,
+$b = \overset{\sim}{\varphi}2^t \in \{0,T-1\}$ and 
+$$0 \leq \varphi -\overset{\sim}{\varphi} < 2^{-t}.$$
+
+
+First, notice that since $\ket{u}$ is an eigenvector of $U$, the state of the top qubits after step 3 is
+\begin{align*}
+\ket{\phi_3} & = \frac{1}{\sqrt{2^{t}}}(\ket{0} + \exp(2\pi i 0.\varphi_t)\ket{1}) \dots (\ket{0} + \exp(2\pi i 0.\varphi_1 \dots \varphi_t)\ket{1}) \\
+& = \frac{1}{\sqrt{2^{t}}} \sum_{k = 0}^{T -1} \exp(2\pi i \varphi k)\ket{k}
+\end{align*}
+
+If we apply the inverse QFT we have
+$$\ket{\phi_4} = \frac{1}{2^t} \sum_{k = 0}^{T-1} \sum _{l = 0}^{T-1} \exp\left(\frac{-2\pi i k l}{2^t}\right)\exp(2\pi i \varphi k) \ket{l}$$
+
+If we reorganize terms we have that the amplitude of $\ket{(b+1) \mod T}$ is
+$$\alpha_t = \frac{1}{2^t} \sum_{k = 0}^{T-1} \left(\exp\left(2 \pi i (\varphi - (b+l)/2^t)\right)\right)^k.$$
+
+The sum is a geometric series, with sum TODO
+$$\alpha_t = \frac{1}{2^t} \sum_{k = 0}^{T-1} \left(\exp\left(2 \pi i (\varphi - (b+l)/2^t)\right)\right)^k.$$
+
+
 :::
 
-As a direct application of [@lemma:phase] and as an intermediate step towards proving [@thm:shor], we prove that the order of an element in $U(\mathbb{Z}_N)$ can be calculated in polynomial quantum time, that is, we can solve the problem:
+As a direct application of [@thm:phase] and as an intermediate step towards proving [@thm:shor], we prove that the order of an element in $U(\mathbb{Z}_N)$ can be calculated in polynomial quantum time, that is, we can solve the problem:
 
 :::{.problem name="Order calculation" #prob:order}
 Calculate the order of an element $x$ in the group of units $U(\ZZ_N)$.

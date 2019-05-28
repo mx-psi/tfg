@@ -228,16 +228,21 @@ Phase change
 $$R_\theta = \left(\begin{matrix}1 & 0 \\ 0 & e^{i\theta}\end{matrix}\right), \qquad R_\theta\ket{0} = 0, \quad R_\theta\ket{1} = e^{i\theta}\ket{1}.$$
 
 Controlled $U$-gate
-: Given an $n$ qubit unitary operation $U$, the controlled $U$ gate is an $n+1$ qubit operation given by $$C_U= \left(\begin{array}{c|c} I_2 & 0 \\ \hline 0 & U \end{array} \right), \qquad C_U\ket{a}\ket{x} = \ket{a}U^a\ket{x}.$$
+: Given an $n$ qubit unitary operation $U$, the controlled $U$ gate is an $n+1$ qubit operation given by $$C_U= \left(\begin{array}{c|c} I_2 & 0 \\ \hline 0 & U \end{array} \right), \qquad C_U\ket{a}\ket{x} = \ket{a}U^a\ket{x},$$
+that is, $C_U\ket{0}\ket{x} = \ket{0}\ket{x}$ and $C_U\ket{1}\ket{x} = \ket{1}U\ket{x}$.
 It serves as a conditional operation.
 
 CNOT
 : The controlled not operation is the operation $\operatorname{CNOT} = C_{\operatorname{NOT}}$.
-It maps $\operatorname{CNOT}\ket{x,y} = \ket{x,x \oplus y}$.
+It maps $\operatorname{CNOT}\ket{x,y} = \ket{x,x \oplus y}$, where $\oplus : \BB^2 \to \BB$ is addition modulo 2.
+Since it is a controlled gate, its matrix expression is 
+$$\operatorname{CCNOT}= \left(\begin{array}{c|c} I_6 & 0 \\ \hline 0 & X \end{array} \right),$$
+where $X$ is the $\operatorname{NOT}$ gate matrix.
+
 
 Toffoli gate
-: The *Toffoli gate* (or *CCNOT gate*) is the 3 qubit gate that maps $\operatorname{CCNOT}\ket{x,y,z} = \ket{x,y,z \oplus (x\cdot y)}$. Its matrix expression is $$\operatorname{CCNOT}= \left(\begin{array}{c|c} I_6 & 0 \\ \hline 0 & X \end{array} \right).$$
-
+: The *Toffoli gate* (or *CCNOT gate*) is the 3 qubit gate that maps $\operatorname{CCNOT}\ket{x,y,z} = \ket{x,y,z \oplus (x\cdot y)}$. Its matrix expression is $$\operatorname{CCNOT}= \left(\begin{array}{c|c} I_6 & 0 \\ \hline 0 & X \end{array} \right),$$
+where $X$ is the $\operatorname{NOT}$ gate matrix.
 :::
 
 

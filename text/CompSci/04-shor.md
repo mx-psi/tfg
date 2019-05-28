@@ -93,25 +93,51 @@ An $n$-bit approximation of $\varphi$ is polynomial-time computable in the quant
 The proof is also adapted from (@NielsenQuantumComputationQuantum2010, sec. 5.2.1).
 We focus on the top qubits only, since the bottom qubits remain unaltered throughout the whole algorithm.
 Let $T = 2^t$ and let $\overset{\sim}{\varphi}$ be the best $n$ bit approximation to $\varphi$, that is,
-$b = \overset{\sim}{\varphi}2^t \in \{0,T-1\}$ and 
-$$0 \leq \varphi -\overset{\sim}{\varphi} < 2^{-t}.$$
+$b = \overset{\sim}{\varphi}T \in \{0,T-1\}$ and 
+$$0 \leq \delta < 2^{-t}, \text{ where } \delta = \varphi -\overset{\sim}{\varphi}.$$
 
 
 First, notice that since $\ket{u}$ is an eigenvector of $U$, the state of the top qubits after step 3 is
 \begin{align*}
-\ket{\phi_3} & = \frac{1}{\sqrt{2^{t}}}(\ket{0} + \exp(2\pi i 0.\varphi_t)\ket{1}) \dots (\ket{0} + \exp(2\pi i 0.\varphi_1 \dots \varphi_t)\ket{1}) \\
+\ket{\phi_3} & = \frac{1}{\sqrt{2^{t}}}(\ket{0} + \exp(2\pi i 0.\varphi_t)\ket{1}) \cdots (\ket{0} + \exp(2\pi i 0.\varphi_1 \dots \varphi_t)\ket{1}) \\
 & = \frac{1}{\sqrt{2^{t}}} \sum_{k = 0}^{T -1} \exp(2\pi i \varphi k)\ket{k}
 \end{align*}
 
 If we apply the inverse QFT we have
 $$\ket{\phi_4} = \frac{1}{2^t} \sum_{k = 0}^{T-1} \sum _{l = 0}^{T-1} \exp\left(\frac{-2\pi i k l}{2^t}\right)\exp(2\pi i \varphi k) \ket{l}$$
 
-If we reorganize terms we have that the amplitude of $\ket{(b+1) \mod T}$ is
-$$\alpha_t = \frac{1}{2^t} \sum_{k = 0}^{T-1} \left(\exp\left(2 \pi i (\varphi - (b+l)/2^t)\right)\right)^k.$$
+If we reorganize terms we have that the amplitude of $\ket{(b+l) \mod T}$ is
+$$\alpha_l = \frac{1}{2^t} \sum_{k = 0}^{T-1} \left(\exp\left(2 \pi i (\varphi - (b+l)/2^t)\right)\right)^k.$$
 
-The sum is a geometric series, with sum TODO
-$$\alpha_t = \frac{1}{2^t} \sum_{k = 0}^{T-1} \left(\exp\left(2 \pi i (\varphi - (b+l)/2^t)\right)\right)^k.$$
+The sum is a geometric series, so we can give the following closed expression
+\begin{align*}
+\alpha_l & = \frac{1}{2^t} \frac{1 - \exp(2\pi i (\varphi T -(b+l)))}{1 - \exp(2\pi i (\varphi - (b+l)/T))} \\
+ & = \frac{1}{2^t} \frac{1 - \exp(2\pi i (\delta T -l))}{1 - \exp(2\pi i (\delta - (b+l)/T))} \\
+\end{align*}
 
+We now check the probability of getting an n-bit approximation.
+The maximum error between the measured result $m$ and the desired result $b$, must be lower than $e = 2^{t-n} -1$.
+
+We bound the probability of having an error higher than this for a measured result $m$:
+$$P[|m-b| > e] ) = \sum_{l = -2^{t-1} +1}^{-(e+1)} |\alpha_l|^2 + \sum_{l = e + 1}^{2^{t-1}} |\alpha_l|^2.$${#eq:qpebounda}
+
+By the triangle inequality, if $\theta \in \RR$, $e^{i\theta} \in \mathbb{T}$, so $|1 - e^{i\theta}| \leq 2$,
+so
+$$|\alpha_l| \leq \frac{2}{2^t|1- \exp(2 \pi i(\delta - l/T))|}.$$aN
+
+If $|\theta| \in [-\pi,\pi]$, then $|1 - e^{i\theta}| >2|\theta|/\pi$.
+Let $\theta = 2 \pi (\delta - l/T) \in [-\pi,\pi]$, since $|l| \leq 2^{t-1}$.
+Therefore
+$$|\alpha_l| \leq \frac{1}{2^{t+1}(\delta - l/T)}$${#eq:qpeboundb}
+
+If we combine [@eq:qpebounda] and [@eq:qpeboundb] and recall $, we have
+$$P[|m-b| > e] \leq \frac14\left(\sum \sum_{l = -2^{t-1} +1}^{-(e+1)} \frac{1}{(l-T\delta)^2} + \sum_{l = e + 1}^{2^{t-1}} \frac{1}{(l-T\delta)^2} \right).$$
+Since $T\delta \in [0,1]$:
+$$P[|m-b| > e] \leq \leq \frac14\left(\sum \sum_{l = -2^{t-1} +1}^{-(e+1)} \frac{1}{(l-1)^2} + \sum_{l = e + 1}^{2^{t-1}} \frac{1}{(l-1)^2} \right),$$
+changing the indices and joining both sums,
+$$P[|m-b| > e] \leq \leq \frac12\sum \sum_{l = e}^{T-1} \frac{1}{l^2}.$$
+
+Lastly
 
 :::
 

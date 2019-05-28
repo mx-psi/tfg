@@ -72,7 +72,7 @@ In practice, not every source of randomness is feasible, since we could encode i
 :::{.definition}
 A real number $r \in \RR$ is a *computable number* if the function that given $n$ outputs the n-th bit of $r$ can be computed.
 
-It is *polynomial time computable* if this function can be computed in time polynomial in $n$.
+$r$ is *polynomial time computable* if this function can be computed in time polynomial in $n$.
 :::
 
 We restrict the numbers on stochastic gates to be computable so as to avoid this situation. 

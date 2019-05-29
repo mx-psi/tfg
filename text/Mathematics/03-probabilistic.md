@@ -322,12 +322,14 @@ The set of algebraic circuits is $\mathcal{A}$.
 :::
 
 Here the state space is an arbitrary field $\mathbb{F}$ (or more generally a ring) and the product between state spaces is the cartesian product.
-We assume that the field operations can be computed in constant time[^constant].
+We assume that the field operations can be computed in constant time as it is the case for example, on a finite field $\mathbb{F}_p$[^constant].
 
 [^constant]: Although this is a common assumption in the study of PIT it is not trivial. If for example we want to apply the algorithm to circuits over $\ZZ$ further considerations are needed to ensure the algorithm is efficient, since the binary representation of intermediate calculations might have exponential size. See (@AroraComputationalComplexityModern2009, sec 7.2.3) for a possible approach.
 
 Clearly, the function associated with an algebraic circuit $A$ is a (multivariate) polynomial $p_A$.
 The output of the function for a given input can be computed in polynomial time, though obtaining the polynomial coefficients can in principle take exponential time (since its degree can be exponential on the number of gates).
+
+<!--TODO: Añadir un ejemplo de circuito que lleve tiempo exponencial-->
 
 :::{.definition}
 $$\operatorname{ZEROP} = \{A \in \mathcal{A} \;:\; p_A \equiv 0 \}$$

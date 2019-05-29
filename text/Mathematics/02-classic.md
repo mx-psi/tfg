@@ -307,7 +307,9 @@ The following inequalities hold for every $f \in \NN^\NN$
 
 ### Polynomial usage of resources
 
-A polynomial amount of resources is informally described as an efficient usage of time or space.
+A polynomial amount of resources is informally described as an efficient usage of them.
+An algorithm can be informally described as *efficient* if it takes a polynomial amount of time to run as a function of its input length and we say it makes an *efficient usage of space* if it uses a polynomial amount of space in its execution.
+
 This definition does not precisely match the everyday definition of "efficient"; for practical purposes an algorithm that takes $n^{1000}$ steps to decide a word of size $n$ is not considered efficient and an algorithm with running time $n^{\log \log n}$ is (@AaronsonmathoplimitsNP2016, sec. 1.2.1).
 
 Nonetheless, the interpretation of the following classes as containing efficiently decidable languages makes sense since these are the minimal classes closed under composition, concatenation and union that contain linear-time decidable languages (or respectively space or size)  (@CobhamIntrinsicComputationalDifficulty1965). Additionally, these classes are robust under small changes in the computational models used to define them (e.g. by using multi-tape machines or RAM models) (@vanLeeuwenHandbookTheoreticalComputer1990, chap. 1).

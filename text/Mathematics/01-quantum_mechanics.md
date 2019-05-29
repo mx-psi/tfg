@@ -8,10 +8,9 @@ We follow the presentation given at (@NielsenQuantumComputationQuantum2010, chap
 
 ## State space and bra-ket notation
 
-\fxnote{El modelo asume que no hay ruido. Podría discutir la corrección de errores brevemente. Ver Parte 3 de Nielsen.}
-
 A concrete state of an isolated physical system is described by a **state vector** that belongs to a **state space**.
 In the case of quantum mechanics these are described by (projective) Hilbert spaces.
+The assumption of isolation is not met in practice, yet error correction techniques can be efficiently applied to make up for this disconnect between theory and practice, so that the model we will describe can produce useful practical results (@NielsenQuantumComputationQuantum2010, section 10.6).
 
 :::{.definition}
 A (complex) **pre-Hilbert space** is a pair $(H,\bk{\cdot}{\cdot}: H^2 \to \CC)$ such that
@@ -109,7 +108,9 @@ The tensor product of $N$ qubits has a state space of $2^n$ dimension. We fix as
 $$\ket{a_1\dots a_n} \quad \text{ where } a_i \in \{0,1\}$$
 The basis is ordered in lexicographic order.
 
-Given $0 \leq i < 2^N$ we write $\ket{i} = \ket{a_1 \dots a_N}$ where $a_1 \dots a_N$ is the representation of $i$ in binary.
+In what follows, we will use letters from the Latin alphabet as in $\ket{x},\ket{y},\ket{z},\ket{a}\dots$, to write elements from the computational basis and letters from the Greek alphabet as in $\ket{\phi},\ket{\psi}$, to denote a general element from a composite system.
+
+Furthermore, given $0 \leq i < 2^N$ we may write $\ket{i} = \ket{a_1 \dots a_N}$ where $a_1 \dots a_N$ is the representation of $i$ in binary. 
 
 :::{.example name='2 qubit system'}
 Let $Q_A, Q_B$ be two qubits with orthonormal basis $\ket{0}_A, \ket{1}_A$ and $\ket{0}_B, \ket{1}_B$ respectively.
@@ -120,6 +121,8 @@ $(\ket{00}, \ket{01}, \ket{10}, \ket{11})$
 or
 $(\ket{0}, \ket{1}, \ket{2}, \ket{3}).$
 :::
+
+
 
 
 ## Quantum operations

@@ -239,7 +239,7 @@ CNOT
 : The controlled not operation is the operation $\operatorname{CNOT} = C_{\operatorname{NOT}}$.
 It maps $\operatorname{CNOT}\ket{x,y} = \ket{x,x \oplus y}$, where $\oplus : \BB^2 \to \BB$ is addition modulo 2.
 Since it is a controlled gate, its matrix expression is 
-$$\operatorname{CCNOT}= \left(\begin{array}{c|c} I_6 & 0 \\ \hline 0 & X \end{array} \right),$$
+$$\operatorname{CNOT}= \left(\begin{array}{c|c} I_2 & 0 \\ \hline 0 & X \end{array} \right),$$
 where $X$ is the $\operatorname{NOT}$ gate matrix.
 
 

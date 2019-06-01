@@ -23,7 +23,7 @@ Find a factor of an integer $N$.
 The two are equivalent due to the closure properties of $\mathsf{BQP}$ and the well-known classical reductions between the problems. The main theorem thus will be 
 
 :::{.theorem #thm:shor}
-(@NielsenQuantumComputationQuantum2010, TODO)
+(@NielsenQuantumComputationQuantum2010, sec. 5.3.2)
 
 $$\operatorname{FACTORING} \in \mathsf{BQP},$$
 in particular, [@prob:factoring] is solvable in $O(\log^3 N)$ quantum time with bounded error.
@@ -64,7 +64,7 @@ Hence, if we approximate $\varphi \approx 0.x_1 \dots x_n$, we can output $\ket{
 Next, we present a quantum algorithm that solves this problem in polynomial time in the number of bits of the approximation (in the query complexity setting).
 
 :::{.algorithm name="Quantum phase estimation" #algo:qpe}
-(@NielsenQuantumComputationQuantum2010, TODO)
+(@NielsenQuantumComputationQuantum2010, sec 5.2)
 
 **Solves:** the phase estimation problem, [@prob:phase].
 
@@ -81,7 +81,7 @@ It is easy to show by applying [@lemma:productrepr] that the algorithm is correc
 
 We now present the general proof of correctness.
 
-:::{.theorem name="Correctness of phase estimation algorith" #thm:phase}
+:::{.theorem name="Correctness of QPE" #thm:phase}
 (@NielsenQuantumComputationQuantum2010, sec. 5.2.1)
 
 
@@ -89,13 +89,15 @@ Let $U$ be a unitary operator with an eigenvalue $\exp(2\pi i \varphi)$.
 An $n$-bit approximation of $\varphi$ is polynomial-time computable in the quantum black box model ($O(n^2)$)
 :::
 :::{.proof}
-
 The proof is also adapted from (@NielsenQuantumComputationQuantum2010, sec. 5.2.1).
-We focus on the top qubits only, since the bottom qubits remain unaltered throughout the whole algorithm.
-Let $T = 2^t$ and let $\overset{\sim}{\varphi}$ be the best $n$ bit approximation to $\varphi$, that is,
-$b = \overset{\sim}{\varphi}T \in \{0,T-1\}$ and 
-$$0 \leq \delta < 2^{-t}, \text{ where } \delta = \varphi -\overset{\sim}{\varphi}.$$
 
+The number of quantum gates used by [@algo:qpe] is $O(n^2)$, since we only add a linear amount of gates apart from the ones used in the QFT algorithm. 
+
+For the correctness, we focus on the top qubits only, since the bottom qubits remain unaltered throughout the whole algorithm.
+Recall that $t = n + 2$ and let $T = 2^t$.
+
+Let $\overset{\sim}{\varphi}$ be the best $n$ bit approximation to $\varphi$, that is,
+$b = \overset{\sim}{\varphi}T \in \{0,T-1\}$ and $0 \leq \delta < 2^{-t}, \text{ where } \delta = \varphi -\overset{\sim}{\varphi}.$
 
 First, notice that since $\ket{u}$ is an eigenvector of $U$, the state of the top qubits after step 3 is
 \begin{align*}
@@ -116,7 +118,7 @@ The sum is a geometric series, so we can give the following closed expression
 \end{align*}
 
 We now check the probability of getting an n-bit approximation.
-The maximum error between the measured result $m$ and the desired result $b$, must be lower than $e = 2^{t-n} -1$.
+The maximum error between the measured result $m$ and the desired result $b$, must be lower than $e = 2^{t-n} -1 = 2^{n+2-n} -1 = 3$.
 
 We bound the probability of having an error higher than this for a measured result $m$:
 $$P[|m-b| > e] ) = \sum_{l = -2^{t-1} +1}^{-(e+1)} |\alpha_l|^2 + \sum_{l = e + 1}^{2^{t-1}} |\alpha_l|^2.$${#eq:qpebounda}
@@ -130,15 +132,17 @@ Let $\theta = 2 \pi (\delta - l/T) \in [-\pi,\pi]$, since $|l| \leq 2^{t-1}$.
 Therefore
 $$|\alpha_l| \leq \frac{1}{2^{t+1}(\delta - l/T)}$${#eq:qpeboundb}
 
-If we combine [@eq:qpebounda] and [@eq:qpeboundb] and recall $, we have
-$$P[|m-b| > e] \leq \frac14\left(\sum \sum_{l = -2^{t-1} +1}^{-(e+1)} \frac{1}{(l-T\delta)^2} + \sum_{l = e + 1}^{2^{t-1}} \frac{1}{(l-T\delta)^2} \right).$$
+If we combine [@eq:qpebounda] and [@eq:qpeboundb], we have
+$$P[|m-b| > e] \leq \frac14\left( \sum_{l = -2^{t-1} +1}^{-(e+1)} \frac{1}{(l-T\delta)^2} + \sum_{l = e + 1}^{2^{t-1}} \frac{1}{(l-T\delta)^2} \right).$$
 Since $T\delta \in [0,1]$:
-$$P[|m-b| > e] \leq \leq \frac14\left(\sum \sum_{l = -2^{t-1} +1}^{-(e+1)} \frac{1}{(l-1)^2} + \sum_{l = e + 1}^{2^{t-1}} \frac{1}{(l-1)^2} \right),$$
+$$P[|m-b| > e] \leq \frac14\left(\sum_{l = -2^{t-1} +1}^{-(e+1)} \frac{1}{(l-1)^2} + \sum_{l = e + 1}^{2^{t-1}} \frac{1}{(l-1)^2} \right),$$
 changing the indices and joining both sums,
-$$P[|m-b| > e] \leq \leq \frac12\sum \sum_{l = e}^{T-1} \frac{1}{l^2}.$$
+$$P[|m-b| > e] \leq \frac12 \sum_{l = e}^{T-1} \frac{1}{l^2}.$$
 
-Lastly
+Lastly, we bound this sum from above by the corresponding integral,
+$$P[|m-b| > e] \leq \frac12\int_{e}^{T-1} \frac{\mathrm{d}l}{l^2} = \frac{1}{2(e-1)} = \frac14.$$
 
+Hence the algorithm will be correct with probability at least $3/4 > 2/3$.
 :::
 
 As a direct application of [@thm:phase] and as an intermediate step towards proving [@thm:shor], we prove that the order of an element in $U(\mathbb{Z}_N)$ can be calculated in polynomial quantum time, that is, we can solve the problem:

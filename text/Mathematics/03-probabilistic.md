@@ -168,7 +168,7 @@ There are at most $2^n$ sequences of that kind, therefore,
 $$P\left[\sum_1^n X_i \leq \frac{n}{2}\right] \leq 2^n \cdot \frac{(1-4 \varepsilon)^{n/2}}{2^n} = (1-4 \varepsilon)^{n/2}.$$
 
 Lastly, by the Taylor expansion of the exponential we have $1 - x \leq e^{-x}$, which proves the result,
-$$P\left[\sum_1^n X_i \leq \frac{n}{2}\right] \leq \exp(-4^{\varepsilon^2 n/2})= \exp(-2\varepsilon^2 n).$$
+$$P\left[\sum_1^n X_i \leq \frac{n}{2}\right] \leq \exp(-4\varepsilon^2 n/2)= \exp(-2\varepsilon^2 n).$$
 :::
 
 ## Probabilistic polynomial complexity

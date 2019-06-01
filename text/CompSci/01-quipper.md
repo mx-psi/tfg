@@ -91,6 +91,25 @@ H^{\otimes n}\ket{x} & = \bigotimes_{k = 1}^n \sum_{y_k = 0}^1 (-1)^{x_ky_k}\ket
 In particular, we can obtain an uniform superposition of all posible $n$ bit strings by using [@lemma:hadamard],
 $$H^{\otimes n}\ket{0}^{\otimes n} = \frac{1}{\sqrt{2^n}}\sum_{y \in \BB^n} (-1)^{0 \odot y}\ket{y} = \frac{1}{\sqrt{2^n}}\sum_{y \in \BB^n} \ket{y}.$$
 
+Another simple lemma that will be useful later is
+
+:::{.lemma #lemma:signchange}
+Let $f: \BB^n \to \BB$ be a function and $U_f: Q^{\otimes n+1} \to Q^{\otimes n+1}$ be the reversible function associated with $f$, that is, 
+$$U_f\ket{x}\ket{y} = \ket{x}\ket{y \oplus f(x)}.$$
+
+Let $$\ket{\downarrow} = \frac{1}{\sqrt{2}}\left(\ket{0} - \ket{1}\right).$$
+Then $$U_f\ket{x}\ket{\downarrow} = (-1)^{f(x)}\ket{x}\ket{\downarrow}.$$
+:::
+:::{.proof}
+Clearly, 
+$$U_f\ket{x}\ket{\downarrow} =\frac{1}{\sqrt{2}}(\ket{x}\ket{f(x)} - \ket{x}\ket{1 \oplus f(x)}).$$
+
+If $f(x) = 0$ then 
+$$\ket{x}\ket{f(x)} - \ket{x}\ket{1 \oplus f(x)} = \ket{x}\ket{0} - \ket{x}\ket{1} = \ket{x}\otimes(\ket{0} - \ket{1}).$$
+Similarly, if $f(x) = 1$,
+$$\ket{x}\ket{f(x)} - \ket{x}\ket{1 \oplus f(x)} = \ket{x}\ket{1} - \ket{x}\ket{0} = -\ket{x}\otimes(\ket{0} - \ket{1}).$$
+:::
+
 Next, consider the following algorithm:
 
 :::{.algorithm name="Deutsch-Jozsa algorithm" #algo:deutsch}
@@ -111,7 +130,7 @@ An example of the algorithm for $n=2$ can be seen in [@fig:deutsch].
 ![Deutsch-Jozsa algorithm for a function $f:\BB^3 \to \BB$](assets/deutsch.pdf){#fig:deutsch width=100%}
 
 
-:::{.proposition name="Correcteness of Deutsch-Jozsa algorithm"}
+:::{.proposition name="Correctness of Deutsch-Jozsa algorithm"}
 (@NielsenQuantumComputationQuantum2010, sec. 1.4.4)
 
 Let $f:\BB^n \to \BB$ be a constant or balanced function.
@@ -127,11 +146,7 @@ $$\ket{\phi_1} = \ket{0}^{\otimes n}\ket{1}.$$
 Applying Hadamard gates to each qubit gives us
 $$\ket{\phi_2} = H^{\otimes n}\ket{0}^{\otimes n}H\ket{1} = \left(\frac{1}{\sqrt{2^n}}\sum_{y \in \BB^n} \ket{y}\right)\otimes \frac{1}{\sqrt{2}}\left(\ket{0} - \ket{1}\right).$$
 
-We now apply the oracle that maps $\ket{x}\ket{y} \mapsto \ket{x}(\ket{y \oplus f(x)})$:
-$$\ket{\phi_3} = U_f\ket{\phi_2} = \frac{1}{\sqrt{2^{n+1}}}\sum_{y \in \BB^n} \ket{y}\ket{f(y)} - \ket{y}\ket{1 \oplus f(y)}.$$
-We can easily check that for any $y$ and any function $f$, 
-$$\ket{y}\ket{f(y)} - \ket{y}\ket{1 \oplus f(y)} = (-1)^{f(y)}\ket{y}\otimes \frac{1}{\sqrt{2}}\left(\ket{0} - \ket{1}\right),$$
-and therefore
+We now apply $f$'s oracle and by [@lemma:signchange] we have
 $$\ket{\phi_3} = \frac{1}{2^n}\sum_{y \in \BB^n} (-1)^{f(y)}\ket{y}\otimes \frac{1}{\sqrt{2}}\left(\ket{0} - \ket{1}\right).$$
 
 By [@lemma:hadamard] we see that
@@ -159,8 +174,8 @@ The probability of success is then
 $$P(\operatorname{Sucess}) P(f(x_2) = 1) = \frac{N/2}{N-1} = \frac12 + \frac{1}{2(N-1)},$$
 and therefore by [@prop:Chernoff] the error can be bounded by repeating the algorithm and taking the majority vote.
 
-[@algo:deutsch] may seem superior to this probabilistic alternative in that it outputs the correct answer with certainty and it does so in exactly one query, when the probabilistic algorithm takes at least two queries.
-Nonetheless, this property is dependent on the chosen gate basis, since the approximation given by the Solovay-Kitaev theorem might introduce some error.
+[@algo:deutsch] may seem superior to this probabilistic alternative in that it outputs the correct answer with certainty and it does so in exactly one query, when, in comparison the probabilistic algorithm takes at least two queries.
+Nonetheless, this property is dependent on the chosen gate basis, since the approximation given by the Solovay-Kitaev theorem might introduce some error, so the seeming advantage might vanish in practice.
 
 Hence, the two alternatives are asymptotically equivalent and there is no speedup gained by this algorithm in comparison with the classical case.
 

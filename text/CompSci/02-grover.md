@@ -24,8 +24,8 @@ Search a string that has a certain property.
 As a possible application, consider a language $L \in \mathsf{NP}$, and fix a word $x \in \BB^n$ (if we allow randomness, we can consider $L \in \mathsf{MA}$ and proceed similarly).
 
 Recalling [@prop:npverifier] consider as $f : \BB^{p(n)} \to \BB$ the function associated with the verifier $V$.
-Then, if we have an algorithm to solve the search problem we can decide whether $x \overset{?}{\in} L$.
-Given the wide variety of problems of practical usefulness in $\mathsf{NP}$[TODO citar], this is an important and useful application of such problem.
+Then, if we have an algorithm to solve the search problem we can decide whether $x \in L$ or not.
+Given the wide variety of problems of practical usefulness in $\mathsf{NP}$ (@AroraComputationalComplexityModern2009, chap. 2), this is an important and useful application of such problem.
 
 As a more practical application, one can consider a search on a database.
 In this case the function would indicate whether there has been a match or not for each item in the database.
@@ -49,7 +49,7 @@ In the query complexity setting we are not interested in the time it takes to co
 
 In the classical case, there is a trivial algorithm that provides an answer: simply check for every possible input until a match is found. The query complexity of this algorithm is $O(N) = O(2^n)$.
 
-Even if $f$ takes unit time to compute this algorithm is not efficient for solving the search problem associated with an $\mathsf{NP}$ language since it would take at least exponential time on the size of word being decided.
+Even if $f$ takes unit time to compute, this algorithm is not efficient for solving the search problem associated with an $\mathsf{NP}$ language since it would take at least exponential time on the size of word being decided.
 
 Furthermore, this algorithm is clearly optimal in the classical setting: in the worst case the last input checked is the matching one and thus $\Omega(N)$ queries are needed.
 
@@ -61,6 +61,32 @@ As we shall see in the next section, Grover's algorithm builds on this idea and 
 
 ## Grover's algorithm
 
+The following operation can be done with a TODO number of gates:
+
+:::{.definition name="Inversion about mean"}
+Let $n \in \NN$.
+The *inversion about mean* operator is the operator given by TODO
+:::
+
+
+A circuit performing the inversion about mean for $n = 3$ qubits can be seen in [@fig:inversion].
+
+![Inversion about mean operator for $n =  3$ qubits.](){#fig:inversion}
+
+
+Using the inversion about the mean procedure, we now define *Grover's operator*, which is associated with a given oracle.
+
+:::{.definition name="Grover Operator"}
+TODO
+:::
+
+This operator is crucial in the description of Grover's algorithm but also in the quantum counting and quantum existence algorithms.
+
+:::{.lemma}
+The restriction of Grover's operator to the subspace spanned by $\ket{\psi}$ and $\ket{\beta}$ is a rotation, whose angle $\theta$ verifies $$TODO.$$
+:::
+
+
 
 :::{.algorithm name="Grover's algorithm"}
 (@Kayeintroductionquantumcomputing2007, sec 8.1)
@@ -71,6 +97,12 @@ As we shall see in the next section, Grover's algorithm builds on this idea and 
 2. Apply the $H$ gate to each qubit to obtain an uniform state, $$\frac{1}{\sqrt{N}}\sum_{k = 0}^{N-1} \ket{k}.$$
 3. Apply $T$ times the following procedure
    i) 
+:::
+
+Lastly, we prove that Grover's algorithm outputs the correct answer with bounded error.
+
+:::{.theorem name="Correctness of Grover's algorithm"}
+TODO
 :::
 
 

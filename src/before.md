@@ -9,6 +9,7 @@ biblio-style: apalike
 link-citations: true
 secnumdepth: 3
 toc: true
+linestretch: 1.05
 toc-depth: 3
 numbersections: true
 linkReferences: true

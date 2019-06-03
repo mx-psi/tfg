@@ -55,6 +55,13 @@
 \newtheorem{algorithm}{Algorithm}
 \newtheorem*{claim}{Claim}
 
+\usepackage{etoolbox}% http://ctan.org/pkg/etoolbox
+\usepackage{needspace}% http://ctan.org/pkg/needspace
+\AtBeginEnvironment{theorem}{\Needspace{5\baselineskip}}
+\AtBeginEnvironment{lemma}{\Needspace{5\baselineskip}}
+\AtBeginEnvironment{definition}{\Needspace{5\baselineskip}}
+\AtBeginEnvironment{proof}{\Needspace{5\baselineskip}}
+
 % Bra-ket notation
 \newcommand{\bra}[1]{\left\langle#1\right|}
 \newcommand{\ket}[1]{\left|#1\right\rangle}

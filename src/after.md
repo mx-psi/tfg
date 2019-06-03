@@ -1,3 +1,3 @@
 # Bibliography {.unnumbered}
 
-\listoffixmes
+<!-- \listoffixmes -->

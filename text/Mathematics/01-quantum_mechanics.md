@@ -262,8 +262,10 @@ Suppose there exists such unitary map $U$.
 Let $\ket{\psi}, \ket{\phi} \in Q^{\otimes n}$.
 
 By [@dfn:unitary] we have
-$$ \bk{\psi}{\phi} = \bk{\psi}{\phi}\bk{x_0}{x_0} = \bk{\ket{\psi}\ket{x_0}}{\ket{\phi}\ket{x_0}} = \bk{U \ket{\psi}\ket{x_0}}{U \ket{\phi}\ket{x_0}} = \bk{ \ket{\psi}\ket{\psi}}{\ket{\phi}\ket{\phi}} = \bk{\psi}{\phi}^2,$$
-
+\begin{align*}
+\bk{\psi}{\phi} & = \bk{\psi}{\phi}\bk{x_0}{x_0} = \bk{\ket{\psi}\ket{x_0}}{\ket{\phi}\ket{x_0}} \\
+& = \bk{U \ket{\psi}\ket{x_0}}{U \ket{\phi}\ket{x_0}} = \bk{ \ket{\psi}\ket{\psi}}{\ket{\phi}\ket{\phi}} = \bk{\psi}{\phi}^2,
+\end{align*}
 therefore $\bk{\psi}{\phi} \in \{0,1\}$ are either equal or orthogonal, which is a contradiction, since we assumed they were arbitary.
 :::
 

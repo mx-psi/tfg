@@ -1,29 +1,14 @@
-# Programming quantum algorithms: Quipper
+:::{.comment}
+
+# Programming quantum algorithms
 
 In this and the following sections we will present several key quantum algorithms that provide some speedup in comparison with the best known classical (or randomized) algorithm that solves the same problem.
 
 This first section presents the general setup; both in terms of what will be said about algorithms and how they have been implemented using the programming language Quipper.
 
-## The query complexity model
-
-The focus of the previous sections on computation models was on time complexity.
-These are the most meaningful practical measures of complexity; however, they are notoriously difficult to analyse, as the wide range of existing open problems in the field shows (@AaronsonmathoplimitsNP2016).
-
-In the analysis of the algorithms that will be presented we will sometimes focus on an alternative complexity measure: *query complexity*, also known in the classical case as *decision tree complexity* (@AmbainisUnderstandingQuantumAlgorithms2017, sec. 2).
-
-In the quantum case, we are given an *oracle* that gives us information about a certain binary string $x \in \BB^N$ (@Kayeintroductionquantumcomputing2007, sec 9.2).
-Similar to the approached for [simulating classical operations](#simulating-classical-operations), we can have a unitary operation that maps $$\ket{j}\ket{y} \mapsto \ket{j}\ket{y \oplus x_j}.$$
-
-We would then like to compute some property about the oracle; the question then becomes: 
-how many *queries* have to be made to the oracle in order to compute such property with bounded error?
-
-That is we say that a quantum algorithm $\{C_N\}_{}$ (with respect to any set of gates that includes the quantum oracle) that computes a certain function $f: \BB^\ast \to \BB^\ast$ (with bounded error) has query complexity $O(T(N))$ if the function that for each $N$ counts the number of oracle gates in $C_N$ is $O(T(N))$.
-
-An alternative way of presenting query complexity is to talk about a function $f:\BB^n \to \BB$ that outputs $f(j) = x_j$ (where $j$ is passed as a binary string). We note that $N = 2^n$, and thus in this approach the query complexity would be $O(T(2^n))$.
-
-Query complexity then gives a lower bound estimate of the actual time complexity; since we would have to add in the non-query gates as well as the amount of gates needed to simulate the oracle.
-
 ## Quipper
+
+\fxnote{Queda por hacer.}
 
 ### stack and Haskell setup 
 
@@ -42,8 +27,33 @@ We can think of the following functions has having this type
 
 TODO
 
+:::
 
 # The Deutsch-Jozsa algorithm
+
+In this chapter we develop our first example of a quantum algorithm.
+The first section presents the setting in which the complexity of this and later algorithms will be analyzed, and the following section presents the solution.
+
+## The query complexity model
+
+The focus of the previous sections on computation models was on time complexity.
+These are the most meaningful practical measures of complexity; however, they are notoriously difficult to analyse, as the wide range of existing open problems in the field shows (@AaronsonmathoplimitsNP2016).
+
+In the analysis of the algorithms that will be presented we will sometimes focus on an alternative complexity measure: *query complexity*, also known in the classical case as *decision tree complexity* (@AmbainisUnderstandingQuantumAlgorithms2017, sec. 2).
+
+In the quantum case, we are given an *oracle* (or, more generally, a family of oracles) that gives us information about a certain binary string $x \in \BB^N$ (@Kayeintroductionquantumcomputing2007, sec 9.2).
+Similar to the approach for [simulating classical operations](#simulating-classical-operations), we can have a unitary operation that maps $$\ket{j}\ket{y} \mapsto \ket{j}\ket{y \oplus x_j}.$$
+
+We would then like to compute some property about the oracle; the question then becomes: 
+how many *queries* have to be made to the oracle in order to compute such property with bounded error?
+
+That is we say that a quantum algorithm $\{C_N\}_{}$ (with respect to any set of gates that includes the quantum oracle) that computes a certain function $f: \BB^\ast \to \BB^\ast$ (with bounded error) has query complexity $O(T(N))$ if the function that for each $N$ counts the number of oracle gates in $C_N$ is $O(T(N))$.
+
+An alternative way of presenting query complexity is to talk about a function $f:\BB^n \to \BB$ that outputs $f(j) = x_j$ (where $j$ is passed as a binary string). We note that $N = 2^n$, and thus in this approach the query complexity would be $O(T(2^n))$.
+
+Query complexity then gives a lower bound estimate of the actual time complexity; since we would have to add in the non-query gates as well as the amount of gates needed to simulate the oracle.
+
+## Deutsch's problem 
 
 The Deutsch-Jozsa algorithm is one of the first quantum algorithms that provide some quantum speedup in the query complexity model.
 It was first proposed in 1992 [@CleveQuantumAlgorithmsRevisited1998].
@@ -171,13 +181,15 @@ Consider an algorithm that uniformly samples two different strings $x_1, x_2$ fr
 If $f$ is constant, then the algorithm always outputs the correct answer.
 If $f$ is balanced, assume, without loss of generality, that $f(x_1) = 0$.
 The probability of success is then 
-$$P(\operatorname{Sucess}) P(f(x_2) = 1) = \frac{N/2}{N-1} = \frac12 + \frac{1}{2(N-1)},$$
+$$P(\operatorname{Success}) = P(f(x_2) = 1) = \frac{N/2}{N-1} = \frac12 + \frac{1}{2(N-1)},$$
 and therefore by [@prop:Chernoff] the error can be bounded by repeating the algorithm and taking the majority vote.
 
 [@algo:deutsch] may seem superior to this probabilistic alternative in that it outputs the correct answer with certainty and it does so in exactly one query, when, in comparison the probabilistic algorithm takes at least two queries.
 Nonetheless, this property is dependent on the chosen gate basis, since the approximation given by the Solovay-Kitaev theorem might introduce some error, so the seeming advantage might vanish in practice.
 
 Hence, the two alternatives are asymptotically equivalent and there is no speedup gained by this algorithm in comparison with the classical case.
+
+:::{.comment}
 
 ## Quipper implementation
 
@@ -234,3 +246,4 @@ conveniently encapsulates such use case, automatically reporting possible errors
 
 It is defined as a polymorphic function that takes an `Oracle`.
 
+:::

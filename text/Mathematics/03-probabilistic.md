@@ -321,7 +321,7 @@ An *algebraic circuit* is a circuit with one output with respect to the basis $\
 The set of algebraic circuits is $\mathcal{A}$.
 :::
 
-Here the state space is an arbitrary field $\mathbb{F}$ (or more generally a ring) and the product between state spaces is the cartesian product.
+Here the state space is an arbitrary field $\mathbb{F}$ (or more generally a ring) and the product between state spaces is the Cartesian product.
 We assume that the field operations can be computed in constant time as it is the case for example, on a finite field $\mathbb{F}_p$[^constant].
 
 [^constant]: Although this is a common assumption in the study of PIT it is not trivial. If for example we want to apply the algorithm to circuits over $\ZZ$ further considerations are needed to ensure the algorithm is efficient, since the binary representation of intermediate calculations might have exponential size. See (@AroraComputationalComplexityModern2009, sec 7.2.3) for a possible approach.

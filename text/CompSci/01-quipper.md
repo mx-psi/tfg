@@ -37,7 +37,7 @@ The first section presents the setting in which the complexity of this and later
 ## The query complexity model
 
 The focus of the previous sections on computation models was on time complexity.
-These are the most meaningful practical measures of complexity; however, they are notoriously difficult to analyse, as the wide range of existing open problems in the field shows (@AaronsonmathoplimitsNP2016).
+These are the most meaningful practical measures of complexity; however, they are notoriously difficult to analyze, as the wide range of existing open problems in the field shows (@AaronsonmathoplimitsNP2016).
 
 In the analysis of the algorithms that will be presented we will sometimes focus on an alternative complexity measure: *query complexity*, also known in the classical case as *decision tree complexity* (@AmbainisUnderstandingQuantumAlgorithms2017, sec. 2).
 
@@ -82,7 +82,7 @@ First, consider the following simple lemma,
 
 Let $n \in \NN, N = 2^n$ and $x \in \BB^n$. Then $$H^{\otimes n}\ket{x} = \frac{1}{\sqrt{2^n}}\sum_{y \in \BB^n} (-1)^{x \odot y}\ket{y},$$
 where, if $x = x_1 \dots x_n$ and $y = y_1 \dots y_n$, then $$x \odot y = \sum_{j=1}^n x_jy_j \mod 2,$$
-is its "bitwise inner product" in $\ZZ_2$.
+is its "bit-wise inner product" in $\ZZ_2$.
 :::
 :::{.proof}
 
@@ -98,7 +98,7 @@ H^{\otimes n}\ket{x} & = \bigotimes_{k = 1}^n \sum_{y_k = 0}^1 (-1)^{x_ky_k}\ket
 \end{align*}
 :::
 
-In particular, we can obtain an uniform superposition of all posible $n$ bit strings by using [@lemma:hadamard],
+In particular, we can obtain an uniform superposition of all possible $n$ bit strings by using [@lemma:hadamard],
 $$H^{\otimes n}\ket{0}^{\otimes n} = \frac{1}{\sqrt{2^n}}\sum_{y \in \BB^n} (-1)^{0 \odot y}\ket{y} = \frac{1}{\sqrt{2^n}}\sum_{y \in \BB^n} \ket{y}.$$
 
 Another simple lemma that will be useful later is
@@ -194,9 +194,9 @@ Hence, the two alternatives are asymptotically equivalent and there is no speedu
 ## Quipper implementation
 
 This section outlines the implementation of [@algo:deutsch] in Quipper.
-It also presents the general datatype of `Oracle`s, used in later algorithms.
+It also presents the general data-type of `Oracle`s, used in later algorithms.
 
-### The `Oracle` datatype
+### The `Oracle` data-type
 
 An oracle is a circuit that represents a function $f: \BB^n \to \BB$.
 It is given by its `shape` of input and the underlying circuit:
@@ -211,7 +211,7 @@ It is intended that the type of input belongs to the class `QData`.
 
 The module `Oracle` provides several ways of building an oracle:
 
-1. Explictly from its shape and a possibly non-reversible circuit by the function `buildOracle`, with type
+1. Explicitly from its shape and a possibly non-reversible circuit by the function `buildOracle`, with type
 ```haskell
 buildOracle
   :: QData qa

@@ -154,7 +154,7 @@ $\norm{U\ket{\psi}} = \sqrt{\bk{U\psi}{U\psi}} = \sqrt{\bk{\psi}{\psi}} = \norm{
 therefore a unitary operator takes unit vectors into unit vectors.
 This justifies the identification of unit vectors with rays.
 
-In finite dimensional Hilbert spaces this concept admits a simple characterisation on the matrix associated with the operator.
+In finite dimensional Hilbert spaces this concept admits a simple characterization on the matrix associated with the operator.
 
 :::{.proposition}
 Let $U:\CC^N \to \CC^N$ be a linear operator, then $$U \text{ is unitary} \iff U \text{ is invertible and } U^{-1} = U^\dagger\,.$$
@@ -231,7 +231,7 @@ Phase change
 $$R_\theta = \left(\begin{matrix}1 & 0 \\ 0 & e^{i\theta}\end{matrix}\right), \qquad R_\theta\ket{0} = 0, \quad R_\theta\ket{1} = e^{i\theta}\ket{1}.$$
 
 Controlled $U$-gate
-: Given an $n$ qubit unitary operation $U$, the controlled $U$ gate is an $n+1$ qubit operation given by $$C_U= \left(\begin{array}{c|c} I_2 & 0 \\ \hline 0 & U \end{array} \right), \qquad C_U\ket{a}\ket{x} = \ket{a}U^a\ket{x},$$
+: Given an $n$ qubit unitary operation $U$, the controlled $U$ gate is an $n+1$ qubit operation given by $$C_U= \left(\begin{array}{c|c} I_N & 0 \\ \hline 0 & U \end{array} \right), \qquad C_U\ket{a}\ket{x} = \ket{a}U^a\ket{x},$$
 that is, $C_U\ket{0}\ket{x} = \ket{0}\ket{x}$ and $C_U\ket{1}\ket{x} = \ket{1}U\ket{x}$.
 It serves as a conditional operation.
 
@@ -266,7 +266,7 @@ By [@dfn:unitary] we have
 \bk{\psi}{\phi} & = \bk{\psi}{\phi}\bk{x_0}{x_0} = \bk{\ket{\psi}\ket{x_0}}{\ket{\phi}\ket{x_0}} \\
 & = \bk{U \ket{\psi}\ket{x_0}}{U \ket{\phi}\ket{x_0}} = \bk{ \ket{\psi}\ket{\psi}}{\ket{\phi}\ket{\phi}} = \bk{\psi}{\phi}^2,
 \end{align*}
-therefore $\bk{\psi}{\phi} \in \{0,1\}$ are either equal or orthogonal, which is a contradiction, since we assumed they were arbitary.
+therefore $\bk{\psi}{\phi} \in \{0,1\}$ are either equal or orthogonal, which is a contradiction, since we assumed they were arbitrary.
 :::
 
 We can however clone states from an orthogonal basis, and we will make use of this fact for quantum simulation of classical operations.

@@ -51,7 +51,7 @@ Hence, Shor's algorithm speedup is not as useful in principle as the one that wi
 
 ## The Quantum Fourier Transform
 
-In this section we will describe the Quantum Fourier Transform, an essential part of Shor's algorithm and one of the main algorithms that allows us to achieve super-polynomial speedups. It depends on the notion of discrete normalised Fourier transform.
+In this section we will describe the Quantum Fourier Transform, an essential part of Shor's algorithm and one of the main algorithms that allows us to achieve super-polynomial speedups. It depends on the notion of discrete normalized Fourier transform.
 
 
 :::{.definition name="Unitary DFT"} 
@@ -135,7 +135,7 @@ Hence, if for each qubit $\ket{x_k}$ we apply the Hadamard gate and the controll
 The circuit will have size  $$\frac{n(n+1)}{2} \in O(n^2),$$ since each qubit needs $n-k+2$ gates.
 :::
 
-As any result having to do with concrete sizes of families of quantum circuits, the $O(n^2)$ [@thm:QFT] is given with respect to a basis that has the appropiate gates, and for a fixed basis there might be a polylogarithmic difference given by [@thm:solovay].
+As any result having to do with concrete sizes of families of quantum circuits, the $O(n^2)$ [@thm:QFT] is given with respect to a basis that has the appropriate gates, and for a fixed basis there might be a poly-logarithmic difference given by [@thm:solovay].
 
 An example circuit for the Quantum Fourier Transform of 3 qubits can be seen in [@fig:qft].
 
@@ -293,7 +293,7 @@ Given this lemma we can prove:
 [@prob:order] is solvable in quantum polynomial time.
 :::
 :::{.proof}
-Let us consider the unique unitary map $U$ that maps, for $j,k \in {0, \dots, N-1}$ (expressable in $n$ qubits each),
+Let us consider the unique unitary map $U$ that maps, for $j,k \in {0, \dots, N-1}$ (expressible in $n$ qubits each),
 $$\ket{k} \mapsto \begin{cases}\ket{x^jk \mod N} & \text{ if } k \leq N \\ \ket{k} & \text{ otherwise.}\end{cases}$$
 This map is efficiently computable for powers $2^j$ via binary exponentiation.
 It is unitary since $x$ and $N$ are coprime.
@@ -344,7 +344,7 @@ $$aN(x+1)+ b(x^2-1) = x+1 \implies N(a(x+1) + bk) = x+1.$$
 Therefore, $N | x+1$, but this is a contradiction.
 
 Therefore, $1<\operatorname{gcd}(x-1,N)<N$, and thus it is a non-trivial divisor of $N$.
-We may then compute it using the well-known Euclides' algorithm, which has the desired complexity.
+We may then compute it using the well-known Euclidean algorithm, which has the desired complexity.
 :::
 
 [@lemma:solution] hints at the reduction used by Shor's algorithm: if we can find a non-trivial solution to 
@@ -439,7 +439,7 @@ Solves [@prob:factoring].
 :::
 
 By the previous discussion this proves [@thm:shor].
-For finding *all* factors of a given number we may repeat [@algo:shor] and succesively divide the integer until we reach a base case. This would also take a polynomial amount of time, $O(\log^4 N)$.
+For finding *all* factors of a given number we may repeat [@algo:shor] and successively divide the integer until we reach a base case. This would also take a polynomial amount of time, $O(\log^4 N)$.
 
 :::{.comment}
 ## Quipper implementation

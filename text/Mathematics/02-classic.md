@@ -103,7 +103,7 @@ When it is clear from context, we will also denote by $M$ the partial function c
 The circuit model provides an alternative computation model that will be useful in proving the relation between classic and quantum computation models. We adapt the definition from (@VollmerIntroductioncircuitcomplexity1999, chap. 1).
 
 We will use the term circuit in different contexts in this document.
-In general, there is an implicit base state space (for example $\BB, \RR$, a random bit or a qubit), that can be composed with a certain product (usually the cartesian product or the tensor product).[^category]
+In general, there is an implicit base state space (for example $\BB, \RR$, a random bit or a qubit), that can be composed with a certain product (usually the Cartesian product or the tensor product).[^category]
 Both will be clear from context.
 
 [^category]: In its most general terms what we are essentially describing a morphism in a planar monoidal category via a string diagram (@Selingersurveygraphicallanguages2010, thm. 3.1).
@@ -146,7 +146,7 @@ It is also important that all gates are symmetric.
 Furthermore, we will use three operations that allow us to clone, destroy and create bits, namely,
 
 4. the FANOUT gate, given by $\operatorname{FANOUT}(x) = (x,x)$,
-5. the 1-input 0-ouput DISCARD gate, that ignores the output and
+5. the 1-input 0-output DISCARD gate, that ignores the output and
 6. the 0-input 1-output ANCILLARY gate that produces a $0$ bit.
 
 Thus,
@@ -228,7 +228,7 @@ Let $f: \NN \to \NN$, $L \subseteq \BB^\ast$. Then:
 
 If $F \subseteq \NN^\NN$ then $$\TIME(F) = \bigcup_{f(n) \in F} \TIME(f(n))$$ and likewise for $\SPACE$ and $\SIZE$.
 
-These classes are potentially dependent on the use of the specific single-tape Turing machine model of [@dfn:tm]; if a different model is used, such as multitape Turing machines or RAM models, the classes might change (@vanLeeuwenHandbookTheoreticalComputer1990, chap. 1).
+These classes are potentially dependent on the use of the specific single-tape Turing machine model of [@dfn:tm]; if a different model is used, such as multi-tape Turing machines or RAM models, the classes might change (@vanLeeuwenHandbookTheoreticalComputer1990, chap. 1).
 
 <!-- #### The hierarchy theorems {.hidden} -->
 
@@ -296,7 +296,7 @@ The following inequalities hold for every $f \in \NN^\NN$
    Let $d$ be the maximum branching factor of $M$.
    Any sequence of choices can be written in $O(f(n)\log d)$ space as a sequence of $O(f(n))$ numbers between $0$ and $d$.
    
-   For every posible sequence of choices, try the execution of $M$ and accept if $M$ accepts.
+   For every possible sequence of choices, try the execution of $M$ and accept if $M$ accepts.
    If $M$ rejects for any of these sequences, then reject.
    
 4. Let $L \in \NSPACE(f(n))$, $M = (Q, \delta, )$ the associated NDTM. 

@@ -58,7 +58,7 @@ In this section we will describe the Quantum Fourier Transform, an essential par
 (@RaoFastFouriertransform2010, sec 2.1.3)
 
 The *discrete normalized Fourier Transform* (UDT) is the map $\operatorname{UDT} : \CC^N \to \CC^N$ given by
-$$\operatorname{UDT}(x) = y,\text{ where } y_k := \frac{1}{\sqrt{N}} \sum_{n= 0}^{N-1} x_j \exp\left(\frac{2\pi ijk}{N}\right),$$
+$$\operatorname{UDT}(x) = y,\text{ where } y_k := \frac{1}{\sqrt{N}} \sum_{j= 0}^{N-1} x_j \exp\left(\frac{2\pi ijk}{N}\right),$$
 for all $k \in \{0,\dots,N-1\}, x = (x_0, \dots, x_{N-1}) \in \CC^N$.
 :::
 

@@ -61,29 +61,53 @@ As we shall see in the next section, Grover's algorithm builds on this idea and 
 
 ## Grover's algorithm
 
-The following operation can be done with a TODO number of gates:
+Firstly, we need to define Grover's operator, an operator associated with a given oracle.
 
-:::{.definition name="Inversion about mean"}
+Consider the following operation.
+
+:::{.definition name="Diffusion"}
 Let $n \in \NN$.
-The *inversion about mean* operator is the operator given by TODO
+The *diffusion* operator is the operator $$D_n : Q^{\otimes n} \to Q^{\otimes n}$$ given by the following procedure
+
+1. Apply the Hadamard transform to each qubit,
+2. Apply a phase shift such that 
+   $$\ket{x} \mapsto \ket{x} \text{ if } x \neq 0, \quad \ket{0} \mapsto -\ket{0},$$
+3. apply the Hadamard transform again to each qubit.
 :::
 
+It can be done with a linear number of gates; a circuit performing the diffusion operator for $n = 3$ qubits can be seen in [@fig:diffusion].
 
-A circuit performing the inversion about mean for $n = 3$ qubits can be seen in [@fig:inversion].
+![Diffusion operator for $n =  3$ qubits.](TODO){#fig:diffusion}
 
-![Inversion about mean operator for $n =  3$ qubits.](){#fig:inversion}
-
-
-Using the inversion about the mean procedure, we now define *Grover's operator*, which is associated with a given oracle.
+Using the diffusion procedure, we now define *Grover's operator*, which is associated with a given oracle.
+We omit dealing with the auxiliary qubits, since these are only altered by the oracle.
+Recall that for a given function $f : \BB^n \to \BB$, its oracle $U_f: Q^{\otimes n +1} \to Q^{\otimes n+1}$ is the unique linear map that maps $$\ket{x}\ket{y} \mapsto \ket{x}\ket{y \oplus f(x)}.$$
 
 :::{.definition name="Grover Operator"}
-TODO
+Given an oracle $U_f$, its *Grover's operator*, $$G_f : Q^{\otimes n +1} \to Q^{\otimes n+1}$$ is given by the following procedure
+
+1. Apply the oracle $U_f$ to all qubits and
+2. apply $D_n$ to all but the last qubit.
 :::
 
 This operator is crucial in the description of Grover's algorithm but also in the quantum counting and quantum existence algorithms.
+When used by algorithms, we will always assume that the last qubit input, that is, qubit $\ket{y}$, is $H\ket{1}$, so that by [@lemma:signchange], we can see the oracle as performing in all but the last qubit the map
+$$\ket{x} \mapsto (-1)^{f(x)}\ket{x}.$$
+
+Grover's operator can be given a geometrical interpretation that we can see in the following lemma.
 
 :::{.lemma}
-The restriction of Grover's operator to the subspace spanned by $\ket{\psi}$ and $\ket{\beta}$ is a rotation, whose angle $\theta$ verifies $$TODO.$$
+Let $f : \BB^n \to \BB$ and $M = |f^{-1}(1)|$.
+
+Let $\ket{\psi}$ be a uniform superposition, that is,
+$$\ket{\psi} = H^{\otimes n}\ket{0}^{\otimes n} = \frac{1}{\sqrt{2^n}}\sum_{y \in \BB^n} \ket{y}$$
+and $\ket{\beta}$ be the uniform superposition of solutions to the equation $f(x) = 1$, that is
+$$\ket{\beta} = \frac{1}{\sqrt{M}} \sum_{x \in f^{-1}(1)} \ket{x}.$$
+
+The restriction of Grover's operator to the subspace spanned by $\ket{\psi}$ and $\ket{\beta}$ is a rotation, whose angle $\theta$ verifies $$\cos \frac{\theta}{2} = \sqrt{\frac{N-M}{N}}.$$
+:::
+:::{.proof}
+TODO
 :::
 
 
@@ -108,10 +132,10 @@ TODO
 
 ## Optimality
 
-In the case of solving an $\mathsf{NP}$ problem, Grover's algorithm gives us at most a quadratic speedup xreplacing a query complexity of $O(2^n)$ to one of $O(\sqrt{2^n}) = O(2^{n/2})$.
-This is an insufficient speedup from a practical point of view, since it still leaves us with an (at least) exponential runtime. Is there any possible improvement of this technique?
+In the case of solving an $\mathsf{NP}$ problem, Grover's algorithm gives us at most a quadratic speedup replacing a query complexity of $O(2^n)$ to one of $O(\sqrt{2^n}) = O(2^{n/2})$.
+This is an insufficient speedup from a practical point of view, since it still leaves us with an (at least) exponential run-time. Is there any possible improvement of this technique?
 
-This section aims to prove that in the query complexity model Grover's algorithm is asymptotically optimal, meaning that any other algorithm that solves the search problem will have a runtime in $\Omega(\sqrt{N})$.
+This section aims to prove that in the query complexity model Grover's algorithm is asymptotically optimal, meaning that any other algorithm that solves the search problem will have a run-time in $\Omega(\sqrt{N})$.
 This does not prove of course that $\mathsf{NP} \not\subseteq \mathsf{BQP}$ or any other similar result.
 It does however show that the general task of solving $\mathsf{NP}$ problems or other search problems with an exponential search space must be attacked by using the inner structure of the problem, since any algorithm that does not do so would have a running time in $\Omega(\sqrt{N})$.
 

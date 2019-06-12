@@ -27,8 +27,6 @@ A **Hilbert space** is a pre-Hilbert space such that $(H,\norm{\cdot})$ is compl
 
 Every finite dimensional normed space over $\CC$ is complete, therefore if $H$ is a finite dimension pre-Hilbert space then $H$ is a Hilbert space.
 We will focus on this scenario when dealing with quantum computers; all the Hilbert spaces considered will be finite dimensional. Vectors in quantum computer science are usually written as a *ket* between $|$ and $\rangle$.
-\fxnote{El caso infinito-dimensional se conoce como "continous variable quantum computation". Podría discutirlo brevemente.}
-
 
 The canonical finite dimensional Hilbert space of dimension $N$ is $\CC^N$ with product given by
 $$\bk{u}{v} = \sum_{j=1}^N \overline{u_j}v_j \quad \text{ where } u = (u_1, \dots, u_N), v = (v_1, \dots, v_N)$$
@@ -67,7 +65,7 @@ $$\ket{\psi} = \alpha\ket{0} + \beta\ket{1} \quad \text{such that } \norm{\ket{\
 ## Composite systems
 
 A physical system may be composed of several separate subsystems. 
-The relationship between the state spaces of the subsystems and the composite system is given by the tensor product, which is justified by the following result: \fxnote{Podría definir el producto tensorial de espacios vectoriales}
+The relationship between the state spaces of the subsystems and the composite system is given by the tensor product, which is justified by the following result:
 
 :::{.proposition}
 Let $H_1, H_2$ be finite dimensional Hilbert spaces with orthonormal basis $B_1 = \{u_i\}_{i \in I}, B_2 = \{v_j\}_{j \in J}$ respectively. 

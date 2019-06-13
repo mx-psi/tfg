@@ -7,7 +7,7 @@ colorlinks: true
 bibliography: src/citas.bib
 biblio-style: apalike
 link-citations: true
-secnumdepth: 3
+secnumdepth: 2
 toc: true
 linestretch: 1.05
 toc-depth: 3

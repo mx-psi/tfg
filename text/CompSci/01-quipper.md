@@ -1,249 +1,213 @@
-:::{.comment}
+# Quipper
 
-# Programming quantum algorithms
+In this chapter we present Quipper, a quantum programming language that we use to implement concrete quantum algorithms as uniform families of quantum circuits, and we describe the setup followed for the implementation.
 
-In this and the following sections we will present several key quantum algorithms that provide some speedup in comparison with the best known classical (or randomized) algorithm that solves the same problem.
+## Quantum programming languages
 
-This first section presents the general setup; both in terms of what will be said about algorithms and how they have been implemented using the programming language Quipper.
+Quantum programming languages are programming languages that would be practically useful in the design and implementation of quantum algorithms.
+Since the early 2000s there has been a surge in proposals for quantum programming languages,
+which can roughly be classified into *imperative quantum programming languages*, which follow Knill's QRAM model (@KnillConventionsquantumpseudocode1996) and *functional quantum programming languages*, which extends lambda calculus in some fashion, frequently using sophisticated type systems to ensure the correctness of programs (@GayQuantumprogramminglanguages2006).
 
-## Quipper
+Even without practically useful quantum computers in the present, the presence of quantum programming languages is essential for the design and verification of quantum algorithms, since they can be more easily tested against different examples.
+Furthermore, these programming languages can be given precise formal semantics that allow for their verification
+(@YingFoundationsquantumprogramming2016, chap. 1).
 
-\fxnote{Queda por hacer.}
+In this bachelor's thesis I have chosen to use *Quipper*, a purely functional scalable programming language, since it is both practically usable and both its actual programs and its underlying semantics most closely resemble the uniform families of quantum circuits model for quantum programs.
+Quipper was designed as part of IARPA's QCS project and it has been used to implement several non-trivial quantum algorithms present in the literature (@GreenIntroductionQuantumProgramming2013).
+Parts of Quipper have been given formal semantics, and the language has been generalized to describe families of morphisms in a symmetric monoidal category (@RossAlgebraicLogicalMethods2015, @RiosCategoricalModelQuantum2018).
 
-### stack and Haskell setup 
+The following sections introduce practical aspects of programming in Quipper, and the next chapters each present the implementation of one or several quantum algorithms that exemplify these notions.
 
-### Testing
+## Quipper: a functional quantum programming language
 
-### Quipper as an embedded language
+Quipper is an embedded language based on *Haskell*, a functional programming language widely used within the functional programming community.
+In practical terms, Quipper consists of
 
-Quipper is an embedded functional programming language based on Haskell that provides tools for quantum simulation and expressing circuit families.
+1. `Quipper`, a Haskell library that defines several constructs and functions that allow us to define and 
+   manipulate both classical and quantum circuits,
+2. `QuipperLib`, a second library that allows us to optimize, represent and simulate those circuits and
+3. a preprocessing script that compiles the Quipper-specific syntax into Haskell.
 
-### Relevant functions
-We can think of the following functions has having this type
+The following sections describe these parts in more detail, as well as the host language Haskell.
 
-1. `qinit :: Struct Bool -> Circ (Struct Qubit)`
-2. `hadamard, qnot gate_X, gate_Y, gate_Y :: Qubit -> Circ Qubit`
-3. `controlled :: ControlSource c => Circ a -> c -> Circ a` (creates a controlled gate)
+### Haskell
 
-TODO
+The host language used by Quipper is Haskell. 
+Haskell is a purely functional programming language created in 1990, that has strong static typing and lazy evaluation.
+It has a formal specification given by the Haskell Report (@MarlowHaskell2010language2010).
 
+In this document we make use of the version of Haskell implement by the Glasgow Haskell's compiler version 8.2.2 (@GlasgowHaskellCompiler).
+We make use of several language extensions that are not part of the Haskell standard since these are used by Quipper for its internal implementation.
+
+We will not make an extensive description of Haskell here, yet here we briefly highlight a number of features that are relevant for the understanding of Quipper.
+An introduction to Haskell can be found at (@HuttonProgramminghaskell2016).
+
+Some relevant features of Haskell for the implementation of quantum algorithms in Quipper are:
+
+Higher-kinded types
+: Haskell's type system (together with GHC's non-standard extensions) allow for the use of *higher kinded types*.
+  Haskell does not have dependent types, but rather its types have a *kind*.
+  Base types such as `Char`, `Int` or `Double` have the kind `Type`, 
+  while type constructors such as lists can have a kind `Type -> Type`,
+  that is, they take a base type and return a different base type 
+  (for example, `[Int]`, the type of lists of integers).
+
+Typeclasses
+: Polymorphic functions in Haskell are defined through the use of *typeclasses*. 
+  In its most general terms, a typeclass `Class a1 a2 .. an` is defined by a public interface 
+  that defines a number of polymorphic functions that can make use of the (possibly higher kinded) types `a1`, 
+  `a2`, ... `an` in their type signatures.
+  Then, the programmer can manually specify instances of the typeclass for a fixed colection of types `T1`, ..., 
+  `Tn`, by giving the definition of these functions for the fixed types.
+  For example, the typeclass `Ord a` defines (among others) the "less than" function, with type signature:
+  ```haskell
+  (<) :: Ord a => a -> a -> Bool
+  ```
+  It has instances for most types, such as `Int`, `Char` or `Double`.
+
+Monads
+: A particular typeclass that is extensively used in Quipper is the `Monad` typeclass.
+  It is defined for types of kind `Type -> Type`, and it is inspired by the concept of *monad*
+  in category theory, a monoid object in the category of endofunctors over a particular category.
+  They are widely used in functional programming as computational contexts, to handle side effects
+  and failure.
+  Its public interface can be given[^monad] by two functions,
+
+  - `pure :: a -> Monad a`, that introduces an object into a minimal computational context and
+  - `(<=<) :: Monad m => (b -> m c) -> (a -> m b) -> a -> m c`, a composition operator for monadic 
+  functions.
+  
+  Any instance of the `Monad` class should verify that the defined `<=<` is an associative operation
+  with `pure` as its neutral element.
+  
+  Haskell introduces a special syntax for monadic operations, the `do` notation.
+  This syntax resembles imperative code, and will be used for defining the families of circuits.
+
+
+[^monad]: This is not the actual definition in the Haskell Report, but it is equivalent. We are describing a monad in terms of its Kleisli category.
+
+### Quipper features
+
+Quipper implements a mixed circuit model of quantum computing, that includes both classical and quantum circuits, and allows for the mixing of both.
+As discussed in previous chapters, this model is equivalent to using pure quantum circuits, yet it allows for further flexibility in the implementation. We will also mix circuit code with Haskell code when this is possible for simplicity.
+While a complete formalization of the semantics of Haskell that would allow for a formal justification of this fact is not available, as most programming languages Haskell is considered to be Turing-equivalent, and thus code written this way would in principle still be able to be transformed to the circuit model.
+
+#### Datatypes
+
+Within its circuit model we can distinguish three phases of execution (@GreenIntroductionQuantumProgramming2013): compile time (when Quipper code is transformed into Haskell code and compiled), *circuit generation* time (when, during program execution, the circuit is generated) and *circuit execution* time (when the circuit execution is simulated).
+
+Using this distinction, we can distinguish two kinds of types
+
+1. *parameters*, known at circuit generation time. These are represented by the datatype `Bool`.
+2. *inputs*, known at circuit execution time. The classical inputs are represented by the type `Bit` and the quantum 
+   inputs are represented by `Qubit`.
+   
+Parameters can be turned into inputs but not vice versa.
+Furthermore, classical inputs can be turned into quantum inputs,
+but transforming quantum inputs into classical ones requires performing a measurement.
+
+To define a circuit in Quipper we use the `Circ` monad.
+For example, a function $f : Q^{\otimes 2} \to Q^{\otimes 3}$ would have type
+```haskell
+f :: (Qubit, Qubit) -> Circ (Qubit, Qubit, Qubit)
+```
+
+:::{.example name="A simple circuit"}
+The file `src/apps/Classical.hs` in the associated code[^code] defines several simple classical and quantum gates, that have been used to produce the diagrams in this document. 
+
+For example, the $\operatorname{FANOUT}$ gate can be seen as having type 
+```haskell
+fanout :: Qubit -> Circ (Qubit, Qubit)
+```
+Its definition is
+```haskell
+fanout x = do
+  y  <- qinit True
+  z  <- qinit False
+  (x, y, z) <- toffoli (x, y, z)
+  qterm True y
+  pure (x, z)
+```
+
+For its definition we use the `qinit` function, that transforms parameters into quantum inputs (serving as the $\operatorname{ANCILLARY}$ gate), the `toffoli` gate and the `qterm` function for the $\operatorname{DISCARD}$ gate.
 :::
 
-# The Deutsch-Jozsa algorithm
+[^code]: See the Appendix for instructions on how to obtain the code if it has not been provided with this file.
 
-In this chapter we develop our first example of a quantum algorithm.
-The first section presents the setting in which the complexity of this and later algorithms will be analyzed, and the following section presents the solution.
+To allow for the definition of families of quantum circuits, 
+Quipper introduces the typeclass `QShape ba qa ca`.
+It is defined for triples of types with kind `Type`, 
+and its purpose is to allow for generic definitions of circuits.
 
-## The query complexity model
-
-The focus of the previous sections on computation models was on time complexity.
-These are the most meaningful practical measures of complexity; however, they are notoriously difficult to analyze, as the wide range of existing open problems in the field shows (@AaronsonmathoplimitsNP2016).
-
-In the analysis of the algorithms that will be presented we will sometimes focus on an alternative complexity measure: *query complexity*, also known in the classical case as *decision tree complexity* (@AmbainisUnderstandingQuantumAlgorithms2017, sec. 2).
-
-In the quantum case, we are given an *oracle* (or, more generally, a family of oracles) that gives us information about a certain binary string $x \in \BB^N$ (@Kayeintroductionquantumcomputing2007, sec 9.2).
-Similar to the approach for [simulating classical operations](#simulating-classical-operations), we can have a unitary operation that maps $$\ket{j}\ket{y} \mapsto \ket{j}\ket{y \oplus x_j}.$$
-
-We would then like to compute some property about the oracle; the question then becomes: 
-how many *queries* have to be made to the oracle in order to compute such property with bounded error?
-
-That is we say that a quantum algorithm $\{C_N\}_{}$ (with respect to any set of gates that includes the quantum oracle) that computes a certain function $f: \BB^\ast \to \BB^\ast$ (with bounded error) has query complexity $O(T(N))$ if the function that for each $N$ counts the number of oracle gates in $C_N$ is $O(T(N))$.
-
-An alternative way of presenting query complexity is to talk about a function $f:\BB^n \to \BB$ that outputs $f(j) = x_j$ (where $j$ is passed as a binary string). We note that $N = 2^n$, and thus in this approach the query complexity would be $O(T(2^n))$.
-
-Query complexity then gives a lower bound estimate of the actual time complexity; since we would have to add in the non-query gates as well as the amount of gates needed to simulate the oracle.
-
-## Deutsch's problem 
-
-The Deutsch-Jozsa algorithm is one of the first quantum algorithms that provide some quantum speedup in the query complexity model.
-It was first proposed in 1992 [@CleveQuantumAlgorithmsRevisited1998].
-It will serve as a first approximation to a concrete algorithm, although it is of little practical value.
-
-The problem it solves is as follows
-
-:::{.problem name="Deutsch's Problem" #prob:deutsch}
-Find out whether a function is balanced or constant.
-
-- **Input:** A function $f:\BB^n \to \BB$
-- **Promise:** The function is either constant or it is *balanced*, i.e., $|f^{-1}(0)| = |f^{-1}(1)|$.
-- **Output:** A bit $b$ where $b = 0$ if the function is constant or $b = 1$ if it is balanced.
-:::
-
-As we work in the query complexity model, we assume $f$ is given as a reversible oracle that maps 
-$$\ket{x}\ket{y} \mapsto \ket{x}\ket{y \oplus f(x)}.$$
-
-In the classical case, at worst we have to check $2^{n-1} + 1$ inputs to distinguish between the two classes.
-In the quantum case in contrast, it can be checked with exactly one query.
-
-First, consider the following simple lemma,
-
-:::{.lemma #lemma:hadamard}
-(@NielsenQuantumComputationQuantum2010, eq. 1.50)
-
-Let $n \in \NN, N = 2^n$ and $x \in \BB^n$. Then $$H^{\otimes n}\ket{x} = \frac{1}{\sqrt{2^n}}\sum_{y \in \BB^n} (-1)^{x \odot y}\ket{y},$$
-where, if $x = x_1 \dots x_n$ and $y = y_1 \dots y_n$, then $$x \odot y = \sum_{j=1}^n x_jy_j \mod 2,$$
-is its "bit-wise inner product" in $\ZZ_2$.
-:::
-:::{.proof}
-
-Let $n=1$. We have 
-$$H\ket{x} = \frac{1}{\sqrt{2}}(\ket{0} + (-1)^{x}\ket{1}) = \sum_{y = 0}^1 (-1)^{xy}\ket{y} = \sum_{y \in \BB} (-1)^{x \odot y}\ket{y}.$$
-
-Let $n > 1$. Then
-\begin{align*}
-H^{\otimes n}\ket{x} & = \bigotimes_{k = 1}^n \sum_{y_k = 0}^1 (-1)^{x_ky_k}\ket{y_k} \\
-& = \sum_{y \in \BB^n} \bigotimes_{k = 1}^n (-1)^{x_ky_k}\ket{y_k} \\
-& = \sum_{y \in \BB^n} (-1)^{\sum x_ky_k}\ket{y} \\
-& = \sum_{y \in \BB^n} (-1)^{x \odot y}\ket{y}.
-\end{align*}
-:::
-
-In particular, we can obtain an uniform superposition of all possible $n$ bit strings by using [@lemma:hadamard],
-$$H^{\otimes n}\ket{0}^{\otimes n} = \frac{1}{\sqrt{2^n}}\sum_{y \in \BB^n} (-1)^{0 \odot y}\ket{y} = \frac{1}{\sqrt{2^n}}\sum_{y \in \BB^n} \ket{y}.$$
-
-Another simple lemma that will be useful later is
-
-:::{.lemma #lemma:signchange}
-Let $f: \BB^n \to \BB$ be a function and $U_f: Q^{\otimes n+1} \to Q^{\otimes n+1}$ be the reversible function associated with $f$, that is, 
-$$U_f\ket{x}\ket{y} = \ket{x}\ket{y \oplus f(x)}.$$
-
-Let $$\ket{\downarrow} = \frac{1}{\sqrt{2}}\left(\ket{0} - \ket{1}\right).$$
-Then $$U_f\ket{x}\ket{\downarrow} = (-1)^{f(x)}\ket{x}\ket{\downarrow}.$$
-:::
-:::{.proof}
-Clearly, 
-$$U_f\ket{x}\ket{\downarrow} =\frac{1}{\sqrt{2}}(\ket{x}\ket{f(x)} - \ket{x}\ket{1 \oplus f(x)}).$$
-
-If $f(x) = 0$ then 
-$$\ket{x}\ket{f(x)} - \ket{x}\ket{1 \oplus f(x)} = \ket{x}\ket{0} - \ket{x}\ket{1} = \ket{x}\otimes(\ket{0} - \ket{1}).$$
-Similarly, if $f(x) = 1$,
-$$\ket{x}\ket{f(x)} - \ket{x}\ket{1 \oplus f(x)} = \ket{x}\ket{1} - \ket{x}\ket{0} = -\ket{x}\otimes(\ket{0} - \ket{1}).$$
-:::
-
-Next, consider the following algorithm:
-
-:::{.algorithm name="Deutsch-Jozsa algorithm" #algo:deutsch}
-(@NielsenQuantumComputationQuantum2010, sec. 1.4.4)
-
-**Solves:** [@prob:deutsch].
-
-1. Initialize $n$ qubits to $\ket{0}$ and an extra qubit to $\ket{1}$.
-2. Apply Hadamard gates to each qubit.
-3. Apply the oracle for $f$ to the whole state.
-4. Apply Hadamard transform to the first $n$ qubits.
-5. Discard the last qubit and measure the first $n$ qubits.
-6. Output the logical OR of the measured bits.
-:::
-
-An example of the algorithm for $n=2$ can be seen in [@fig:deutsch].
-
-![Deutsch-Jozsa algorithm for a function $f:\BB^3 \to \BB$](assets/deutsch.pdf){#fig:deutsch width=100%}
+For example, an instance of `QShape` can be given by the types `Bool`, `Qubit` and `Bit`,
+but also for `[Bool]`, `[Qubit]` and `[Bit]`.
+This allows for generic definitions of circuits that can have an arbitrary shape of input, 
+thus easily defining families of circuits.
 
 
-:::{.proposition name="Correctness of Deutsch-Jozsa algorithm"}
-(@NielsenQuantumComputationQuantum2010, sec. 1.4.4)
+:::{.example name="Oracles"}
 
-Let $f:\BB^n \to \BB$ be a constant or balanced function.
-Then [@algo:deutsch] output is non-zero if and only if $f$ is balanced.
-:::
-:::{.proof}
+As we saw in section [simulating classical operations], 
+a function $$f :\BB^n \to \BB$$ can be transformed into a reversible function 
+$$ U_f : Q^{\otimes n+1} \to Q^{\otimes n+1}$$
+that maps $$\ket{x}\ket{y} \mapsto \ket{x}\ket{y \oplus f(x)}.$$
 
-Let $\ket{\phi_j}$ be the state at step $j$.
-
-By construction, 
-$$\ket{\phi_1} = \ket{0}^{\otimes n}\ket{1}.$$
-
-Applying Hadamard gates to each qubit gives us
-$$\ket{\phi_2} = H^{\otimes n}\ket{0}^{\otimes n}H\ket{1} = \left(\frac{1}{\sqrt{2^n}}\sum_{y \in \BB^n} \ket{y}\right)\otimes \frac{1}{\sqrt{2}}\left(\ket{0} - \ket{1}\right).$$
-
-We now apply $f$'s oracle and by [@lemma:signchange] we have
-$$\ket{\phi_3} = \frac{1}{2^n}\sum_{y \in \BB^n} (-1)^{f(y)}\ket{y}\otimes \frac{1}{\sqrt{2}}\left(\ket{0} - \ket{1}\right).$$
-
-By [@lemma:hadamard] we see that
-$$\ket{\phi_4} = \frac{1}{2^n}\left(\sum_{z \in \BB^n} \sum_{y \in \BB^n} (-1)^{y \odot z + f(y)}\ket{z}\right)\otimes \frac{1}{\sqrt{2}}\left(\ket{0} - \ket{1}\right).$$
-
-Ignore the last qubit and consider the probability of measuring $\ket{0}^{\otimes n}$ at step 5.
-Its probability is given by 
-$$\left|\frac{1}{2^n}\sum_{y \in \BB^n} (-1)^{f(y)}\right|^2.$$
-
-If $f$ is constant, then this probability is exactly $1$, and the logical OR will give us $0$.
-If $f$ is balanced, then 
-$$\sum_{y \in \BB^n} (-1)^{f(y)} = \sum_{y \in f^{-1}(0)} (-1)^0 + \sum_{y \in f^{-1}(1)} (-1)^1 = 0.$$
-Hence, at least one of the measured bits will be $1$ and the output will be $1$.
-:::
-
-In contrast with the deterministic case, [@algo:deutsch] solves [@prob:deutsch] in one query,
-thus we can obtain a provable speedup from $O(N)$ to $O(1)$.
-
-Although this is a non-negligible improvement, the speedup vanishes when randomness is allowed.
-Consider an algorithm that uniformly samples two different strings $x_1, x_2$ from $\BB^n$ and outputs constant if $f(x_1) = f(x_2)$ or balanced otherwise.
-
-If $f$ is constant, then the algorithm always outputs the correct answer.
-If $f$ is balanced, assume, without loss of generality, that $f(x_1) = 0$.
-The probability of success is then 
-$$P(\operatorname{Success}) = P(f(x_2) = 1) = \frac{N/2}{N-1} = \frac12 + \frac{1}{2(N-1)},$$
-and therefore by [@prop:Chernoff] the error can be bounded by repeating the algorithm and taking the majority vote.
-
-[@algo:deutsch] may seem superior to this probabilistic alternative in that it outputs the correct answer with certainty and it does so in exactly one query, when, in comparison the probabilistic algorithm takes at least two queries.
-Nonetheless, this property is dependent on the chosen gate basis, since the approximation given by the Solovay-Kitaev theorem might introduce some error, so the seeming advantage might vanish in practice.
-
-Hence, the two alternatives are asymptotically equivalent and there is no speedup gained by this algorithm in comparison with the classical case.
-
-:::{.comment}
-
-## Quipper implementation
-
-This section outlines the implementation of [@algo:deutsch] in Quipper.
-It also presents the general data-type of `Oracle`s, used in later algorithms.
-
-### The `Oracle` data-type
-
-An oracle is a circuit that represents a function $f: \BB^n \to \BB$.
-It is given by its `shape` of input and the underlying circuit:
+In the attached code, these reversible functions are given by the datatype `Oracle`,
+that has a `shape` and `circuit`:
 ```haskell
 data Oracle qa = Oracle {
   shape   :: qa, -- ^ The shape of the input
   circuit :: (qa,Qubit) -> Circ (qa,Qubit) -- ^ The circuit oracle
   }
 ```
-This type constructor is parameterized by the shape of input.
-It is intended that the type of input belongs to the class `QData`.
 
-The module `Oracle` provides several ways of building an oracle:
-
-1. Explicitly from its shape and a possibly non-reversible circuit by the function `buildOracle`, with type
+We also define a function `buildOracle` that can build $U_f$ given $f$.
+For this we make use of the `QShape` datatype, with which we can express the type signature as:
 ```haskell
 buildOracle
-  :: QData qa
+  :: QShape ba qa ca
   => qa
   -> (qa -> Circ Qubit)
   -> Oracle qa
 ```
-2. From a csv-formatted `String` such as
-```
-00,0
-01,1
-10,0
-11,1
-```
-via the function `decodeOracle`, with type
-```haskell
-decodeOracle :: String -> Either Error (Oracle [Qubit])
-```
-indicating a possible failure if the string is malformed.
-A general use case is reading an oracle from a file and using it in some `IO` action.
-The function `withOracle`, with type
-```haskell
-withOracle :: String -> (Oracle [Qubit] -> IO ()) -> IO ()
-```
-conveniently encapsulates such use case, automatically reporting possible errors.
-
-
-### Deutsch-Jozsa algorithm
-
-
-
-
-It is defined as a polymorphic function that takes an `Oracle`.
-
 :::
+
+#### Circuit generation
+
+Quipper includes a powerful circuit generation system, that uses Haskell's compile-time metaprogramming capabilities to produce circuits from classical code.
+This can be used for transforming `Bool` based functions into circuits.
+
+For this, Quipper introduces the special syntax `build_circuit`, that is not legal Haskell syntax.
+If placed before a boolean function it produces a circuit based on the code of that function.
+For example, to define the $\operatorname{XNOR}$ gate:
+```haskell
+build_circuit
+booleanXnor (x, y) = (not x || y) && (x || not y)
+
+xnor :: (Qubit, Qubit) -> Circ Qubit
+xnor = unpack template_booleanXnor
+```
+
+This is used to define an automatic circuit generator from a truth table given in a CSV file (or, if the filename is missing, from the standard input).
+We will use this to pass concrete functions to the defined algorithms.
+
+
+### stack and `quipperlib` setup 
+
+`stack` is Haskell's most popular package manager [@SnoymanHaskellToolStack2019].
+It provides a framework for reproducible builds and an easy way of installing a package dependencies.
+It is compatible with Windows, macOS and Linux based OSs.
+
+In order to ease the programming in Quipper, for this work I have bundled the official Quipper code into a `stack`-compatible Haskell package, which is available [on Github](https://github.com/mx-psi/quipper).
+Quipper's preprocessor has been manually included in `stack`'s building process so as to be able to use the full Quipper language.
+
+A Makefile is provided to aid in the compilation of the binaries.
+
+The provided binaries are
+
+1. `quantum`, that provides a command-line interface for the simulation and graphical representation of several 
+  quantum algorithms.
+2. `diagrams`, that produces the circuit diagrams that are used in this document making use of Quipper's libraries.
+
+
+The following chapters will describe the quantum algorithms in detail, as well as their implementations.

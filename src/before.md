@@ -10,7 +10,7 @@ link-citations: true
 secnumdepth: 2
 toc: true
 linestretch: 1.05
-toc-depth: 3
+toc-depth: 1
 numbersections: true
 linkReferences: true
 prefixes:

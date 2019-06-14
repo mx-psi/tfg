@@ -1,5 +1,4 @@
 PANDOC:=pandoc
-# TODO: filters/IncludeFilter.hs
 FILTERS:= filters/env.hs filters/pandoc-crossref pandoc-citeproc
 PFLAGS:= $(foreach filter,$(FILTERS),-F $(filter)) -M commit="$$(git rev-parse --short HEAD)" -M time="$$(date -Iseconds)" -H src/math.sty
 

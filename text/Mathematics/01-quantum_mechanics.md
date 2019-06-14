@@ -189,10 +189,6 @@ Furthermore, if $U^{(1)} = (u^{(1)}_{ij})$, its matrix expression wrt. the basis
   u^{(1)}_{m1} U^{(2)} & \cdots & u^{(1)}_{mn} U^{(2)}
 \end{matrix}\right).$$
 :::
-<!-- :::{.proof} -->
-<!-- TODO? -->
-<!-- ::: -->
-
 
 Lastly we state the measurement operation for finite dimensional systems.
 

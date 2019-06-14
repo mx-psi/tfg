@@ -212,7 +212,7 @@ The family $\{C_n\}_{n \in \NN}$ then decides $L$.
 ## Complexity
 ### Deterministic complexity
 
-There are different approaches as to how to measure the complexity of a given algorithm, here we will focus on two such notions: the worst-case time and space complexity for Turing machines and the number of gates per input size in the case of circuits. <!--TODO: Mencionar otros approaches-->
+There are different approaches as to how to measure the complexity of a given algorithm, here we will focus on two such notions: the worst-case time and space complexity for Turing machines and the number of gates per input size in the case of circuits.
 
 :::{.definition}
 Let $g \in \NN^\NN$. $$O(g) = \set{f \in \NN^\NN}{\exists N, C \in \NN: \;\; f(n) \leq Cg(n) \quad \forall n > N}$$

@@ -201,24 +201,6 @@ Clearly, we can then simulate any probabilistic circuit on a quantum computer by
 In general, the unitary purification of the quantum circuit obtained in this way gives us for a function $f : \BB^N \to \BB^M$ a reversible function that maps $$\ket{x}\ket{c} \mapsto \ket{x}\ket{c \oplus f(x)},$$
 which uses an extra polynomial amount of wires and gates.
 
-
-::::::{.comment}
-## Quantum Turing Machines
-
-Historically, the theory of quantum computation started with the *quantum Turing machine* model, a model built upon the classical Turing machine model. This section aims to define this model and show it is equivalent to the quantum circuit model, which has better properties when it comes to error correction.
-An advantage of quantum Turing machines are that they allow us to define $\operatorname{BQTIME}$ easily.
-
-:::{.definition}
-TODO QTM
-:::
-
-:::{.theorem}
-polynomial slowdown simulation
-:::
-::::::
-
-
-
 ## Quantum computability
 
 In this section we define what it means for a function to be efficiently computed by a quantum computer.
@@ -301,22 +283,8 @@ $\mathsf{PQP} = \mathsf{PP}$
 Thus, the probabilistic class $\mathsf{PP}$ and therefore the classical class $\mathsf{PSPACE}$ are non-quantum upper bounds of the $\mathsf{BQP}$ class.
 This shows that the power of quantum computers is limited to what classical computers can do in polynomial space.
 
-<!-- :::::{.comment} -->
-<!-- :::{.theorem name="Subroutine theorem"} -->
+<!-- TODO :::{.theorem name="Subroutine theorem"} -->
 <!-- $\mathsf{BQP}^\mathsf{BQP} = \mathsf{BQP}$ -->
-<!-- ::: -->
-
-<!-- :::{.definition} -->
-<!-- BQP/qpoly -->
-<!-- ::: -->
-
-<!-- 2. BQP vs PH (Optional) -->
-<!-- ::::: -->
-
-<!-- ### Complete problems for BQP -->
-
-<!-- :::{.definition} -->
-<!-- TODO problem complete for BQP -->
 <!-- ::: -->
 
 
@@ -361,7 +329,8 @@ The constants $\frac23$ and $\frac13$ can be substituted by any $c \in ]\frac12,
 
 Two approaches are possible for this error reduction; either multiplying the length of the proof by a constant (known as *parallel error reduction*) or relying on the information of the *garbage* registers to reconstruct the proof and run the proof sequentally (*witness-preserving error reduction*) (@VidickQuantumProofs2016, sec. 3.2).
 The latter process has the advantage of preserving the proof size yet its proof is somewhat more contrived.
-Here we present a proof using parallel error reduction.
+
+These give rise to the following proposition.
 
 :::{.proposition name="QMA error reduction" #prop:qmaerror}
 (@VidickQuantumProofs2016, sec. 3.2)
@@ -372,13 +341,23 @@ Then $L \in \mathsf{QMA}$ if and only if there exists
 a polynomial $p(n)$ and
 a polynomial time quantum algorithm $\mathcal{V}$ such that
 
-2. for every $x \in L$, $|x| = n$, there exists a quantum state $\ket{\psi}$ of at most $p(n)$ qubits (the *proof*) such that $$P[\mathcal{V}(\ket{x}\ket{\psi}) = 1] \geq c \text{ and}$$
-3. for every $x \notin L$, $|x| = n$, and every quantum state $\ket{\psi}$ of at most $p(n)$ qubits $$P[\mathcal{V}(\ket{x}\ket{\psi}) = 1] \leq 1-c.$$
+1. for every $x \in L$, $|x| = n$, there exists a quantum state $\ket{\psi}$ of at most $p(n)$ qubits (the *proof*) such that $$P[\mathcal{V}(\ket{x}\ket{\psi}) = 1] \geq c \text{ and}$$
+2. for every $x \notin L$, $|x| = n$, and every quantum state $\ket{\psi}$ of at most $p(n)$ qubits $$P[\mathcal{V}(\ket{x}\ket{\psi}) = 1] \leq 1-c.$$
 :::
-:::{.proof}
-\fxnote{Queda por hacer.}
-:::
+:::{.proof name="Proof sketch"}
+Although we omit the proof, a brief sketch of the proof in the parallel case can be given, 
+adapted from (@VidickQuantumProofs2016, sec. 3.2).
 
+Let $L \in \mathsf{QMA}$, and let $\mathcal{V}$ be a verifier for $L$.
+For a given $x \in L$, we call a valid proof $\ket{\psi_x} \in Q^{\otimes p(|x|)}$.
+
+We create a verifier $\mathcal{V}'$ that takes as a proof of length at most $Tp(|x|)$ qubits for a certain $T \in \NN$. $\mathcal{V}'$ takes groups of $p(|x|)$ qubits and runs verifier $\mathcal{V}$ on them, outputting the majority vote.
+
+Clearly, $\ket{\psi_x}^{\otimes T}$ would be a valid proof for $\mathcal{V}'$, and by applying [@prop:Chernoff] we can choose an appropiate $T$ such that condition 1 is fulfilled.
+
+What remains is showing that there is no possibility of taking advantage of the new verifier by using some superposition.
+This analysis can be done by considering the verifier as a measurement operator, which is outside the scope of this text.
+:::
 
 [@prop:qmaerror] shows that we can prove a similar result to [@prop:nppp], namely:
 

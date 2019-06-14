@@ -213,7 +213,6 @@ Otherwise, pick a random $y \in \BB^{p(|x|)}$ and accept if $V(x,y) = 1$.
 If $x \notin L$, then $$P[M(x) = 1] = \frac12 - 2^{-p(|x|)-2} < \frac12.$$
 Otherwise, if $x \in L$ then $P[V(x,y) = 1] \geq 2^{-p(|x|)}$, thus
 $$P[M(x) = 1] \geq \frac12 - 2^{-p(|x|)-2} + 2^{-p(|x|)} > \frac12.$$
-<!--TODO: En la fuente original pone 2^{-p(|x|)}/2-->
 
 Therefore, $M$ decides $L$.
 $M$ runs in polynomial time since $V$ runs in polynomial time on its first input.

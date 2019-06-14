@@ -158,61 +158,70 @@ Nonetheless, this property is dependent on the chosen gate basis, since the appr
 
 Hence, the two alternatives are asymptotically equivalent and there is no speedup gained by this algorithm in comparison with the classical case.
 
-:::{.comment}
-
 ## Quipper implementation
 
 This section outlines the implementation of [@algo:deutsch] in Quipper.
-It also presents the general data-type of `Oracle`s, used in later algorithms.
+We will need some functions and datatypes mentioned in [Quipper features].
 
-### The `Oracle` data-type
-
-An oracle is a circuit that represents a function $f: \BB^n \to \BB$.
-It is given by its `shape` of input and the underlying circuit:
+The algorithm will have type
 ```haskell
-data Oracle qa = Oracle {
-  shape   :: qa, -- ^ The shape of the input
-  circuit :: (qa,Qubit) -> Circ (qa,Qubit) -- ^ The circuit oracle
-  }
+deutschJozsa :: (QShape ba qa ca) => Oracle qa -> Circ ca
 ```
-This type constructor is parameterized by the shape of input.
-It is intended that the type of input belongs to the class `QData`.
+since it takes an oracle with input shape `qa` and returns classical bits `ca` with the same shape.
+We name the input oracle `oracle`.
 
-The module `Oracle` provides several ways of building an oracle:
 
-1. Explicitly from its shape and a possibly non-reversible circuit by the function `buildOracle`, with type
+First, we need to initialize as much qubits as the oracle takes to $\ket{0}$ and an extra one to $ket{1}$.
+We use `qinit :: QShape qa ba ca => ba -> Circ qa`, that  initializes an arbitrary data structure with qubits that have some fixed value. It can be used in conjunction with `qc_false` to initialize the qubits:
 ```haskell
-buildOracle
-  :: QData qa
-  => qa
-  -> (qa -> Circ Qubit)
-  -> Oracle qa
+(x, y) <- qinit (qc_false (shape oracle), True)
 ```
-2. From a csv-formatted `String` such as
-```
-00,0
-01,1
-10,0
-11,1
-```
-via the function `decodeOracle`, with type
+
+Next, we apply `map_hadamard :: QShape qa ba ca => qa -> Circ qa` that applies the Hadamard gate to each qubit:
 ```haskell
-decodeOracle :: String -> Either Error (Oracle [Qubit])
+(x, y) <- map_hadamard (x, y)
 ```
-indicating a possible failure if the string is malformed.
-A general use case is reading an oracle from a file and using it in some `IO` action.
-The function `withOracle`, with type
+
+For the next step we apply the oracle.
+To have a simpler graphical representation, we use the function `box`, which encapsulates a circuit into a box, so that on its depiction it appears on a different page.
+This has no effect on the simulation.
 ```haskell
-withOracle :: String -> (Oracle [Qubit] -> IO ()) -> IO ()
+(x, y) <- boxedOracle (x, y) -- boxedOracle = box "Oracle" $ circuit oracle
 ```
-conveniently encapsulates such use case, automatically reporting possible errors.
 
+We apply the Hadamard gate again, this time to the top qubits (called `x`), measure the top qubits and discard the 
+bottom qubit `y`. Finally, we return the result using `pure`.
 
-### Deutsch-Jozsa algorithm
+The complete algorithm can be seen in the following code snippet.
 
+```haskell
+deutschJozsa :: (QShape ba qa ca) => Oracle qa -> Circ ca
+deutschJozsa oracle = do
+  -- Initialize x (to False) and y (to True)
+  (x, y) <- qinit (qc_false (shape oracle), True)
 
+  -- Apply Hadamard gates to each qubit
+  (x, y) <- map_hadamard (x, y)
 
+  -- Apply oracle
+  (x, y) <- boxedOracle (x, y)
 
-It is defined as a polymorphic function that takes an `Oracle`.
+  -- Apply Hadamard gate again to x
+  x      <- map_hadamard x
 
-:::
+  -- Measure and discard
+  z      <- measure x
+  qdiscard y
+  pure z
+```
+
+In order to solve [@prob:deutsch], we use the function `run_generic_io` to get the result:
+```haskell
+result <- run_generic_io (0 :: Double) deutschCircuit
+```
+and the output will be given by whether there is or not a `True` boolean:
+```haskell
+if or result then Balanced else Constant
+```
+
+This algorithm can be run by using the `quantum` binary with the `deutsch` subcommand.

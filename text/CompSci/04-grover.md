@@ -172,6 +172,60 @@ $$\frac{2k+1}{2}\theta = \frac{\pi}{2} + \varepsilon, \text{ where } \varepsilon
 thus $\sin(\frac{\pi}{2} + \varepsilon) = \cos(\varepsilon) \geq 1 - \frac{\varepsilon^2}{2} = 1 - O\left(\frac{1}{N}\right)$. where we have used the second order approximation of the cosine by its Taylor series.
 :::
 
+### Quipper implementation
+
+Grover's algorithm is implemented on `src/lib/Algorithms/Grover.hs`.
+It can be run by using the `grover` subcommand on the `quantum` binary in the attached code.
+
+First, we need to define the diffusion operator.
+For this we first define the phase shift, that negates all qubits, applies a $\pi$ conditional rotation to one of them, and negates all qubits again.
+
+```haskell
+phaseShift :: [Qubit] -> Circ [Qubit]
+phaseShift (x:xs) = do
+  x:xs <- mapUnary qnot (x : xs)
+  x    <- gate_Z x `controlled` xs
+  mapUnary qnot (x : xs)
+```
+The `controlled` operator can make an operation controlled on a list of qubits.
+
+
+The diffusion operator is then defined by composing this monadic function with the monadic functions `map_hadamard`, that apply the Hadamard gate to each qubit.
+```haskell
+diffusion :: [Qubit] -> Circ [Qubit]
+diffusion = map_hadamard >=> phaseShift >=> map_hadamard
+```
+
+This allows us to define Grover's operator for a given oracle.
+We define it by composing the oracle's circuit with the diffusion operator, taking care to leave the lower qubit (the one that has state $\ket{\downarrow}$) unchanged.
+```haskell
+groverOperator :: Oracle [Qubit] -> ([Qubit], Qubit) -> Circ ([Qubit], Qubit)
+groverOperator oracle (xs, y) = do
+  (xs, y) <- circuit oracle (xs, y)
+  xs      <- diffusion xs
+  pure (xs, y)
+```
+
+Finally, this allows us to define Grover's algorithm for a given number of solutions.
+For this we need the function `timesM`, defined in module `src/lib/Utils.hs`, that allows us to raise a monadic function to a certain power (effectively working as a loop with a fixed number of iterations).
+
+```haskell
+grover :: Int -> Oracle [Qubit] -> Circ [Bit]
+grover m oracle = do
+  (x, y) <- qinit (qc_false (shape oracle), True)
+  (x, y) <- map_hadamard (x, y)
+  (x, y) <- n `timesM` box "Grover's operator" (groverOperator oracle) $ (x, y)
+  qdiscard y
+  measure x
+  where n :: Int
+        n = round $ pi / 4 * sqrt $ inputSize oracle / fromIntegral m
+```
+
+As we see, we first initialize the `x` register to a uniform superposition and the `y` register to state $\ket{\downarrow}$.
+We then apply Grover's operator a number of times given by the previously calculated formula,
+and, discard the auxiliary qubit `y` and finally we measure the bits to get an answer.
+To boost the probability of correctness, we run the algorithm a fixed number of times.
+
 ## Quantum counting
 
 [@algo:grover] requires the number of solutions to be known in advance.
@@ -187,7 +241,7 @@ Count the number of solutions to an equation.
 
 The answer to solving it lies in using of the quantum phase estimation algorithm, [@algo:qpe].
 
-The geometrical characterization given by [@lemma:geogrover] tells us that Grover's operator is a rotation of an angle $\theta/2$ such that $$\sin^2\left(\frac{\theta}{2}\right) = \frac{M}{N}.$$
+The geometrical characterization given by [@lemma:geogrover] tells us that Grover's operator is a rotation of an angle $\theta/2$ such that $$\sin^2\left(\frac{\theta}{2}\right) = \frac{M}{N}.$${#eq:count}
 Thus, if we can estimate the angle, then, since $N$ is known, we may estimate $M$.
 
 It is easy to check that the eigenvalues of the matrix are $\exp(\pm i\theta/2)$ corresponding to eigenvectors that add up to the uniform superposition, $\ket{\psi}$ (@Kayeintroductionquantumcomputing2007, sec. 8.3).
@@ -212,6 +266,37 @@ We present the algorithm from (@Kayeintroductionquantumcomputing2007), but omit 
 
 Combining [@algo:grover] and [@algo:counting] gives us and algorithm that solves [@prob:search] using $O(\sqrt{N})$ queries, which is better than any classical or randomized algorithm.
 
+
+### Quipper implementation
+
+The quantum counting and quantum existence algorithms have been implemented on Quipper.
+The latter can be executed by running the subcommand `existence` of the `quantum` binary.
+Both are available at `src/lib/Algorithms/Count.hs`.
+
+The quantum counting algorithm needs to much precision for it to be feasibly simulated on a laptop, therefore the code is shown for illustrative purposes and to create diagrams.
+Its code is a simple application of the quantum phase estimation algorithm with Grover's operator.
+
+```haskell
+quantumCount :: Oracle [Qubit] -> Int -> Circ [Qubit]
+quantumCount oracle t = do
+  eigv <- qinit (qc_false (shape oracle), True)
+  eigv <- map_hadamard eigv
+  estimatePhase (`timesM` groverOperator oracle) eigv t
+```
+
+Given this phase, we estimate the number of solutions by transforming this phase using [@eq:count].
+The following simplified snippet presents the algorithm:
+```haskell
+phaseToNum :: Oracle [Qubit] -> Int -> IO Int
+phaseToNum oracle t = do
+  bits <- run_generic_io (0 :: Double) (quantumCount oracle t)
+  let phi = bitsToFloating bits
+  let theta = if phi <= 0.5 then 2 * pi * phi else 2 * pi * (1 - phi)
+  pure $ ceiling (n * sin theta ^^ 2)
+ where n = inputSize oracle
+```
+Checking whether the estimated phase $\varphi$ is above or below $\frac12$ tells us whether the positive or negative eigenvalue was estimated, and thus allows for the recovery of the number of solutions.
+The quantum existence algorithm then uses `phaseToNum` to see whether it is positive or zero.
 
 ## Optimality
 

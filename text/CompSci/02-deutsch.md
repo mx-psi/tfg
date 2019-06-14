@@ -161,6 +161,7 @@ Hence, the two alternatives are asymptotically equivalent and there is no speedu
 ## Quipper implementation
 
 This section outlines the implementation of [@algo:deutsch] in Quipper.
+The complete code is available at `src/lib/Algorithms/Deutsch.hs`.
 We will need some functions and datatypes mentioned in [Quipper features].
 
 The algorithm will have type

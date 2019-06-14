@@ -141,6 +141,10 @@ An example circuit for the Quantum Fourier Transform of 3 qubits can be seen in 
 
 ![Circuit for the 3 qubit Quantum Fourier Transform.](assets/qft.pdf){#fig:qft width=110%}
 
+### Quipper implementation
+
+\fxnote{Queda por hacer.}
+
 ## Quantum phase estimation
 
 We now present an algorithm that computes an $n$-bit approximation of the eigenvalue of an operator.
@@ -249,6 +253,43 @@ $$P[|m-b| > e] \leq \frac12\int_{e}^{T-1} \frac{\mathrm{d}l}{l^2} = \frac{1}{2(e
 Hence the algorithm will be correct with probability at least $3/4 > 2/3$.
 :::
 
+### Quipper implementation
+
+This algorithm is also implemented on the file `src/lib/Algorithms/QFT.hs`.
+For the reverse Quantum Fourier Transform we use Quipper's `reverse_generic_endo`, which reverses a function with shape `f :: QShape qa ba ca => qa -> Circ qa`.
+
+Having this, we need three elements for the quantum phase estimation algorithm:
+
+1. A function `operator :: Int -> (qa -> Circ qa)` that gives us the powers of the unitary operator of which we want to calculate the eigenvalues,
+2. The eigenvector, `eigv :: qa` (or superposition of eigenvectors if necessary),
+3. the desired precision, `n :: Int`.
+
+Given these arguments the function initializes the phase qubits to a uniform superposition, 
+and applies the unitary operator raised to binary powers controlling on each qubit.
+It then applies the reversed Quantum Fourier transform.
+The complete code is available in the following snippet.
+
+```haskell
+estimatePhase
+  :: (QData qa) => (Int -> (qa -> Circ qa)) -> qa -> Int -> Circ [Qubit]
+estimatePhase operator eigv n = do
+  phase <- qinit (replicate t False)
+  phase <- map_hadamard phase
+  eigv  <- forEach (numbered phase)
+                   (\(i, q) qx -> operator (2 ^ i) qx `controlled` q)
+                   eigv
+  phase <- box "RQFT" reverseQft phase
+  qdiscard eigv
+  pure phase
+  where t = n + 2
+```
+
+Here we have used the `forEach` combinator, that combines a number of monadic maps into a single one.
+Its type signature is:
+```haskell
+forEach :: (Monad m) => [b] -> (b -> a -> m a) -> (a -> m a)
+```
+
 ## Order finding
 
 As a direct application of [@thm:phase] and as an intermediate step towards proving [@thm:shor], we prove that the order of an element in $U(\mathbb{Z}_N)$ can be calculated in polynomial quantum time, that is, we can solve the problem:
@@ -320,6 +361,26 @@ Clearly, the output will be an approximation of the phase of one of the eigenval
 Hence, the output will be an approximation of $\frac{s}{r}.$
 If the approximation is accurate enough, the period $r$ can be recovered from the decimal expression of this fraction by using [@lemma:continued].
 :::
+
+### Quipper implementation
+#### Modular exponentiation and oracle
+
+Binary exponentiation is needed for both calculating factors and for creating the oracle circuit used by the quantum phase estimation algorithm.
+The Haskell code for binary exponentiation is
+```haskell
+binaryExp :: Integer -> Integer -> Integer -> Integer
+binaryExp x 0 m = 1
+binaryExp x a m = binaryExp (x ^ 2 `mod` m) q m `mod` m * (x `mod` m) ^ r
+  where (q, r) = a `divMod` 2
+```
+where `binaryExp x a m` computes $x^a \mod m$.
+The function `divMod` returns the quotient and remainder of a given number.
+
+\fxnote{Falta por hacer aquí la exponenciación binaria en el caso cuántico con circuito.}
+
+#### Order finding algorithm
+
+\fxnote{Falta por hacer.}
 
 ## Classical part
 
@@ -441,7 +502,80 @@ Solves [@prob:factoring].
 By the previous discussion this proves [@thm:shor].
 For finding *all* factors of a given number we may repeat [@algo:shor] and successively divide the integer until we reach a base case. This would also take a polynomial amount of time, $O(\log^4 N)$.
 
-:::{.comment}
-## Quipper implementation
-## The hidden subgroup problem
-:::
+
+### Implementation
+
+The complete algorithm for factorization is available in the attached code at the file `src/lib/Algorithms/Shor.hs`. First, we define a datatype that deals with the possible modes of failure of the algorithm, indicating whether the integer is one (`One`), a prime number (`Prime`), a bad order was found (`BadOrder`) or any other case of failure of the intermediate algorithms (`Other`).
+
+```haskell
+data Failure = One
+             | Prime
+             | BadOrder Integer Integer
+             | Other
+```
+
+#### Power of a number
+
+First, we look at the case where $N = a^b$.
+For this we define the function `getPower`, given by the following (simplified[^simplification]) code snippet
+
+```haskell
+getPower :: Integer -> Either Failure Integer
+getPower n = base <$> exponent
+ where
+  a :: Double
+  -- We check every possible root up to `a`
+  a = ceiling $ logBase 2 n'
+
+  base :: Double -> Double
+  -- The base for a given exponent
+  base x = round (n' ** (1 / x))
+
+  exponents :: [Double]
+  -- List of possible exponents, from biggest to smallest
+  exponents = filter (\x -> n == round ((base x) ** x)) [a, a - 1 .. 2]
+
+  exponent :: Either Failure Double
+  exponent = if null exponents then Left Other else Right (head exponents)
+```
+
+[^simplification]: Explicit management of numeric types conversion has been omitted from this and the following snippets. The complete code can be checked in the attached files
+
+We first calculate a list of possible `exponents`.
+They can range from $2$ to $a = \lceil \log_2 N \rceil$.
+We filter those that give that are true roots up to the rounding error given by the square root algorithm, 
+and finally get the first of them in `exponent`.
+
+We then calculate that square root (the `base` for the chosen `exponent`) and return it.
+
+#### Main factorization function
+
+The main factorization function, `factor`, takes an integer and returns a valid factor.
+It distinguishes several cases.
+It is an IO function since we need to make use of randomness.
+
+```haskell
+factor :: Integer -> IO (Either Failure Integer)
+factor n
+  | n < 0 = pure $ Right (-1)
+  | n == 1 = pure $ Left One
+  | isPrime n = pure $ Left Prime
+  | n `mod` 2 == 0 = pure $ Right 2
+  | isRight root = pure root
+  | otherwise = do
+    x <- randomRIO (1, n - 1)
+    if gcd x n > 1 then pure (Right (gcd x n)) else factorFromOrder x n
+  where root = getPower n
+```
+
+The different cases are
+
+1. The integer is negative, then we return -1.
+2. The integer is 1 or it is prime. We return the corresponding failure code.
+   The prime factorization is done using a Haskell library that implements the Baille-PSW primality test 
+   (@Pomerancepseudoprimes25101980).
+3. The integer is even, we then return 2.
+4. The integer is of the form $N = a^b$, checked by the implemented algorithm in the previous section.
+
+Otherwise, we follow the algorithm and apply the quantum case that has previously been described.
+For the full factorization, we apply a recursive algorithm that factors each number until we get to a base case: either the number is one or it is prime.

@@ -53,6 +53,7 @@ Hence, Shor's algorithm speedup is not as useful in principle as the one that wi
 
 In this section we will describe the Quantum Fourier Transform, an essential part of Shor's algorithm and one of the main algorithms that allows us to achieve super-polynomial speedups. It depends on the notion of discrete normalized Fourier transform.
 
+Recall from [@dfn:amplitude] that the *amplitude vector* of a quantum state is the coordinate vector of that state with respect to the computational basis.
 
 :::{.definition name="Unitary DFT"} 
 (@RaoFastFouriertransform2010, sec 2.1.3)
@@ -143,7 +144,32 @@ An example circuit for the Quantum Fourier Transform of 3 qubits can be seen in 
 
 ### Quipper implementation
 
-\fxnote{Queda por hacer.}
+The Quipper implementation for the Quantum Fourier Transform is a simplified version of the one implemented at `QuipperLib.QFT`.
+It can be found at `src/lib/Algorithms/QFT.hs`.
+
+It is a simple recursive algorithm.
+The base case uses the empty list and does nothing,
+```haskell
+qft [] = pure []
+```
+
+The recursive case applies the base case to all but the first qubit, conditionally rotates the first qubit with respect to the rest and then applies a Hadamard gate.
+
+```haskell
+qft (x:xs) = do
+  xs'  <- qft xs
+  xs'' <- rotations x xs' (length xs')
+  x'   <- hadamard x
+  pure (x' : xs'')
+```
+
+The `rotations` function implements a simple loop recursively.
+```haskell
+rotations :: Qubit -> [Qubit] -> Int -> Circ [Qubit]
+rotations _ []     _ = pure []
+rotations c (q:qs) n = (:) <$> rGate ((n + 1) - length qs) q `controlled` c <*> rotations c qs n
+```
+`n` is the total length of the qubits that we want to condition.
 
 ## Quantum phase estimation
 
@@ -162,6 +188,7 @@ Approximate an eigenvalue of the eigenvector $\ket{u}$ a unitary operator $U$.
 
 Since $U$ is unitary, its eigenvalues will lie on the unit circle, and thus they can all be expressed as $\exp(2\pi i \varphi)$ for some $\varphi \in [0,1[$.
 Hence, if we approximate $\varphi \approx 0.x_1 \dots x_n$, we can output $\ket{x_1 \cdots x_n}$ as an answer.
+We call $\varphi_u$ a *phase*.
 
 Next, we present a quantum algorithm that solves this problem in a polynomial number of queries in the number of bits of the approximation.
 
@@ -184,8 +211,6 @@ It is easy to show by applying [@lemma:productrepr] that the algorithm is correc
 An example circuit implementing [@algo:qpe] is shown in [@fig:qpe].
 
 ![The Quantum Phase Estimation subroutine for an unitary operator $U : Q^{\otimes 2} \to Q^{\otimes 2}$ with eigenvector $\ket{00}$ and an approximation using $t = 4$ qubits. "RQFT" does the reverse QFT.](assets/qpe.pdf){#fig:qpe width=100%}
-
-\fixme{Hay que arreglar la imagen de ejemplo para mostrar los operadores controlados correctamente.}
 
 We now present the general proof of correctness.
 
@@ -376,11 +401,41 @@ binaryExp x a m = binaryExp (x ^ 2 `mod` m) q m `mod` m * (x `mod` m) ^ r
 where `binaryExp x a m` computes $x^a \mod m$.
 The function `divMod` returns the quotient and remainder of a given number.
 
-\fxnote{Falta por hacer aquí la exponenciación binaria en el caso cuántico con circuito.}
+For the quantum oracle we use the `QuipperLib.Arith` module, that defines a series of integer types usable in the quantum setting.
+These are `IntM` for parameters and `QDInt` for quantum integers.
+We define the function `quantumOp x n j` that returns a circuit that maps
+$$\ket{\mathtt{y}} \mapsto \ket{\mathtt{x}^\mathtt{j}\mathtt{y} \mod \mathtt{n}}.$$
+
+The code is as follows:
+```haskell
+quantumOp :: Integer -> Integer -> Integer -> QDInt -> Circ QDInt
+quantumOp x n j y = do
+  (y,z) <- q_mult_param a y -- x^n mod n * y
+  q_n <- qinit (fromIntegral n) -- q_n
+  (z, q_n, res) <- q_mod_unsigned z q_n
+  pure res -- x^n*y mod n
+  where
+    a :: IntM
+    a = fromIntegral $ binaryExp x j n
+```
+We first calculate $\mathtt{x}^\mathtt{j} \mod \mathtt{n}$ using the `binaryExp` function.
+We then multiply `y` by this using `q_mult_param` (quantum multiplication with classical parameter).
+
+Then we apply the modulus `n` again using `q_mod_unsigned` (for which we need to transform `n` into a quantum integer `q_n`).
 
 #### Order finding algorithm
 
-\fxnote{Falta por hacer.}
+First, we estimate the phase by simply applying the phase estimation algorithm.
+
+```haskell
+getOrder :: Integer -> Integer -> Circ [Qubit]
+getOrder x n = do
+  eigv <- qinit 1
+  estimatePhase (quantumOp x n) eigv (2 + ceiling (logBase 2 (fromIntegral n)))
+```
+
+We then calculate the convergents of the phase until we find one that has as its denominator the phase that we are looking for. For this we need to implement the continued fractions algorithm, which is straightforward, and then calculate each convergent. This is available at the `src/lib/Floating.hs` module.
+What remains is classically recovering the divisor from its order if possible.
 
 ## Classical part
 

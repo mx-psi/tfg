@@ -9,7 +9,7 @@ PREV:= $(patsubst %.md, text/Others/%.md, 01-summary.md 02-intro.md)
 POST:= $(patsubst %.md, text/Others/%.md, 03-conclusions.md 04-appendix.md)
 
 CHAPTERS:= $(patsubst text/Mathematics/%.md, chapters/%.pdf, $(MATH)) $(patsubst text/CompSci/%.md, chapters/%.pdf, $(CSI))
-SRCS:= $(PREV) $(MATH) $(CSI) $(POST)
+SRCS:= $(MATH) $(CSI) $(POST)
 
 
 .PHONY: all clean check

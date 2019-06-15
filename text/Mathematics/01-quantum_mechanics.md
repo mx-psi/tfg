@@ -35,7 +35,7 @@ Every finite dimensional Hilbert space of dimension $N$ is isomorphic to $\CC^N$
 
 An alternative way of considering this inner product is by the use of the *adjoint*.
 
-:::{.definition}
+:::{.definition #dfn:adjoint}
 Let $A \in \mathcal{M}_{N \times N}(\CC)$. The **adjoint** or **conjugate transpose** of $A$, $A^\dagger$, is given by $$(A^\dagger)_{ij} = \overline{A}_{ji}.$$
 :::
 
@@ -61,6 +61,13 @@ This unit vector is unique up to a constant of the form $e^{i\theta}$ with $\the
 A **qubit** is an isolated physical system with state space $\PC^2$ in which we fix an orthonormal basis $\ket{0}, \ket{1}$ (called the *computational basis*).
 The term is also used to refer to an element of this state space; using the identification of rays with unit vectors a qubit can also refer to a vector 
 $$\ket{\psi} = \alpha\ket{0} + \beta\ket{1} \quad \text{such that } \norm{\ket{\psi}} = |\alpha|^2 + |\beta|^2 = 1$$
+The coefficients $\alpha, \beta$ are called amplitudes:
+
+:::{.definition name="Amplitudes" #dfn:amplitude}
+The *amplitudes* of a quantum state are its coordinates with respect to the computational basis.
+
+The coordinate vector is the *amplitude vector* of the state.
+:::
 
 ## Composite systems
 

@@ -38,7 +38,7 @@ The  *unitary purification* of $C$ is a unitary quantum circuit $C'$ constructed
 
 A unitary quantum circuit has an associated unitary function, whose construction is given in the following definition.
 
-:::{.definition}
+:::{.definition #dfn:unitaryop}
 Let $C$ be a unitary quantum circuit with $n$ inputs and outputs.
 The function associated with the quantum circuit, $C:Q^{\otimes n} \to Q^{\otimes n}$ is constructed as follows
 
@@ -107,29 +107,28 @@ We now present an example of a universal gate set, which is not minimal but will
 
 $\{\operatorname{CNOT}, H, R_{\pi/4}\}$  is a universal gate set.
 :::
+:::{.proof name="Proof sketch"}
 
-For the proof we will make use of the following technical lemmas.
-A *two-level unitary operation* is a unitary operation that acts different from the identity in at most two computational basis states.
+We present a brief proof sketch adapted from (@NielsenQuantumComputationQuantum2010, sec. 4.5.3).
 
-:::{.lemma}
+A *two-level unitary operation* is a unitary operation that acts different from the identity in at most two computational basis states. The first step towards proving the theorem is to prove that these gates form an (infinite) universal gate set.
+
+:::{.claim}
 (@NielsenQuantumComputationQuantum2010, sec. 4.5.1)
 The set of two-level unitary operations is a universal gate set.
 :::
 
 This can be easily shown to be the case by constructing matrices whose multiplication zero-out the components of a unitary matrix.
-Secondly, we will make use of this lemma.
+Using this claim we can prove:
 
-:::{.lemma}
+:::{.claim}
 (@NielsenQuantumComputationQuantum2010, sec. 4.5.2)
 The set of single qubit gates together with the CNOT gate forms a universal gate set.
 :::
 
-To prove this lemma we use the previous lemma and construct an arbitrary two-level unitary gate by appropiately composing single qubit gates and the CNOT gate so that they are applied to the basis states that we need.
+To prove this claim we use the previous claim and construct an arbitrary two-level unitary gate by appropiately composing single qubit gates and the CNOT gate so that they are applied to the basis states that we need.
 
-Lastly, we prove the theorem.
-
-:::{.proof name="Proof of the universal gate set theorem"}
-\fxnote{Queda por hacer.}
+Lastly, to prove the theorem, it is shown that $\{H, R_{\pi/4}\}$ can approximate an arbitrary rotation of the qubit Hilbert space from any axis. This, together with a decomposition of an arbitrary single-qubit gate into these rotations, proves that $\{H, R_{\pi/4}\}$ can approximate any single qubit gate, which using the last lemma proves the result.
 :::
 
 
@@ -149,9 +148,29 @@ Let $\mathcal{G}$ be a universal gate set closed under inverses and $U$ a unitar
 
 There exists a constant $c$ such that $U$ can be approximated within $\epsilon$ accuracy by a sequence of $O(\log^c(1/\epsilon))$ gates from $\mathcal{G}$.
 :::
-:::{.proof}
-\fxnote{Queda por hacer.}
-<!-- TODO: https://github.com/cmdawson/sk/tree/master/src -->
+:::{.proof name="Proof sketch"}
+
+What follows is a proof sketch adapted from (@DawsonSolovayKitaevalgorithm2005).
+
+Let $n \in \NN$.
+A recursive algorithm can be defined that returns the sequence of gates that approximates $U$.
+This algorithm gives more accurate and longer sequences depending on $n$.
+
+For $n = 0$, we consider a basic approximation up to a certain accuracy $\varepsilon_0$.
+This approximation can be done for any gate by considering all possible sequences of gates up to a certain length.
+
+If $n > 1$, we consider the approximation given by $n-1$, $U_{n-1}$.
+Then, let $\Delta = U_{n-1}U^{\dagger}_{n-1}$, where $U^{\dagger}_{n-1}$ is the adjoint of $U_{n-1}$ (see [@dfn:adjoint]).
+We can express $\Delta$ as the conmutator of two unitary operators $V,W$, that is
+$$\Delta = [V,W] = VWV^\dagger W^\dagger,$$
+such that $V$ and $W$ are close enough to the identity.
+
+We then find approximations to $V$ and $W$ of depth $n-1$, $V_{n-1}, W_{n-1}$ and return as the approximation of depth $n$ $$U_n = [V_{n-1},W_{n-1}]U_{n-1}.$$
+This turns out to be an approximation up to an accuracy of order $\varepsilon_n = c_{\operatorname{approx}}\varepsilon_{n-1}^{3/2}$.
+
+This defines a sequence such that, to obtain an accuracy $\varepsilon$, we need to get an approximation of depth logarithmic on the length of $\varepsilon$ which in turns gives a sequence of length
+$$O(\operatorname{ln}^{\operatorname{ln}(5)/\operatorname{ln}(3/2)}(1/\varepsilon)),$$
+which fulfills the conditions of the theorem.
 :::
 
 Suppose a certain family of quantum circuits has $O(f(n))$ size.
@@ -275,8 +294,40 @@ The following theorem shows that when these bounds are relaxed quantum computers
 :::{.theorem #thm:pqp}
 $\mathsf{PQP} = \mathsf{PP}$
 :::
-:::{.proof}
-\fxnote{Queda por hacer.}
+:::{.proof name="Proof sketch"}
+The following proof sketch is adapted from (@WatrousQuantumComputationalComplexity2009, sec. IV.5).
+
+A function $f : \BB^\ast \to \ZZ$ is $\operatorname{GapP}$ if there exists a non-deterministic Turing Machine $M$ such that for any $x$, $f(x)$ is the difference of the number of accepting paths and the number of rejecting paths of $M$ with input $x$.
+
+A simple characterization of $\mathsf{PP}$ is that there exists a function $f \in \operatorname{GapP}$ such that 
+$f(x) > 0$ if and only if $x \in L$.
+
+(@FortnowComplexityTheoryRetrospective1997) proves the following claim:
+
+:::{.claim}
+Let $p,q \in \poly(n)$.
+
+For each $n$, let $A_n,1, \dots, A_n,p(n) \in \mathcal{M}_{2^{q(n)} \times 2^{q(n)}}(\mathbb{C})$ be a sequence of matrices.
+
+If there exist $f,g \in \operatorname{GapP}$ functions such that
+$$f(1^n, 1^k, i,j) = \operatorname{Re}(A_{n,k}(i,j)) \text{ and }$$
+$$g(1^n, 1^k, i,j) = \operatorname{Im}(A_{n,k}(i,j)),$$
+where $i,j$ are written in binary, then there exists $F,G \in \operatorname{GapP}$ functions such that
+$$F(1^n, i, j)= \operatorname{Re}((A_{n,p(n)} \dots A_{n,k})(i,j)) \text{ and }$$
+$$G(1^n, i, j)= \operatorname{Im}((A_{n,p(n)} \dots A_{n,k})(i,j)).$$
+:::
+
+If $L \in \mathsf{PQP}$ then, there exists a uniform polynomial family of quantum circuits $\mathcal{C}$ that decides the language. Furthermore, a universal gate set may be chosen such that every gate has rational coefficients.
+
+The procedure stated at [@dfn:unitaryop] gives us then a sequence of matrices that verifies the conditions of the claim: 
+
+- It is polynomial and polynomial-sized because of the size of the circuits and
+- since it is uniform and the gates have rational coefficients, 
+  the functions $f$ and $g$ can be constructed for each matrix.
+  
+Applying the claim we then have a $\operatorname{GapP}$ function such that 
+$$P[\mathcal{C}(x) = 1] = \frac{F(x)}{2^{p(|x|)}},$$
+and therefore by taking $h(x) = F(x) - 2^{p(|x|) - 1}$ we have that $L \in \mathsf{PP}$.
 :::
 
 

@@ -163,11 +163,12 @@ qft (x:xs) = do
   pure (x' : xs'')
 ```
 
-The `rotations` function implements a simple loop recursively.
+The `rotations` function implements a simple loop recursively by making use of applicative functors.
 ```haskell
 rotations :: Qubit -> [Qubit] -> Int -> Circ [Qubit]
 rotations _ []     _ = pure []
-rotations c (q:qs) n = (:) <$> rGate ((n + 1) - length qs) q `controlled` c <*> rotations c qs n
+rotations c (q:qs) n = 
+  (:) <$> rGate ((n + 1) - length qs) q `controlled` c <*> rotations c qs n
 ```
 `n` is the total length of the qubits that we want to condition.
 
@@ -633,4 +634,7 @@ The different cases are
 4. The integer is of the form $N = a^b$, checked by the implemented algorithm in the previous section.
 
 Otherwise, we follow the algorithm and apply the quantum case that has previously been described.
-For the full factorization, we apply a recursive algorithm that factors each number until we get to a base case: either the number is one or it is prime.
+For the full factorization, we would apply a recursive algorithm that factors each number until we get to a base case: either the number is one or it is prime.
+
+This algorithm is not feasibly executable in practice because of the number of qubits needed in the quantum estimation phase, thus an assesment is made as to what the procedure would be and what amount of resources would be needed for calculating the factors of a number in this way.
+This assesment can be seen  by running the `quantum` executable in mode `shor`.

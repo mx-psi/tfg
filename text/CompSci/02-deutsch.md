@@ -1,4 +1,4 @@
-# The Deutsch-Jozsa algorithm
+#  Query complexity and the Deutsch-Jozsa algorithm
 
 In this chapter we develop our first example of a quantum algorithm.
 The first section presents the setting in which the complexity of this and later algorithms will be analyzed, and the following section presents the solution.

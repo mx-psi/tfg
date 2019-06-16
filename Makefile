@@ -5,11 +5,11 @@ PFLAGS:= $(foreach filter,$(FILTERS),-F $(filter)) -M commit="$$(git rev-parse -
 MATH:= $(sort $(wildcard text/Mathematics/*.md))
 CSI:= $(sort $(wildcard text/CompSci/*.md))
 
-PREV:= $(patsubst %.md, text/Others/%.md, 01-summary.md 02-intro.md)
+PREV:= $(patsubst %.md, text/Others/%.md, 01-intro.md 02-summary.md)
 POST:= $(patsubst %.md, text/Others/%.md, 03-conclusions.md 04-appendix.md)
 
 CHAPTERS:= $(patsubst text/Mathematics/%.md, chapters/%.pdf, $(MATH)) $(patsubst text/CompSci/%.md, chapters/%.pdf, $(CSI))
-SRCS:= $(MATH) $(CSI) $(POST)
+SRCS:= $(PREV) $(MATH) $(CSI) $(POST)
 
 
 .PHONY: all clean check

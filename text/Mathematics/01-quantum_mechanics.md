@@ -1,3 +1,5 @@
+\part{Quantum complexity theory}
+
 # A model of quantum mechanics
 
 The study of quantum computers requires us to state the basic principles and mathematical structures this physical theory is based on.

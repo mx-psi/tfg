@@ -45,6 +45,7 @@ $endif$
 % (scaled to match size of Palatino)
 \usepackage[scaled=0.85]{beramono}
 
+
 $if(linestretch)$
 \usepackage{setspace}
 \setstretch{$linestretch$}
@@ -278,6 +279,8 @@ $endif$
     }}}
 
 
+\usepackage{bookmark}
+
 $for(header-includes)$
 $header-includes$
 $endfor$
@@ -356,7 +359,7 @@ $if(title)$
 \begin{titlepage}
   \AddToShipoutPicture*{\BackgroundPic}
   \phantomsection
-  \pdfbookmark[1]{Título}{title}
+  \pdfbookmark[1]{Title}{title}
 
   % Para que el título esté centrado en la página.
   % Los valores numéricos deberán elegirse de acuerdo con el diseño de

@@ -1,3 +1,5 @@
+\part{Concrete quantum algorithms}
+
 # Quipper
 
 In this chapter we present Quipper, a quantum programming language that we use to implement concrete quantum algorithms as uniform families of quantum circuits, and we describe the setup followed for the implementation.
@@ -36,7 +38,7 @@ The host language used by Quipper is Haskell.
 Haskell is a purely functional programming language created in 1990, that has strong static typing and lazy evaluation.
 It has a formal specification given by the Haskell Report (@MarlowHaskell2010language2010).
 
-In this document we make use of the version of Haskell implement by the Glasgow Haskell's compiler version 8.2.2 (@GlasgowHaskellCompiler).
+In this document we make use of the version of Haskell implement by the Glasgow Haskell's compiler version 8.2.2 (@GlasgowHaskellCompiler2019).
 We make use of several language extensions that are not part of the Haskell standard since these are used by Quipper for its internal implementation.
 
 We will not make an extensive description of Haskell here, yet here we briefly highlight a number of features that are relevant for the understanding of Quipper.

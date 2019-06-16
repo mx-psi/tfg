@@ -142,7 +142,7 @@ The *Solovay-Kitaev Theorem* shows that the approximation can be done in quasi-l
 This celebrated result is essential for the usefulness of certain algorithms, such as Grover's algorithm.
 
 :::{.theorem name="Solovay-Kitaev theorem" #thm:solovay} 
-(@DawsonSolovayKitaevalgorithm2005)
+[@dawson2005]
 
 Let $\mathcal{G}$ be a universal gate set closed under inverses and $U$ a unitary operation.
 
@@ -150,7 +150,7 @@ There exists a constant $c$ such that $U$ can be approximated within $\epsilon$ 
 :::
 :::{.proof name="Proof sketch"}
 
-What follows is a proof sketch adapted from (@DawsonSolovayKitaevalgorithm2005).
+What follows is a proof sketch adapted from [@dawson2005].
 
 Let $n \in \NN$.
 A recursive algorithm can be defined that returns the sequence of gates that approximates $U$.
@@ -302,7 +302,7 @@ A function $f : \BB^\ast \to \ZZ$ is $\operatorname{GapP}$ if there exists a non
 A simple characterization of $\mathsf{PP}$ is that there exists a function $f \in \operatorname{GapP}$ such that 
 $f(x) > 0$ if and only if $x \in L$.
 
-(@FortnowComplexityTheoryRetrospective1997) proves the following claim:
+[@FortnowComplexityTheoryRetrospective1997] proves the following claim:
 
 :::{.claim}
 Let $p,q \in \poly(n)$.

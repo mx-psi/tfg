@@ -1,4 +1,4 @@
-\chapter*{Summary}
+# Summary {.unnumbered}
 
 <!--
 scrartcl:
@@ -32,8 +32,8 @@ La parte matemática describe el modelo de estados puros para la computación cu
 
 **Capítulo 1**: En este capítulo se procede al desarrollo matemático de los principios de la mecánica cuántica.
   En el modelo de física cuántica de *estados puros* en dimensión finita, 
-  un *qubit* es un espacio de Hilbert proyectivo de 2 dimensiones con una base computacional ortonormal 
-  fijada. Estos qubits u otros espacios de estados pueden componerse en un espacio de estados compuesto
+  un *qubit* es el espacio proyectivo asociado a un espacio de Hilbert de 2 dimensiones con una base computacional ortonormal 
+  fijada. Estos qubits u otros espacios de estados pueden combinarse en un espacio de estados compuesto
   mediante el producto tensorial de los espacios 
   de los subestados. 
   
@@ -41,7 +41,8 @@ La parte matemática describe el modelo de estados puros para la computación cu
   lineales que en dimensión finita se caracterizan porque su inversa viene dada por su transpuesta conjugada.
   Estas operaciones son la base de la computación cuántica, y se conocen como *puertas cuánticas*.
   Algunas puertas cuánticas relevantes para la computación cuántica son la puerta de Hadamard, las puertas de cambio 
-  de fase o la puerta NOT controlada y podemos dar su descripción en términos de matrices unitarias.
+  de fase o la puerta NOT controlada. Podemos dar su descripción en términos de matrices unitarias.
+  
   No todas las operaciones clásicas pueden generalizarse de forma satisfactoria al ámbito cuántico;
   el *teorema de no-clonado* impide ciertas operaciones en el ámbito cuántico que sí son factibles de forma clásica.
   Además, la operación de *medición* nos da para cada estado cuántico una distribución de probabilidad sobre los 
@@ -61,9 +62,10 @@ La parte matemática describe el modelo de estados puros para la computación cu
   resolubles mediante la utilización de una cierta cantidad de recursos en un cierto tipo de máquina.
   El uso polinomial del tiempo puede verse como un uso eficiente de recursos y por tanto estas clases pueden darnos 
   información sobre si un cierto problema es o no eficiente.
+  
   Las relaciones entre estas clases, como que $\mathsf{P} \subseteq \mathsf{NP} \subseteq \mathsf{PSPACE}$ nos 
   aportan cotas inferiores y superiores de la dificultad de resolver ciertos problemas.
-  Otras relaciones, como el problema de $\mathsf{P}$ vs. $\mathsf{NP}$ permanecen abiertos y nos ayudarían a 
+  Otras relaciones, como el problema de $\mathsf{P}$ vs. $\mathsf{NP}$ permanecen sin resolver y nos ayudarían a 
   comprender estos problemas.
   En concreto, la clase $\mathsf{NP}$ puede verse como una clase de problemas para los cuales puede demostrarse 
   su resolución para un cierto caso dando un *certificado*.
@@ -72,6 +74,7 @@ La parte matemática describe el modelo de estados puros para la computación cu
 Análogamente al modelo descrito en el capítulo 1 para la computación cuántica, puede definirse un modelo de computación probabilística compatible con el formalismo del modelo de circuitos uniformes, utilizando en este caso espacios vectoriales reales como espacio de estados.
 Las aplicaciones válidas en este caso son un subconjunto de las *aplicaciones estocásticas* (aquellas cuyas entradas pueden calcularse de forma eficiente clásicamente). Además, estas aplicaciones pueden descomponerse siempre en una parte clásica y un generador de bits aleatorios con un sesgo dado.
 A partir de estos podemos definir algoritmos probabilísticos que resuelvan un cierto problema.
+
 Para incrementar la probabilidad de éxito de uno de estos algoritmos pueden utilizarse las *cotas de Chernoff*.
 Estos algoritmos junto con los resultados anteriores permiten definir clases de problemas resolubles de forma eficiente en el caso probabilístico como $\mathsf{BPP}$, en el cual los algoritmos deben tener una probabilidad de éxito acotada.
 Aunque se cree que los algoritmos probabilísticos no proporcionan una ventaja asintótica en la práctica, 
@@ -139,6 +142,8 @@ Además, este algoritmo es óptimo asintóticamente en el modelo de complejidad 
 Para la ejecución del algoritmo necesitamos saber el número de soluciones, que puede obtener también de forma eficiente con el *algoritmo de conteo cuántico*.
 Este algoritmo es una aplicación directa del algoritmo de estimación de fase.
 Los requerimientos en términos de la dimensión del espacio de estados impiden su simulación directa, pero podemos estimar el número de recursos necesarios.
+
+**Palabras clave:** informática teórica, computación cuántica, algoritmos cuánticos, programación funcional, problemas de búsqueda
 
 ***
 

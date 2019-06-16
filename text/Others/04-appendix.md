@@ -1,6 +1,6 @@
-# Appendices
+# Appendices {.unnumbered}
 
-## Code
+## Code {.unnumbered}
 
 The source files that generate this document are available at [`github.com/mx-psi/tfg`](https://github.com/mx-psi/tfg).
 
@@ -12,7 +12,7 @@ The code associated with this document is available at [`github.com/mx-psi/quant
 Its documentation can be generated using `make docs`.
 
 
-### Code description
+### Code description {.unnumbered}
 
 What follows is a formatted copy of the file `README.md`,
 available with the attached code.
@@ -109,7 +109,7 @@ The code is organized as follows
 5.  the `package.yaml` and `stack.yaml` files define the dependencies
     and compilation steps.
 
-## Acknowledgements
+## Acknowledgements {.unnumbered}
 
 Professor Serafín Moral Callejón has helped me greatly with his corrections and advice in writing this document, allowing me to clarify my thoughts when writing this document, and teaching me how to write clearly in a mathematical style. I am also, more generally, thankful to the Department of Computer Science and Artificial Intelligence at the University of Granada for allowing me to pursue this project with a collaboration grant.
 

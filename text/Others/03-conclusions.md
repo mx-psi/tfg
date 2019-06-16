@@ -1,4 +1,7 @@
-# Conclusions and further work
+\appendix
+\bookmarksetup{startatroot}
+
+# Conclusions and further work {.unnumbered}
 
 In this document I have developed an overview of quantum computation and quantum computing models,
 giving both the complexity theoretical perspective as well as a more applied one, by describing and implementing several key quantum algorithms.

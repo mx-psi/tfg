@@ -196,7 +196,7 @@ a probabilistic polynomial time algorithm $M$ such that
 In contrast to $\mathsf{BPP}$, $\mathsf{PP}$ is considered unfeasible, as the following proposition hints at. 
 
 :::{.proposition #prop:nppp}
-(@KatzNotesComplexityTheory)
+[@KatzNotesComplexityTheory]
 
 $$\mathsf{NP} \subseteq \mathsf{PP}$$
 :::
@@ -312,7 +312,7 @@ Unfortunately, this remains an open problem and there are problems that resist *
 In this section we show a simple decision problem known to be in $\mathsf{BPP}$ but not known to be in $\mathsf{P}$, that is, no direct classical algorithm is known to solve this problem in polynomial time.
 
 The problem is called *polynomial identity testing* and can be formally stated by making use of algebraic circuits, which essentially describe a polynomial expression.
-We follow the approach of (@SaxenaProgressPolynomialIdentity).
+We follow the approach of (@SaxenaProgressPolynomialIdentity2014).
 
 :::{.definition}
 An *algebraic circuit* is a circuit with one output with respect to the basis $\{+,-,\times, \operatorname{FANOUT}\}$.
@@ -342,7 +342,7 @@ Surprisingly, a polynomial probabilistic algorithm can be given for this problem
 The algorithm is based on the following lemma.
 
 :::{.lemma name="Schwartz-Zippel Lemma" #lemma:zippel}
-(@SaxenaProgressPolynomialIdentity, lemma 1.2)
+(@SaxenaProgressPolynomialIdentity2014, lemma 1.2)
 
 Let $p \in \mathbb{F}[X_1, \dots, X_m]$ be a nonzero polynomial of (total) degree $d$ and $S \subseteq \mathbb{F}$ a finite set.
 Then, if $a_1, \dots, a_m$ are sampled independently and uniformly from $S$,

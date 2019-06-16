@@ -277,7 +277,7 @@ Muy muy detallado 10/10}
 }
 
 @incollection{AaronsonmathoplimitsNP2016,
-  title = {\{\$\$\vphantom\}{{P}}\textbackslash{}mathop\{ =\}\textbackslash{}limits\^\{?\}{{NP}}\$\$\vphantom\{\}},
+  title = {$\mathsf{P} \overset{?}{=} \mathsf{NP}$},
   isbn = {978-3-319-32160-8 978-3-319-32162-2},
   abstract = {In 1950, John Nash sent a remarkable letter to the National Security Agency, in which\textemdash{}seeking to build theoretical foundations for cryptography\textemdash{}he all but formulated what today we call the P=?NPP=?⁡NP\textbackslash{}mathsf\{P\}\textbackslash{}mathop\{ =\}\textbackslash{}limits\^\{?\}\textbackslash{}mathsf\{NP\} problem, and consider one of the great open problems of science. Here I survey the status of this problem in 2016, for a broad audience of mathematicians, scientists, and engineers. I offer a personal perspective on what it's about, why it's important, why it's reasonable to conjecture that P {$\not =$} NP is both true and provable, why proving it is so hard, the landscape of related problems, and crucially, what progress has been made in the last half-century toward solving those problems. The discussion of progress includes diagonalization and circuit lower bounds; the relativization, algebrization, and natural proofs barriers; and the recent works of Ryan Williams and Ketan Mulmuley, which (in different ways) hint at a duality between impossibility proofs and algorithms.},
   language = {en},
@@ -542,73 +542,73 @@ V{\'e}ase tambi{\'e}n Papadimitriou p{\'a}gina 521}
   copyright = {Creative Commons Attribution-ShareAlike License},
   abstract = {In complexity theory, the Karp\textendash{}Lipton theorem states that if the Boolean satisfiability problem (SAT) can be solved by Boolean circuits with a polynomial number of logic gates, then
 
-  
-    
-      
-        
+
+
+
+
           {$\Pi$}
-          
+
             2
-          
-        
+
+
         =
-        
+
           {$\Sigma$}
-          
+
             2
-          
-        
-        
-      
-    
+
+
+
+
+
     \{\textbackslash{}displaystyle \textbackslash{}Pi \_\{2\}=\textbackslash{}Sigma \_\{2\}\textbackslash,\}
-   and therefore 
-  
-    
-      
-        
+   and therefore
+
+
+
+
           P
           H
-        
+
         =
-        
+
           {$\Sigma$}
-          
+
             2
-          
-        
+
+
         .
-        
-      
-    
+
+
+
     \{\textbackslash{}displaystyle \textbackslash{}mathrm \{PH\} =\textbackslash{}Sigma \_\{2\}.\textbackslash,\}
-  
+
 That is, if we assume that NP, the class of nondeterministic polynomial time problems, can be contained in the non-uniform polynomial time complexity class P/poly, then this assumption implies the collapse of the polynomial hierarchy at its second level. Such a collapse is believed unlikely, so the theorem is generally viewed by complexity theorists as evidence for the nonexistence of polynomial size circuits for SAT or for other NP-complete problems. A proof that such circuits do not exist would imply that P {$\not =$} NP. As P/poly contains all problems solvable in randomized polynomial time (Adleman's theorem), the Karp\textendash{}Lipton theorem is also evidence that the use of randomization does not lead to polynomial time algorithms for NP-complete problems.
-The Karp\textendash{}Lipton theorem is named after Richard M. Karp and Richard J. Lipton, who first proved it in 1980. (Their original proof collapsed PH to 
-  
-    
-      
-        
+The Karp\textendash{}Lipton theorem is named after Richard M. Karp and Richard J. Lipton, who first proved it in 1980. (Their original proof collapsed PH to
+
+
+
+
           {$\Sigma$}
-          
+
             3
-          
-        
-      
-    
+
+
+
+
     \{\textbackslash{}displaystyle \textbackslash{}Sigma \_\{3\}\}
-  , but Michael Sipser improved it to 
-  
-    
-      
-        
+  , but Michael Sipser improved it to
+
+
+
+
           {$\Sigma$}
-          
+
             2
-          
-        
-      
-    
+
+
+
+
     \{\textbackslash{}displaystyle \textbackslash{}Sigma \_\{2\}\}
   .)
 Variants of the theorem state that, under the same assumption, MA = AM, and PH collapses to SP2 complexity class. There are stronger conclusions possible if PSPACE, or some other complexity classes are assumed to have polynomial-sized circuits; see P/poly. If NP is assumed to be a subset of BPP (which is a subset of P/poly), then the polynomial hierarchy collapses to BPP. If coNP is assumed to be subset of NP/poly, then the polynomial hierarchy collapses to its third level.},
@@ -675,7 +675,7 @@ Leer sobre demostraci{\'o}n de QMA en PP en el otro paper de Watrous}
 }
 
 @misc{AaronsonmathsfBQPvsmathsfQMA2010,
-  title = {\{\$\textbackslash{}mathsf\{\vphantom{\}\}}{{BQP}}\vphantom\{\}\$\vphantom\{\} vs. \{\$\textbackslash{}mathsf\{\vphantom{\}\}}{{QMA}}\vphantom\{\}\$\vphantom\{\}?},
+  title = {$\mathsf{BQP}$ vs. $\mathsf{QMA}$},
   urldate = {2018-08-04},
   journal = {Theoretical Computer Science Stack Exchange},
   url = {https://cstheory.stackexchange.com/questions/3304/bqp-vs-qma},
@@ -1052,25 +1052,13 @@ Interesting when it comes to the discussion of how to transform a quantum circui
   file = {/home/pablo/Zotero/storage/ASDQRTAY/barbados-2016.pdf}
 }
 
-@article{DawsonSolovayKitaevalgorithm2005,
-  archivePrefix = {arXiv},
-  eprinttype = {arxiv},
-  eprint = {quant-ph/0505030},
-  title = {The {{Solovay}}-{{Kitaev}} Algorithm},
-  abstract = {This pedagogical review presents the proof of the Solovay-Kitaev theorem in the form of an efficient classical algorithm for compiling an arbitrary single-qubit gate into a sequence of gates from a fixed and finite set. The algorithm can be used, for example, to compile Shor's algorithm, which uses rotations of \$\textbackslash{}pi / 2\^k\$, into an efficient fault-tolerant form using only Hadamard, controlled-\{\textbackslash{}sc not\}, and \$\textbackslash{}pi / 8\$ gates. The algorithm runs in \$O(\textbackslash{}log\^\{2.71\}(1/\textbackslash{}epsilon))\$ time, and produces as output a sequence of \$O(\textbackslash{}log\^\{3.97\}(1/\textbackslash{}epsilon))\$ quantum gates which is guaranteed to approximate the desired quantum gate to an accuracy within \$\textbackslash{}epsilon {$>$} 0\$. We also explain how the algorithm can be generalized to apply to multi-qubit gates and to gates from \$SU(d)\$.},
-  language = {en},
-  urldate = {2019-03-09},
-  journal = {arXiv:quant-ph/0505030},
-  url = {http://arxiv.org/abs/quant-ph/0505030},
-  author = {Dawson, Christopher M. and Nielsen, Michael A.},
-  month = may,
-  year = {2005},
-  keywords = {Quantum Physics},
-  file = {/home/pablo/Zotero/storage/7GQ5TPPB/Dawson y Nielsen - 2005 - The Solovay-Kitaev algorithm.pdf},
-  annote = {Comment: 15 pages, accepted to Quantum Information and Computation as Review Article
-
-https://quantumcomputing.stackexchange.com/questions/2625/basic-approximation-in-solovay-kitaev-algorithm}
+@article{dawson2005,
+  title={The solovay-kitaev algorithm},
+  author={Dawson, Christopher M and Nielsen, Michael A},
+  journal={arXiv preprint quant-ph/0505030},
+  year={2005}
 }
+
 
 @article{AharonovQuantumCircuitsMixed1998,
   archivePrefix = {arXiv},
@@ -1125,17 +1113,19 @@ https://quantumcomputing.stackexchange.com/questions/2625/basic-approximation-in
   file = {/home/pablo/Zotero/storage/8BCNLVPL/Watrous - An introduction to quantum information and quantum.pdf}
 }
 
-@article{SaxenaProgressPolynomialIdentity,
+@article{SaxenaProgressPolynomialIdentity2014,
   title = {Progress on {{Polynomial Identity Testing}}},
   language = {en},
   number = {99},
   author = {Saxena, Nitin},
+  year = {2014},
   pages = {31},
   file = {/home/pablo/Zotero/storage/JPBNQTIE/Saxena - Progress on Polynomial Identity Testing.pdf}
 }
 
 @misc{KatzNotesComplexityTheory,
   title = {Notes on {{Complexity Theory}}},
+  year = {2005},
   urldate = {2019-05-03},
   url = {http://www.cs.umd.edu/~jkatz/complexity/f05/lecture7.pdf},
   author = {Katz, Jonathan},
@@ -1278,10 +1268,11 @@ https://quantumcomputing.stackexchange.com/questions/2625/basic-approximation-in
   file = {/home/pablo/Zotero/storage/7X3WQWLG/haskell2010.pdf}
 }
 
-@misc{GlasgowHaskellCompiler,
+@misc{GlasgowHaskellCompiler2019,
   title = {The {{Glasgow Haskell Compiler}}},
   urldate = {2019-06-13},
   url = {https://www.haskell.org/ghc/},
+  year = {2019},
   file = {/home/pablo/Zotero/storage/6ANHMJA9/ghc.html}
 }
 
@@ -1416,5 +1407,3 @@ https://quantumcomputing.stackexchange.com/questions/2625/basic-approximation-in
   pages = {5:1--5:29},
   file = {/home/pablo/Zotero/storage/GS7Z7XAL/Bernardy et al. - 2017 - Linear Haskell Practical Linearity in a Higher-or.pdf}
 }
-
-

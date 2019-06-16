@@ -111,11 +111,11 @@ The code is organized as follows
 
 ## Acknowledgements {.unnumbered}
 
-Professor Serafín Moral Callejón has helped me greatly with his corrections and advice in writing this document, allowing me to clarify my thoughts when writing this document, and teaching me how to write clearly in a mathematical style. I am also, more generally, thankful to the Department of Computer Science and Artificial Intelligence at the University of Granada for allowing me to pursue this project with a collaboration grant.
+Professor Serafín Moral Callejón has helped me greatly with his corrections and advice in writing this document, allowing me to clarify my thoughts when writing this document, and teaching me how to write clearly in a mathematical style. I am also thankful to him and more generally to the Department of Computer Science and Artificial Intelligence at the University of Granada for allowing me to pursue this project with a collaboration grant.
 
 Professor Peter Selinger has assisted me in the bundling of Quipper as a `stack` project by updating his maintained packages and answering my doubts via e-mail. I am also grateful for his work and others developing Quipper, which has allowed me to better understand quantum computers.
 
-I would also like to thank the LibreIM organizers and attendants, for listening to my seminar on the topic and providing useful feedback. Thank you to Antonio, Mario, David, Guillermo, Sofía, José Alberto, Dani, José Manuel, Blanca and Violeta.
+I would also like to thank the LibreIM organizers and attendants, for attending to my seminar on the topic and providing useful feedback. Thank you to Antonio, Mario, David, Guillermo, Sofía, José Alberto, Dani, José Manuel, Blanca and Violeta.
 
 Lastly, a special thank you to Mario Román for his help in understanding the categorical perspective on quantum circuits and to José María Martín for his advice on the design and style of this document.
 

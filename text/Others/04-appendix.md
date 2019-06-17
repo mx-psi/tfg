@@ -70,6 +70,10 @@ For example, the NOT logical operation can be given as
 
 Some examples of oracles are included in the `oracles` folder.
 
+The second binary, `diagrams`, generates the diagrams used in the document.
+The option `--gen-all` generates a selection of the diagrams used,
+while providing a circuit in the form of a truth table with the option `--circuit` generates a circuit diagram for that specific circuit.
+
 #### Documentation
 
 The documentation, generated with Haddock, is available in the `docs`
@@ -108,6 +112,8 @@ The code is organized as follows
 4.  the `docs` folder includes the generated documentation.
 5.  the `package.yaml` and `stack.yaml` files define the dependencies
     and compilation steps.
+
+\newpage
 
 ## Acknowledgements {.unnumbered}
 

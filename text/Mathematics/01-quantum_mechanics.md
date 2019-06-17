@@ -255,6 +255,8 @@ where $X$ is the $\operatorname{NOT}$ gate matrix.
 Furthermore, it is easy to show that cloning is not a unitary operation.
 This is the famous *no-cloning theorem*.
 
+\newpage
+
 :::{.proposition name="No-cloning theorem" #prop:nocloning}
 There is no unitary map $U: Q^{\otimes 2n} \to Q^{\otimes 2n}$ and state $\ket{x_0} \in Q^{\otimes n}$ that for an arbitrary state $\ket{\psi} \in Q^{\otimes n}$ maps $$U\ket{\psi}\ket{x_0} = \ket{\psi}\ket{\psi}.$$
 :::

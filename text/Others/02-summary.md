@@ -55,7 +55,7 @@ La parte matemática describe el modelo de estados puros para la computación cu
   Turing clásica*, pero, para tener una descripción unificada con el caso cuántico, recurrimos a los circuitos.
   El *modelo de circuitos uniforme*, que puede verse como la descripción de un morfismo en una categoría monoidal en 
   términos de un conjunto de morfismos básicos llamados *puertas*, puede demostrarse como equivalente al modelo de 
-  máquina de Turing clásica en términos de computabilidad y complejidad eficiente.
+  máquina de Turing clásica en términos de computabilidad y eficiencia computacional.
   
   A partir de estos dos modelos podemos definir *clases de complejidad* deterministas y no deterministas como 
   $\mathsf{P}, \mathsf{P}/\poly, \mathsf{NP}$ y $\mathsf{PSPACE}$: conjuntos de problemas de decisión que son 
@@ -72,7 +72,7 @@ La parte matemática describe el modelo de estados puros para la computación cu
 
 **Capítulo 3**: En este capítulo se describe y estudia el modelo probabilístico de computación.
 Análogamente al modelo descrito en el capítulo 1 para la computación cuántica, puede definirse un modelo de computación probabilística compatible con el formalismo del modelo de circuitos uniformes, utilizando en este caso espacios vectoriales reales como espacio de estados.
-Las aplicaciones válidas en este caso son un subconjunto de las *aplicaciones estocásticas* (aquellas cuyas entradas pueden calcularse de forma eficiente clásicamente). Además, estas aplicaciones pueden descomponerse siempre en una parte clásica y un generador de bits aleatorios con un sesgo dado.
+Las aplicaciones válidas en este caso son un subconjunto de las *aplicaciones estocásticas* (aquellas cuyas entradas pueden calcularse de forma eficiente). Además, estas aplicaciones pueden descomponerse siempre en una parte clásica y un generador de bits aleatorios con un sesgo dado.
 A partir de estos podemos definir algoritmos probabilísticos que resuelvan un cierto problema.
 
 Para incrementar la probabilidad de éxito de uno de estos algoritmos pueden utilizarse las *cotas de Chernoff*.
@@ -98,8 +98,8 @@ Puede establecerse así una jerarquía completa de clases definidas en los capí
 
 La parte informática desarrolla varios algoritmos concretos en el modelo definido en los capítulos 1 a 4, tanto de forma téorica como de forma aplicada en el lenguaje Quipper. Trata los siguientes contenidos:
 
-**Capítulo 5**: En este capítulo se discuten brevemente los lenguajes de programación cuánticas y se justifica la elección del lenguaje de programación funcional puro Quipper, embebido en Haskell.
-Quipper necesita de varios conceptos de la programación funcional tomados de Haskell, como es el caso de las mónadas, un concepto tomado de la teoría de categorías que nos permite tratar de forma pura con contexto computacionales.
+**Capítulo 5**: En este capítulo se discuten brevemente los lenguajes de programación cuánticos y se justifica la elección del lenguaje de programación funcional puro Quipper, embebido en Haskell.
+Quipper necesita de varios conceptos de la programación funcional tomados de Haskell, como es el caso de las mónadas, un concepto tomado de la teoría de categorías que nos permite tratar de forma pura con contextos computacionales.
 
 Además, Quipper hace uso de las clases de tipos generalizadas de Haskell y de sus capacidades para metaprogramación en tiempo de compilación.
 El modelo subyacente a Quipper es un modelo mixto, que combina los circuitos clásicos y los circuitos cuánticos en un único lenguaje de descripción.
@@ -111,9 +111,9 @@ En este capítulo describimos también la lectura de funciones clásicas y su tr
 **Capítulo 6:** En primer lugar, en este capítulo se describe el modelo simplificado de complejidad de consultas (*query complexity*) en el que se realizará el análisis de eficiencia de los algoritmos presentados.
 Este modelo mide la complejidad de un algoritmo en función del número de consultas que hace a una cadena de caracteres dada mediante un *oráculo*.
 
-Bajo este enfoque puede discutirse el problema de Deutsch, uno de los primeros problemas para los cuales se describió un algoritmo cuántico (el algoritmo de Deutsch-Jozsa)que superaba en el modelo de complejidad de consultas la eficiente de cualquier algoritmo clásico. 
+Bajo este enfoque puede discutirse el problema de Deutsch, uno de los primeros problemas para los cuales se describió un algoritmo cuántico (el algoritmo de Deutsch-Jozsa) que superaba en el modelo de complejidad de consultas la eficiente de cualquier algoritmo clásico. 
 
-En la práctica la ventaja es sólo respecto del caso clásico, puesto que en el caso probabilístico es asintóticamente equivalente al caso probabilístico en función del conjunto de puertas cuánticas utilizado.
+En la práctica la ventaja es sólo respecto del caso clásico, puesto que en el caso probabilístico es asintóticamente equivalente al caso cuántico en función del conjunto de puertas cuánticas utilizado.
 Este algoritmo se ha implementado en Quipper y puede encontrarse en el código adjunto.
 
 **Capítulo 7:** En este capítulo se describe el algoritmo de Shor.
@@ -128,7 +128,7 @@ Este algoritmo puede describirse también de forma sencilla en Quipper, utilizan
 
 Este algoritmo puede aplicarse en el problema de hallar el orden de un elemento del grupo de las unidades de los enteros módulo un $N$ dado, que puede implementarse en Quipper gracias a sus capacidades para lidiar con enteros de forma cuántica.
 
-Finalmente, el problema de factorización de enteros puede reducirse de forma probabilísticaal de hallar el orden de una unidad, con lo que podemos definir finalmente el algoritmo de Shor.
+Finalmente, el problema de factorización de enteros puede reducirse de forma probabilística al de hallar el orden de una unidad, con lo que podemos definir finalmente el algoritmo de Shor.
 La parte cuántica de este algoritmo no puede ejecutarse de forma factible en la práctica, por lo que discutimos 
 la implementación de la estimación de recursos para obtener la factorización e implementamos la parte clásica.
 
@@ -139,7 +139,7 @@ Este algoritmo tiene una interpretación geométrica como la aplicación de un g
 Puede implementarse de forma sencilla en Quipper, mediante la lectura de oráculos descrita anteriormente y la aplicación de operaciones de combinación monádica.
 Además, este algoritmo es óptimo asintóticamente en el modelo de complejidad de consultas.
 
-Para la ejecución del algoritmo necesitamos saber el número de soluciones, que puede obtener también de forma eficiente con el *algoritmo de conteo cuántico*.
+Para la ejecución del algoritmo necesitamos saber el número de soluciones, que se puede obtener también de forma eficiente con el *algoritmo de conteo cuántico*.
 Este algoritmo es una aplicación directa del algoritmo de estimación de fase.
 Los requerimientos en términos de la dimensión del espacio de estados impiden su simulación directa, pero podemos estimar el número de recursos necesarios.
 

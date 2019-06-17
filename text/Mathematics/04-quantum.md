@@ -227,7 +227,7 @@ In this section we define what it means for a function to be efficiently compute
 :::{.definition #dfn:qalgo}
 A **quantum algorithm** is a uniform family of quantum circuits $\mathcal{C} = \{C_n\}$ over a finite universal gate set.
 
-We say the algorithm is *polynomial time* if the function $1^n \mapsto C_n$ cane be computed in polynomial time.
+We say the algorithm is *polynomial time* if the function $1^n \mapsto C_n$ can be computed in polynomial time.
 :::
 
 

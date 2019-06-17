@@ -6,7 +6,7 @@
 In this document I have developed an overview of quantum computation and quantum computing models,
 giving both the complexity theoretical perspective as well as a more applied one, by describing and implementing several key quantum algorithms.
 
-The study of quantum computers and their properties is relatively young as a mathematical and computer science subject, yet it has seen several important sucesses.
+The study of quantum computers and their properties is relatively young as a mathematical and computer science subject, yet it has seen several important successes.
 Quantum computers are a promising technology that has the potential to be a key tool in the resolution of several practical engineering problems.
 Algorithms such as Shor's algorithm are a resounding success, since they provide a practical polynomial-time algorithm for a problem that lacks such an algorithm classically, even heuristically.
 
@@ -23,8 +23,8 @@ For example, if the unitary matrices are restricted to have real entries, this m
 What about other fields or division rings? Can a simpler description of quantum computation be found?
 
 Secondly, the study of relativized models of quantum and classical computation was not addressed in this document, yet it provides for a wide array of theoretical results that hint at the separation and incomparability of quantum classes.
-A recent celebrated result is the relativized separation of $\mathsf{BQP}$ and the polynomial hierarchy (@RazOracleSeparationBQP2018).
+A recent celebrated result is the relativized proof that $\mathsf{BQP} \not\subset \mathsf{PH}$, that might lead to the resolution of problems that are not even in the polynomial hierarchy (@RazOracleSeparationBQP2018).
 
-On the practical side, functional quantum programming languages could have stronger verification usage with the use of dependent types for reflecting the shape of inputs and outputs or linear types to model resource consumption and avoid the cloning of qubits.
-The development of Linear Haskell, a linear types implementation on Haskell, could put this ideas into action on Quipper (@BernardyLinearHaskellPractical2017).
+On the practical side, functional quantum programming languages could have stronger verification capacities with the use of dependent types for reflecting the shape of inputs and outputs or with linear types to model resource consumption and avoid the cloning of qubits.
+The development of Linear Haskell, a linear types implementation on Haskell, could put some of these ideas into action on Quipper (@BernardyLinearHaskellPractical2017).
 

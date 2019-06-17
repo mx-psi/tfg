@@ -435,8 +435,11 @@ getOrder x n = do
   estimatePhase (quantumOp x n) eigv (2 + ceiling (logBase 2 (fromIntegral n)))
 ```
 
-We then calculate the convergents of the phase until we find one that has as its denominator the phase that we are looking for. For this we need to implement the continued fractions algorithm, which is straightforward, and then calculate each convergent. This is available at the `src/lib/Floating.hs` module.
+We then would have to calculate the convergents of the phase until we find one that has as its denominator the phase that we are looking for. For this we need to implement the continued fractions algorithm, which is straightforward, and then calculate each convergent. This is available at the `src/lib/Floating.hs` module.
 What remains is classically recovering the divisor from its order if possible.
+
+This algorithm can't be feasibly executed since it takes too much time.
+Therefore, only the circuit is generated.
 
 ## Classical part
 

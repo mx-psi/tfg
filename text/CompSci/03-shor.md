@@ -184,7 +184,7 @@ Approximate an eigenvalue of the eigenvector $\ket{u}$ a unitary operator $U$.
   an oracle that computes a controlled $U^{2^j}$ operation and a vector $\ket{u}$
 - **Promise**: $\ket{u}$ is an eigenvector of $U$.
 - **Output**: An $n$-bit approximation of $\varphi_u$ such that $$\exp(2\pi i \varphi_u)$$ 
-  is the eigenvalue of $U$ associated with $U$.
+  is the eigenvalue of $U$ associated with $\ket{u}$.
 :::
 
 Since $U$ is unitary, its eigenvalues will lie on the unit circle, and thus they can all be expressed as $\exp(2\pi i \varphi)$ for some $\varphi \in [0,1[$.

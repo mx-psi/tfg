@@ -14,7 +14,7 @@ SRCS:= $(PREV) $(MATH) $(CSI) $(POST)
 
 .PHONY: all clean check
 
-all: filters/pandoc-crossref $(CHAPTERS)
+all: filters/pandoc-crossref tfg.pdf
 
 filters/pandoc-crossref:
 	wget https://github.com/lierdakil/pandoc-crossref/releases/download/v0.4.0.0-alpha2/linux-ghc84-pandoc22.tar.gz
@@ -27,12 +27,6 @@ check: $(SRCS)
 
 tfg.pdf: $(SRCS) src/template.tex src/citas.bib
 	$(PANDOC) $(PFLAGS) --template src/template.tex src/before.md $(SRCS) src/after.md -o $@
-
-chapters/%.pdf: text/Mathematics/%.md
-	$(PANDOC) $(PFLAGS) -M title=$(patsubst text/Mathematics/%.md,%, $^) --template src/chapter.tex src/before-chap.md $^ src/after.md -o $@
-
-chapters/%.pdf: text/CompSci/%.md
-	$(PANDOC) $(PFLAGS) -M title=$(patsubst text/CompSci/%.md,%, $^) --template src/chapter.tex src/before-chap.md $^ src/after.md -o $@
 
 tfg.html: $(SRCS)
 	$(PANDOC) $(PFLAGS) $(SRCS) -o $@

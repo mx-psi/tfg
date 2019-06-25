@@ -1,0 +1,13 @@
+digraph G {
+rankdir="LR";
+bgcolor="transparent";
+node [shape="plaintext" fontname="Fira Sans"];
+edge[arrowsize=0.5];
+BPP -> "P/poly";
+P -> NP;
+NP -> MA [style="dashed"];
+BPP -> MA;
+P -> BPP [style="dashed"];
+BPP -> BQP -> QMA -> PP -> PSPACE;
+MA -> QMA;
+}

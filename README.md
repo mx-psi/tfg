@@ -8,12 +8,8 @@ The code developed for this dissertation is available on [a separate repository]
 
 ## Related talks
 
-[Programando ordenadores cuánticos](https://mx-psi.github.io/libreim-quantum)
-
-: I gave a talk at [LibreIm](https://libreim.github.io/) about some of the theoretical aspects on quantum circuits and Quipper (in Spanish).
-
-[Algoritmos cuánticos en Quipper](https://mx-psi.github.io/quantum-algorithms)
-
-: I gave a talk at [esLibre 2019](https://eslib.re/2019/) on more practical aspects related to Quipper.
+- [*Programando ordenadores cuánticos*](https://mx-psi.github.io/libreim-quantum): I gave a talk at [LibreIm](https://libreim.github.io/) about some of the theoretical aspects on quantum circuits and Quipper (in Spanish).
+- [*Algoritmos cuánticos en Quipper*](https://mx-psi.github.io/quantum-algorithms):
+I gave a talk at [esLibre 2019](https://eslib.re/2019/) on more practical aspects related to Quipper.
 
 
